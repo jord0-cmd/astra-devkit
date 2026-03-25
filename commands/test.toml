@@ -1,5 +1,2 @@
-[command]
 description = "Generate tests — delegate to the test-writer agent for TDD test suite generation"
-
-[command.prompt]
-content = "Delegate to @test-writer: Generate a comprehensive test suite for the code I'm about to describe or the files I'll point you to. Follow TDD standards — happy path, edge cases, error paths."
+prompt = "Delegate to @test-writer: Generate a comprehensive test suite for the code I'm about to describe or the files I'll point you to. Follow TDD standards — happy path, edge cases, error paths."

@@ -1,5 +1,2 @@
-[command]
 description = "Code review — delegate to the code-reviewer agent for bugs, security, and standards"
-
-[command.prompt]
-content = "Delegate to @code-reviewer: Review the recent code changes in this project. Focus on bugs, security issues, logic errors, and standards compliance. Check git diff for what changed."
+prompt = "Delegate to @code-reviewer: Review the recent code changes in this project. Focus on bugs, security issues, logic errors, and standards compliance. Check git diff for what changed."

@@ -7,7 +7,7 @@ tools:
   - grep_search
   - list_directory
   - read_many_files
-  - shell
+  - run_shell_command
 model: inherit
 temperature: 0.3
 max_turns: 20

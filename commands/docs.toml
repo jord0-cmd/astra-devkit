@@ -1,5 +1,2 @@
-[command]
-description = "Generate documentation — delegate to the doc-generator agent for module summaries, API docs, project setup"
-
-[command.prompt]
-content = "Delegate to @doc-generator: Read through this project's codebase and generate documentation. Start with a project GEMINI.md if one doesn't exist, then module summaries for key source files."
+description = "Generate documentation — delegate to the doc-generator agent for module summaries and project docs"
+prompt = "Delegate to @doc-generator: Read through this project's codebase and generate documentation. Start with a project GEMINI.md if one doesn't exist, then module summaries for key source files."

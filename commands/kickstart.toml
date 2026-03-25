@@ -1,5 +1,2 @@
-[command]
 description = "Start a new project with guided discovery — scoping, tech stack, experience calibration"
-
-[command.prompt]
-content = "Activate the kickstart skill. Walk me through scoping a new project step by step."
+prompt = "Activate the kickstart skill. Walk me through scoping a new project step by step."

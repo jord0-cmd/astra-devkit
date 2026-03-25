@@ -1,5 +1,2 @@
-[command]
 description = "Debug — delegate to the debugger agent for systematic root-cause analysis"
-
-[command.prompt]
-content = "Delegate to @debugger: Something is broken. Start a systematic investigation — gather evidence, form hypotheses, test one at a time. I'll describe the symptom."
+prompt = "Delegate to @debugger: Something is broken. Start a systematic investigation — gather evidence, form hypotheses, test one at a time. I'll describe the symptom."
