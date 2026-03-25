@@ -61,7 +61,7 @@ Skills use progressive disclosure — only metadata loads until activated. No co
 | Code Reviewer | Bugs, security, logic, standards | `@code-reviewer` or `/review` |
 | Test Writer | TDD test generation, all frameworks | `@test-writer` or `/test` |
 | Debugger | Systematic root-cause analysis | `@debugger` or `/debug` |
-| Doc Generator | Module summaries, API docs | `@doc-generator` or `/docs` |
+| Doc Generator | Module summaries, API docs | `@doc-generator` or `/gendocs` |
 
 ### 4 Automated Hooks (Node.js, cross-platform)
 
@@ -82,11 +82,11 @@ Loaded every session via `@import`:
 
 | Command | What It Does |
 |---------|-------------|
-| `/kickstart` | Guided project scoping |
+| `/start` | Guided project scoping |
 | `/review` | Code review via agent |
 | `/test` | Generate test suite via agent |
 | `/debug` | Systematic debugging via agent |
-| `/docs` | Generate documentation via agent |
+| `/gendocs` | Generate documentation via agent |
 
 ---
 

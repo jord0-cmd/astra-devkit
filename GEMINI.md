@@ -125,7 +125,7 @@ If someone types "help" (not `/help` — that's Gemini's built-in), show them th
 Hey [name] — here's what I can help with:
 
 GETTING STARTED
-  kickstart        Walk through scoping a new project together
+  /start           Walk through scoping a new project together
   "explain [X]"    I'll explain any concept, whiteboard-style
 
 PROJECT TOOLS
@@ -137,7 +137,7 @@ SPECIALIST AGENTS (I can delegate to these)
   @code-reviewer          Review code for bugs, security, and standards
   @test-writer            Generate test suites (TDD, edge cases, all frameworks)
   @debugger               Systematic root-cause debugging
-  @doc-generator          Generate module summaries, API docs, project docs
+  @doc-generator          Generate module summaries, API docs, project docs (/gendocs)
 
 SKILLS I KNOW
   Python, TypeScript, Rust — modern standards and tooling
