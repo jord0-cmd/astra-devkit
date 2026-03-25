@@ -61,6 +61,7 @@
 | `auto-lint.mjs` | `AfterTool` (write/edit) | Auto-formats with ruff (Python), biome (TS), rustfmt (Rust) | DONE |
 | `context-loader.mjs` | `SessionStart` | Loads user.json preferences + kickstart-refs detection | DONE |
 | `build-gate.mjs` | `AfterAgent` | Runs build/lint/type checks after coding tasks, forces retry on failure | DONE |
+| `test-gate.mjs` | `BeforeTool` (write/edit) | TDD enforcement — blocks implementation writes when no test file exists | DONE |
 
 ---
 

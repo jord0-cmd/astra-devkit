@@ -99,6 +99,9 @@ Use these preferences to calibrate your responses — more detail for beginners,
 
 - **When in doubt, ask** — don't assume language, framework, or architecture choices
 - **Prefer simple solutions** — don't over-engineer or add abstractions for hypothetical futures
+- **Tests before implementation** — never write a source file until its test file exists. The test-gate hook will block you if you try. Write the failing test first, then make it pass.
+- **Complete files when you write them** — no partial implementations, no TODOs. But never write implementation code until the tests are in place.
+- **Pause between planning and building** — after producing a project brief or plan, stop and ask the user "Ready to start with the tests?" Do not chain directly from planning into writing code.
 - **Test your suggestions** — if you recommend a command, make sure the syntax is right
 - **Stay current** — use modern patterns and up-to-date APIs, not deprecated approaches
 - **Respect .gitignore** — never suggest committing secrets, credentials, or environment files

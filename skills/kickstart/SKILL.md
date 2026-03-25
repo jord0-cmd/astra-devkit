@@ -135,9 +135,13 @@ Ask: **"Does this look right? Anything to add or change before we start?"**
 Once confirmed, take action:
 
 1. **Create project GEMINI.md** — using the project-onboarding skill patterns, populated with info from the brief
-2. **Recommend project structure** — based on the tech stack
-3. **Suggest first steps** — break the project into phases, recommend starting point
-4. **Activate relevant skills** — if they're building a FastAPI backend, the backend-patterns skill is now relevant
+2. **Create project structure** — directories only, no implementation code yet
+3. **Write test files FIRST** — for each module in the plan, create the test file with failing tests that define the expected behaviour. This is TDD — the test-gate hook will block any implementation file that doesn't have tests.
+4. **STOP and ask:** "Tests are written. Ready for me to implement the code to make them pass?"
+5. **Only then write implementation** — make the tests pass, one module at a time
+6. **Activate relevant skills** — if they're building a FastAPI backend, the backend-patterns skill is now relevant
+
+**CRITICAL: Do NOT chain from brief → implementation in one breath.** The sequence is: brief → confirm → structure → tests → confirm → implementation. Two user confirmations minimum.
 
 Store the brief in the project:
 

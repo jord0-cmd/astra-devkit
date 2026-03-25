@@ -109,6 +109,13 @@
             "name": "astra-secret-scanner",
             "timeout": 5000,
             "description": "Block file writes containing secrets, API keys, or credentials"
+          },
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/test-gate.mjs",
+            "name": "astra-test-gate",
+            "timeout": 5000,
+            "description": "TDD enforcement — blocks implementation writes when no test file exists"
           }
         ]
       }
