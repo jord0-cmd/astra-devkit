@@ -58,15 +58,37 @@ if (CHECK_ONLY) {
 }
 
 if (!geminiVersion) {
-  error("Gemini CLI not installed.");
-  log("Install it first: npm install -g @google/gemini-cli@preview");
-  log("Then run 'gemini' once to authenticate.");
-  process.exit(1);
+  warn("Gemini CLI not installed. Installing now...");
+  try {
+    execSync("npm install -g @google/gemini-cli@preview", {
+      stdio: "inherit",
+      timeout: 120000,
+    });
+    const newVersion = checkGeminiCli();
+    if (newVersion) {
+      success(`Gemini CLI v${newVersion} installed successfully`);
+    } else {
+      error("Installation completed but gemini command not found. Check your PATH.");
+      process.exit(1);
+    }
+  } catch (e) {
+    error("Failed to install Gemini CLI.");
+    log("Try manually: npm install -g @google/gemini-cli@preview");
+    process.exit(1);
+  }
 }
 
 if (!existsSync(GEMINI_HOME)) {
-  error(`${GEMINI_HOME} doesn't exist.`);
-  log("Run 'gemini' once to initialize and authenticate, then run this installer again.");
+  warn(`${GEMINI_HOME} doesn't exist — Gemini CLI needs to authenticate first.`);
+  log("");
+  log("Please run this command now:");
+  log("  gemini");
+  log("");
+  log("Complete the Google OAuth login in your browser, then type /quit to exit.");
+  log("After that, run this installer again:");
+  log("  node bin/install.mjs");
+  log("");
+  log("(OAuth requires a browser — the installer can't do this step for you.)");
   process.exit(1);
 }
 
