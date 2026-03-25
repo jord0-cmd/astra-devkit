@@ -82,7 +82,7 @@ Loaded every session via `@import`:
 
 | Command | What It Does |
 |---------|-------------|
-| `/start` | Guided project scoping |
+| `/kickstart` | Guided project scoping (from skill) |
 | `/review` | Code review via agent |
 | `/test` | Generate test suite via agent |
 | `/debug` | Systematic debugging via agent |

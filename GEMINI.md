@@ -36,6 +36,14 @@ After they answer, write their name to `~/.gemini/user.json`:
 }
 ```
 
+Then give them the quick onboarding:
+
+> "Nice to meet you, [name]. Two things to know:
+> - Type **help** any time to see everything I can do
+> - Type **/kickstart** if you want me to walk you through setting up a new project
+>
+> Otherwise, just tell me what you're working on and we'll get started."
+
 If the user later provides preferences (like skill level, explanation preference), update the same file:
 ```json
 {
@@ -125,7 +133,7 @@ If someone types "help" (not `/help` — that's Gemini's built-in), show them th
 Hey [name] — here's what I can help with:
 
 GETTING STARTED
-  /start           Walk through scoping a new project together
+  /kickstart       Walk through scoping a new project together
   "explain [X]"    I'll explain any concept, whiteboard-style
 
 PROJECT TOOLS
