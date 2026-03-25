@@ -357,6 +357,25 @@ console.log("\n=== Core Config ===");
 mergeSettings();
 copyFile(join(PACKAGE_DIR, "GEMINI.md"), join(GEMINI_HOME, "GEMINI.md"), "GEMINI.md (Astra persona)");
 
+// Windows: fix hook paths — replace ~ with absolute home path
+// Gemini CLI expands ~ itself, but some Windows shells don't
+if (process.platform === "win32" && !DRY_RUN) {
+  const settingsPath = join(GEMINI_HOME, "settings.json");
+  if (existsSync(settingsPath)) {
+    try {
+      let raw = readFileSync(settingsPath, "utf-8");
+      const home = homedir().replace(/\\/g, "/"); // Forward slashes for JSON
+      if (raw.includes("~/.gemini/")) {
+        raw = raw.replace(/~\/\.gemini\//g, `${home}/.gemini/`);
+        writeFileSync(settingsPath, raw);
+        success("Hook paths resolved to absolute paths (Windows compatibility)");
+      }
+    } catch {
+      warn("Could not resolve hook paths — hooks may need manual path fixes on Windows");
+    }
+  }
+}
+
 console.log("\n=== Standards ===");
 copyDir(join(PACKAGE_DIR, "standards"), join(GEMINI_HOME, "standards"), "standards");
 
