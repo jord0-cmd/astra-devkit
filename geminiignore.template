@@ -1,0 +1,59 @@
+# .geminiignore — files Gemini CLI should not index or read
+# Copy this to your project root as .geminiignore
+
+# Dependencies
+node_modules/
+.venv/
+venv/
+__pycache__/
+
+# Build output
+dist/
+build/
+.next/
+out/
+*.egg-info/
+target/
+
+# Environment and secrets
+.env
+.env.*
+*.pem
+*.key
+credentials.json
+**/secrets/
+
+# IDE and editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and caches
+*.log
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+coverage/
+htmlcov/
+.nyc_output/
+
+# Large files
+*.zip
+*.tar.gz
+*.bin
+*.pkl
+*.pt
+*.onnx
+*.safetensors
+
+# Lock files (large, not useful for context)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+uv.lock
+Cargo.lock

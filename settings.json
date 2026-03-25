@@ -1,0 +1,144 @@
+{
+  "security": {
+    "auth": {
+      "selectedType": "oauth-personal"
+    }
+  },
+  "tools": {
+    "shell": {
+      "showColor": true
+    }
+  },
+  "ui": {
+    "theme": "Dracula",
+    "autoThemeSwitching": false,
+    "loadingPhrases": "witty",
+    "customWittyPhrases": [
+      "It works on my machine...",
+      "Have you tried turning it off and on again?",
+      "Blaming DNS...",
+      "It's always DNS.",
+      "No, seriously. It's DNS.",
+      "Checking if it's DNS... it's DNS.",
+      "Deploying to prod on a Friday...",
+      "LGTM. Didn't read it.",
+      "Resolving merge conflicts from 2019...",
+      "git push --force and pray...",
+      "Reverting the revert of the revert...",
+      "The CI pipeline is judging you...",
+      "Waiting for the pipeline... again...",
+      "Build failed. Surprise.",
+      "404: Motivation not found.",
+      "200 OK (probably)",
+      "503: Coffee service unavailable.",
+      "418: I'm a teapot.",
+      "Segfault in production. Classic.",
+      "rm -rf node_modules && npm install (the universal fix)",
+      "There are 2 hard problems in CS: cache invalidation, naming things, and off-by-1 errors.",
+      "Tabs vs spaces war: round 4,782...",
+      "Updating dependencies... pray for me.",
+      "This should only take five minutes...",
+      "Fixing the fix that fixed the fix...",
+      "Reading the error message this time...",
+      "Consulting Stack Overflow... oh wait, it's archived.",
+      "The intern pushed to main again...",
+      "chmod 777. Security is a spectrum.",
+      "sudo make me a sandwich.",
+      "Dockerizing the container that runs Docker...",
+      "Kubernetes wants more YAML. Feed it YAML.",
+      "The cloud is just someone else's computer...",
+      "Terraform plan: 47 to add, 0 to change, 312 to destroy. Proceed?",
+      "The helm chart has become sentient...",
+      "Scaling horizontally because fixing the bug is harder...",
+      "Adding more RAM should fix it.",
+      "Microservices: because one monolith wasn't enough problems.",
+      "The sprint ends tomorrow. We started yesterday.",
+      "Agile: moving fast in no particular direction.",
+      "Story points are made up and the deadlines don't matter.",
+      "Standup lasted 45 minutes. Nobody stood up.",
+      "Writing tests for code we'll delete next week...",
+      "100% code coverage. 0% confidence.",
+      "The regex works. Nobody knows why.",
+      "Commented out code from 2017. Too scared to delete it.",
+      "// TODO: fix this later (committed 3 years ago)",
+      "Works perfectly. Don't touch it. Don't look at it.",
+      "The logs say everything is fine. The users disagree.",
+      "Monitoring says green. Customers say red.",
+      "Alert fatigue is not a badge of honour.",
+      "On-call at 3am for a config typo. Living the dream.",
+      "The postmortem will be blameless. The Slack thread was not.",
+      "Rollback complete. Dignity not yet restored.",
+      "Feature flag everything. Trust nothing.",
+      "The database migration will be quick, they said.",
+      "SELECT * FROM problems WHERE solved = false; -- 47,000 rows",
+      "Caching: making the same mistake faster.",
+      "Premature optimisation is the root of all evil. But this is fine.",
+      "It compiled. Ship it."
+    ]
+  },
+  "experimental": {
+    "enableAgents": true
+  },
+  "skills": {
+    "enabled": true
+  },
+  "hooksConfig": {
+    "enabled": true
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/context-loader.mjs",
+            "name": "astra-context-loader",
+            "timeout": 5000,
+            "description": "Load user preferences and project context on session start"
+          }
+        ]
+      }
+    ],
+    "BeforeTool": [
+      {
+        "matcher": "write_file|replace_in_file|create_file|edit_file",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/secret-scanner.mjs",
+            "name": "astra-secret-scanner",
+            "timeout": 5000,
+            "description": "Block file writes containing secrets, API keys, or credentials"
+          }
+        ]
+      }
+    ],
+    "AfterTool": [
+      {
+        "matcher": "write_file|replace_in_file|create_file|edit_file",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/auto-lint.mjs",
+            "name": "astra-auto-lint",
+            "timeout": 15000,
+            "description": "Auto-format and lint files after writes (ruff, biome, rustfmt)"
+          }
+        ]
+      }
+    ],
+    "AfterAgent": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/build-gate.mjs",
+            "name": "astra-build-gate",
+            "timeout": 30000,
+            "description": "Run build and type checks after agent completes coding tasks"
+          }
+        ]
+      }
+    ]
+  }
+}

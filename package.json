@@ -1,0 +1,42 @@
+{
+  "name": "astra-devkit",
+  "version": "1.0.0",
+  "description": "Astra — AI coding partner configuration for Gemini CLI. Skills, agents, hooks, and standards for development teams.",
+  "bin": {
+    "astra-devkit": "./bin/install.mjs"
+  },
+  "keywords": [
+    "gemini",
+    "gemini-cli",
+    "ai",
+    "coding-assistant",
+    "developer-tools",
+    "skills",
+    "agents",
+    "devops",
+    "configuration"
+  ],
+  "author": "jord0-cmd",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jord0-cmd/astra-devkit"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "type": "module",
+  "files": [
+    "bin/",
+    "agents/",
+    "commands/",
+    "hooks/",
+    "skills/",
+    "standards/",
+    "GEMINI.md",
+    "settings.json",
+    "geminiignore.template",
+    "LICENSE",
+    "README.md"
+  ]
+}

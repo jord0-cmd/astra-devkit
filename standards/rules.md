@@ -1,0 +1,209 @@
+# Development Standards
+
+These rules apply to every coding session, every language, every project. No exceptions.
+
+---
+
+## Core Philosophy
+
+**Code is communication.** Every line should be clear to someone reading it six months from now — including you.
+
+**Finish what you start.** Incomplete implementations create more problems than they solve. Complete it or don't start it.
+
+**Simplicity wins.** The best solution is the one that works with minimum complexity. Clever code is usually bad code.
+
+---
+
+## The 11 Rules
+
+### 1. Never Make Unauthorised Changes
+- Only modify what is explicitly requested
+- Never change unrelated code, files, or functionality
+- If something else needs changing, ask first
+
+### 2. Dependency Management Is Mandatory
+- Always update package manifests when adding imports
+- Never add imports without corresponding dependency entries
+- Verify all dependencies are declared before suggesting code
+
+### 3. No Placeholders
+- Never use "YOUR_API_KEY", "TODO", or dummy data
+- Always use proper variable references or configuration patterns
+- Environment variables or config files, not hardcoded values
+
+### 4. Questions vs Code Requests
+- When asked a question, provide an answer — don't change code
+- Only modify code when explicitly requested: "change", "update", "fix"
+- Never assume a question is a code change request
+
+### 5. No Assumptions
+- If information is missing, ask for clarification
+- Never guess library versions, API formats, or implementation details
+- State clearly what information you need to proceed
+
+### 6. Security Is Non-Negotiable
+- Never put secrets in client-side code
+- Always use environment variables for sensitive data
+- Always implement proper input validation
+- Always implement appropriate access controls for data
+
+### 7. Be Honest About Capabilities
+- Never attempt impossible features
+- State limitations clearly
+- Suggest proper alternatives using appropriate libraries or services
+
+### 8. Preserve Functional Requirements
+- Never change core functionality to "fix" errors
+- Fix the technical issue, not the requirements
+- If requirements seem problematic, ask before changing
+
+### 9. Evidence-Based Responses
+- When asked if something is implemented, show the code
+- Reference specific files and line numbers
+- Never guess implementation status
+
+### 10. No Hardcoded Examples
+- Never hardcode example values as permanent solutions
+- Always use variables, parameters, or configuration
+- If showing examples, clearly mark them as such
+
+### 11. Intelligent Logging
+- Log key decision points, data transformations, state changes
+- Never over-log trivial operations
+- Never under-log critical flows
+- Use appropriate levels: ERROR, WARN, INFO, DEBUG
+- Include context: user ID, request ID, key parameters
+
+---
+
+## No Mock Services
+
+All code must be production-ready and fully functional.
+
+**Never:**
+- Use mock data or placeholder services
+- Implement temporary workarounds with TODOs
+- Create fallback logic that bypasses core functionality
+- Return fake responses "for now"
+- Use empty function bodies
+
+**Always:**
+- Implement real, working solutions
+- Connect to actual services
+- Solve the root problem, not symptoms
+- Complete all functionality before moving on
+
+---
+
+## The Confirm Protocol
+
+Before implementing any new feature or significant change, **state the plan back**:
+
+> "We're building X to achieve Y. It connects to Z. The constraints are W."
+
+This is not optional. This is not "ask if unsure." This is proving alignment before writing code.
+
+If a request for something new lacks context — what it does, why, what it connects to, what the constraints are — don't guess. Push back:
+
+> "I need more context before I start. Tell me: 1. What does this connect to? 2. What happens if it fails?"
+
+Most wrong implementations happen in the gap between what someone pictures in their head and what gets built. Close the gap before writing a single line.
+
+---
+
+## The Three Fix Rule
+
+After 3 failed attempts to fix the same issue:
+
+1. **Stop** writing code
+2. **Declare**: "Three fixes failed. This looks structural, not implementation."
+3. **Step back**: Examine the design, not the code
+4. **Propose**: A structural change, not another patch
+
+If three patches didn't work, the problem isn't in the patch — it's in the foundation.
+
+---
+
+## Quality Gates
+
+Verification checkpoints at transition boundaries. Move fast between gates, but you cannot pass one without the check.
+
+| Gate | When | What to Verify |
+|------|------|----------------|
+| **Gate 0: Confirm** | Before starting new work | State plan, get confirmation |
+| **Gate 1: Build** | After implementation | Project builds clean — no errors, no warnings |
+| **Gate 2: Test** | After integration | Tests pass, no regressions |
+| **Gate 3: Pre-Commit** | Before committing | Lint clean, no secrets, no TODOs |
+
+Between gates: move fast, experiment, iterate. That's where the best work happens.
+
+---
+
+## Debugging Standards
+
+When something breaks:
+
+1. **Reproduce**: Can you make it fail consistently?
+2. **Isolate**: What's the smallest code that fails?
+3. **Instrument**: Add logging, not print statements
+4. **Hypothesise**: What do you think is wrong?
+5. **Test**: Verify the hypothesis
+6. **Fix**: Address root cause, not symptoms
+7. **Verify**: Does the original issue still occur?
+8. **Prevent**: Add a test to catch regression
+
+---
+
+## Code Review Checklist
+
+Before shipping:
+
+- [ ] All functions have type hints or equivalent
+- [ ] Error handling is complete
+- [ ] Logging is sufficient for debugging
+- [ ] No hardcoded values — use config
+- [ ] Tests cover the happy path and edge cases
+- [ ] No commented-out code
+- [ ] No TODO comments without a ticket or issue reference
+- [ ] Imports are organised
+- [ ] Variable names are descriptive
+- [ ] Functions are under 50 lines
+- [ ] Classes are under 300 lines
+
+---
+
+## Feature Completion Criteria
+
+**A feature is complete when:**
+1. All code implemented — no placeholders
+2. All errors handled appropriately
+3. Tests written and passing
+4. Standards compliance verified
+5. Documentation complete
+6. Integration tested
+7. No known bugs
+
+**Incomplete features must not be committed to main, marked as done, or deployed.**
+
+---
+
+## Emergency Stop
+
+Specific triggers — not vague "if unsure":
+
+- **Ambiguous deliverable**: What exactly are we building? — Run Confirm (Gate 0)
+- **SDK/package selection**: State exact name, verify it exists before installing
+- **Visual tuning**: After 2 iterations without convergence — stop, get acceptance criteria
+- **New project scaffold**: Confirm stack, structure, and template before creating files
+- **Three fixes failed**: Stop patching, declare structural
+
+If none of the above apply but you're still uncertain:
+1. Stop code generation
+2. Ask for clarification
+3. Wait for explicit confirmation
+
+**Better to ask than to break everything.**
+
+---
+
+*Quality over speed. Complete over partial. Working over "almost working."*

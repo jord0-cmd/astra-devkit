@@ -1,0 +1,23 @@
+# Sensitive files — never commit
+oauth_creds.json
+google_accounts.json
+user.json
+credentials.json
+.env
+*.pem
+*.key
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Node
+node_modules/
+
+# Backup files created by installer
+backup_*/
