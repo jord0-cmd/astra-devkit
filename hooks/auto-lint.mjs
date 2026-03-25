@@ -6,7 +6,7 @@
  */
 
 import { execSync } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { extname } from "node:path";
 
 const chunks = [];
@@ -77,7 +77,6 @@ process.stdin.on("end", () => {
     case ".json":
       // JSON formatting — read, parse, rewrite with indentation
       try {
-        const { readFileSync, writeFileSync } = await import("node:fs");
         const raw = readFileSync(file, "utf-8");
         const parsed = JSON.parse(raw);
         writeFileSync(file, JSON.stringify(parsed, null, 2) + "\n");
