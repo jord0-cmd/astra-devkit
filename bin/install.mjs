@@ -406,7 +406,7 @@ log("  Commands:   /review, /test, /debug, /gendocs");
 console.log("");
 log("Quick start:");
 log(`  1. Run: ${BOLD}gemini${RESET}`);
-log("  2. Astra will introduce herself and ask your name");
+log(`  2. Say ${BOLD}hi${RESET} — Astra will introduce herself and ask your name`);
 log(`  3. Type ${BOLD}help${RESET} for everything she can do`);
 log(`  4. Type ${BOLD}kickstart${RESET} to scope a new project`);
 console.log("");
