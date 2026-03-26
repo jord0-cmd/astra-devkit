@@ -380,17 +380,30 @@ def test_with_fixture(sample_config):
     assert sample_config["port"] == 8080
 ```
 
-### Mocking External Dependencies
+### Faking External Dependencies
+
+Use in-memory fakes with `typing.Protocol`, not `mock.patch` or `MagicMock`. Fakes are explicit, type-safe, and catch real integration bugs that mocks hide.
 
 ```python
-from unittest.mock import patch, MagicMock
+from typing import Protocol
+
+class HttpClient(Protocol):
+    async def get(self, url: str) -> dict: ...
+
+class FakeHttpClient:
+    def __init__(self, responses: dict[str, dict]):
+        self.responses = responses
+
+    async def get(self, url: str) -> dict:
+        return self.responses[url]
 
 def test_api_call():
-    with patch("myproject.client.httpx.get") as mock_get:
-        mock_get.return_value = MagicMock(status_code=200, json=lambda: {"ok": True})
-        result = fetch_data()
-        assert result["ok"] is True
+    client = FakeHttpClient({"/api/data": {"ok": True}})
+    result = await fetch_data(client=client)
+    assert result["ok"] is True
 ```
+
+**NEVER use `mock.patch`, `MagicMock`, or `AsyncMock`** — they hide real bugs and break when implementations change.
 
 ### Property-Based Testing with Hypothesis
 
@@ -511,13 +524,22 @@ dev = [
     "ruff>=0.3",
 ]
 
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [tool.ruff]
 line-length = 88
 target-version = "py311"
 
 [tool.mypy]
 strict = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
 ```
+
+**REQUIREMENT**: Every `pyproject.toml` MUST include a `[build-system]` section. Without it, `pip install -e .` and packaging fail. Use `hatchling` as default build backend.
 
 ---
 
