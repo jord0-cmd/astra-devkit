@@ -12,6 +12,7 @@
   "ui": {
     "theme": "Dracula",
     "autoThemeSwitching": false,
+    "inlineThinkingMode": "off",
     "loadingPhrases": "witty",
     "customWittyPhrases": [
       "It works on my machine...",
