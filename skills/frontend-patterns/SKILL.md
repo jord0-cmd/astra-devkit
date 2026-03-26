@@ -13,6 +13,14 @@ Modern React, production-grade. Components, state, accessibility, performance.
 
 These rules override tutorial defaults. Follow them exactly.
 
+### Plan Before Building (Critical)
+- ALWAYS enter Plan Mode before building a frontend application
+- Design the full component hierarchy architecture BEFORE writing any TSX
+- The plan must list every component by name, file path, and props interface
+- Frontend code has no compiler gravity — `vite build` passes with a skeleton.
+  The plan creates the structural tension that prevents premature completion.
+- Only exit plan mode after the component tree is fully mapped
+
 ### Project Setup
 - ALWAYS use Vite + React + TypeScript for SPAs, or Next.js for SSR/SSG
 - ALWAYS enable TypeScript strict mode in tsconfig.json

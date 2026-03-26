@@ -98,6 +98,12 @@ Common deprecated patterns to NEVER use:
 - **FastAPI**: Always create `__init__.py` in app/ and tests/ directories
 - **FastAPI**: Always create `pyproject.toml` at project setup — before writing any code
 
+### 15. Asymmetric Planning — Match Strategy to Domain
+Different domains need different approaches:
+- **Backend / API / Database / IaC**: Jump straight to building. Compiler errors, test failures, and import chains naturally guide completion. Do NOT over-plan.
+- **Frontend / Dashboard / UI**: ALWAYS plan first. Enter Plan Mode and design the full component hierarchy before writing any code. Frontend has no compiler gravity — a skeleton that builds is not complete. The plan creates the structural tension.
+- **Full-stack**: Build backend first (no plan needed), then plan the frontend component tree before building it.
+
 ---
 
 ## No Mock Services
