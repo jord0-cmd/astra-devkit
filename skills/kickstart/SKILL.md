@@ -130,19 +130,32 @@ Ask: **"Does this look right? Anything to add or change before we start?"**
 
 ---
 
-### Phase 6: Project Setup
+### Phase 6: Plan and Build
 
-Once confirmed, take action:
+Once the brief is confirmed, take action:
 
-1. **Create project GEMINI.md** — using the project-onboarding skill patterns, populated with info from the brief
-2. **Create pyproject.toml** — with dependencies, tool config (ruff, mypy, pytest). NEVER create requirements.txt.
-3. **Create project structure** — directories with `__init__.py` files, no implementation code yet
-4. **Activate relevant skills** — BEFORE writing any code, activate the domain skills (e.g., python-standards, backend-patterns, database-patterns for a FastAPI project). Use the patterns from these skills, not tutorial defaults.
-5. **Write test files FIRST** — for each module in the plan, create the test file with failing tests that define the expected behaviour. Include sad path tests (404s, validation errors). Use modern patterns: `DeclarativeBase` not `declarative_base()`, `ConfigDict` not `class Config`.
-6. **STOP and ask:** "Tests are written. Ready for me to implement the code to make them pass?"
-7. **Only then write implementation** — make the tests pass, one module at a time. Use `Mapped[type]` + `mapped_column()` for SQLAlchemy, `model_config = ConfigDict()` for Pydantic.
+1. **Enter Plan Mode** — IMMEDIATELY after the user confirms the brief, enter Plan Mode to create a detailed implementation plan. This uses a higher-reasoning model for architecture decisions. Say: "I'll create a detailed implementation plan first."
+2. **Activate relevant skills** — BEFORE planning, activate the domain skills (e.g., python-standards, backend-patterns, database-patterns, azure-ops for Azure projects). Use the patterns from these skills, not tutorial defaults.
+3. **Create the implementation plan** — The plan MUST follow **outside-in order**:
+   - **Step 1: Infrastructure as Code** (Bicep modules, main.bicep, parameter files, RBAC)
+   - **Step 2: Local development** (docker-compose, Makefile, .gitignore, emulator setup)
+   - **Step 3: Project scaffold** (pyproject.toml, directory structure, GEMINI.md, project-brief.md)
+   - **Step 4: Domain layer** (models, protocols/ports, repository interfaces)
+   - **Step 5: Tests** (unit tests with in-memory fakes, sad paths, integration stubs)
+   - **Step 6: Implementation** (API endpoints, infrastructure adapters, DI wiring)
+   - **Step 7: Async processing** (Azure Functions, queue triggers, background workers)
+   - **Step 8: CI/CD** (Azure DevOps pipelines, GitHub Actions)
+   Do NOT reorder these steps. Infrastructure comes FIRST, application code comes LAST.
+4. **Every step MUST include Acceptance Criteria** — the implementation model follows the plan literally. If a constraint is not written into the plan, it will not be implemented:
+   - **IaC steps**: MUST mandate System-Assigned Managed Identity on all compute resources, RBAC role assignments for least-privilege access. Hardcoded keys are forbidden.
+   - **Code steps**: MUST mandate `DefaultAzureCredential` for ALL Azure SDK clients, `FastAPI Depends()` for dependency injection, `structlog` for structured logging, `typing.Protocol` for port definitions, in-memory fakes for testing (NEVER mock.patch).
+   - **Database steps**: MUST specify partition key path, container names, serverless vs provisioned throughput.
+   - **Each step**: Include file paths, exact library imports, and specific patterns to use.
+5. **Exit Plan Mode** — present the plan for user approval. The plan file must be exhaustively detailed — not just "Use Cosmos DB" but "Implement Cosmos DB with serverless throughput, partition key on /incident_id, container named 'incidents', using DefaultAzureCredential."
+5. **Implement the plan** — after approval, implement each step in order. Write test files BEFORE implementation code for each module. Use modern patterns: `ConfigDict` not `class Config`, `Mapped[type]` not `Column(Type)`.
+6. **STOP between major steps** and confirm with the user if the plan has more than 5 steps.
 
-**CRITICAL: Do NOT chain from brief → implementation in one breath.** The sequence is: brief → confirm → structure → tests → confirm → implementation. Two user confirmations minimum.
+**CRITICAL: Do NOT skip Plan Mode.** The sequence is: brief → confirm → Plan Mode → plan → approve → implement. The planning phase uses a higher-reasoning model that makes better architecture decisions.
 
 Store the brief in the project:
 
