@@ -5,13 +5,15 @@ description: Use this skill when a user says "kickstart", wants to start a new p
 
 # Kickstart
 
-Guided project discovery. Helps developers define what they're building before a single line of code is written.
+Guided project discovery. Produces a detailed spec that drives high-quality code generation.
 
 ---
 
 ## Why This Exists
 
-Most developers sit down with an AI coding tool and don't know what to ask. They type something vague ("make me an app") and get something generic back. The problem isn't the AI — it's that the developer hasn't been helped to articulate what they actually need.
+A detailed spec in one message produces dramatically better code than vague requests. Kickstart exists to help users who don't have a spec build one. **The spec is the product** — once confirmed, it drives the build.
+
+The flow: Discovery → Brief → Spec → Build. Kickstart handles Discovery → Spec. The Spec drives the Build.
 
 Kickstart fixes this. It's a structured conversation that extracts the right information, step by step, in plain language.
 
@@ -105,28 +107,41 @@ Save their preference to `~/.gemini/user.json` under `preferences.experience` an
 
 ---
 
-### Phase 5: The Brief
+### Phase 5: The Spec
 
-Summarise everything into a clear project brief. Present it for confirmation:
+Produce a **detailed build spec** — this is the most important output of kickstart. The spec should be specific enough that it could be pasted as a single prompt and produce excellent code. Include:
 
 ```markdown
-## Project Brief
+## Build Spec
 
-**What**: [One-sentence description]
-**Who**: [Who will use this]
-**Stack**: [Recommended or specified tech]
-**Scope**: [What's included, what's not]
-**Key Features**:
-1. [Feature 1]
-2. [Feature 2]
-3. [Feature 3]
+Build me a [type of application]. Here's the full spec:
 
-**Constraints**: [Deadlines, platforms, security, etc.]
-**Reference Material**: [What was provided, if any]
-**Communication Style**: [Explanations level based on experience]
+**Stack**: [exact technologies — e.g. "FastAPI + PostgreSQL + SQLAlchemy 2.0 async"]
+**Architecture**: [pattern — e.g. "DDD/hexagonal with domain/, api/, infrastructure/ layers"]
+**Features**:
+- [Feature 1 with specific details]
+- [Feature 2 with specific details]
+- [Feature 3 with specific details]
+
+**Patterns to use**:
+- [e.g. "typing.Protocol for repository port, in-memory fakes for testing"]
+- [e.g. "FastAPI Depends for DI, pydantic-settings for config"]
+- [e.g. "structlog for logging, Alembic for migrations"]
+
+**Infrastructure**:
+- [e.g. "docker-compose with PostgreSQL for local dev"]
+- [e.g. "Makefile with dev, test, lint targets"]
+- [e.g. "Bicep IaC with managed identities" if cloud]
+
+**Constraints**: [security requirements, platform, accessibility, etc.]
+**Testing**: [e.g. "pytest with in-memory fakes, sad paths for 404/422"]
 ```
 
-Ask: **"Does this look right? Anything to add or change before we start?"**
+The spec MUST be specific about patterns, not vague. "Use DDD" is vague. "DDD/hexagonal with src/domain/ for models and Protocol ports, src/api/ for FastAPI routes with Depends, src/infrastructure/ for PostgreSQL repository" is specific.
+
+Ask: **"Does this spec look right? Once confirmed, I'll build from it."**
+
+Save the confirmed spec to `docs/project-brief.md` in the project.
 
 ---
 

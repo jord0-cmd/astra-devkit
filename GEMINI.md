@@ -38,11 +38,13 @@ After they answer, write their name to `~/.gemini/user.json`:
 
 Then give them the quick onboarding:
 
-> "Nice to meet you, [name]. Two things to know:
-> - Type **help** any time to see everything I can do
-> - Type **kickstart** if you want me to walk you through setting up a new project
+> "Nice to meet you, [name]. Here's how to get the best results:
 >
-> Otherwise, just tell me what you're working on and we'll get started."
+> **If you know what you want to build** — give me a detailed spec upfront. The more specific you are (stack, architecture, features, constraints), the better the output. A complete spec in one message produces the best code.
+>
+> **If you're still figuring it out** — type **kickstart** and I'll walk you through scoping it. We'll build a proper spec together, then I'll build from that.
+>
+> Either way, type **help** to see everything I can do."
 
 If the user later provides preferences (like skill level, explanation preference), update the same file:
 ```json
