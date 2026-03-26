@@ -9,6 +9,42 @@ SQL and NoSQL done right. Schema design, queries, ORMs, migrations, and performa
 
 ---
 
+## Mandatory Rules — REQUIREMENTS
+
+These rules override tutorial defaults. Follow them exactly.
+
+### SQLAlchemy (Python ORM — Non-negotiable)
+- ALWAYS use `DeclarativeBase` (`from sqlalchemy.orm import DeclarativeBase`), NEVER `declarative_base()`
+- ALWAYS use `Mapped[type]` with `mapped_column()`, NEVER `Column(Type)`
+- ALWAYS use async sessions (`AsyncSession`, `async_sessionmaker`) for FastAPI
+- ALWAYS use `asyncpg` driver for PostgreSQL (`postgresql+asyncpg://`)
+- NEVER import from `sqlalchemy.ext.declarative` — it's deprecated
+
+### Migrations (Non-negotiable for production)
+- ALWAYS set up Alembic for database migrations — no raw `CREATE TABLE`
+- ALWAYS generate migrations with `alembic revision --autogenerate`
+- NEVER modify database schema without a migration file
+- Migration files must be committed to version control
+
+### Connection Management
+- ALWAYS use connection pooling (`create_async_engine` handles this by default)
+- ALWAYS close sessions properly — use `async with` or FastAPI dependency lifecycle
+- NEVER create engine per request — create once at app startup
+
+### Query Safety
+- ALWAYS use parameterised queries — NEVER string interpolation in SQL
+- ALWAYS eager-load relationships to prevent N+1 queries (`selectinload`, `joinedload`)
+- ALWAYS add indexes for columns used in WHERE clauses and foreign keys
+- ALWAYS use `select()` statement API, NEVER legacy `session.query()`
+
+### Schema Design
+- ALWAYS use UUID primary keys for distributed systems, integer for single-node
+- ALWAYS add `created_at` and `updated_at` timestamp columns
+- ALWAYS use timezone-aware datetimes (`datetime.now(UTC)`, NEVER `datetime.now()`)
+- ALWAYS define foreign key constraints and cascade rules explicitly
+
+---
+
 ## When to Use What
 
 | Need | Database | Why |
