@@ -9,6 +9,33 @@ FastAPI + Python Async + Production-Grade Everything.
 
 ---
 
+## Mandatory Rules — REQUIREMENTS
+
+These rules override tutorial defaults. Follow them exactly.
+
+### Architecture (Non-negotiable for production)
+- ALWAYS use **DDD/hexagonal layered architecture** with explicit directories:
+  - `src/domain/` — models, business logic, ZERO framework imports
+  - `src/api/` — FastAPI routes, schemas, middleware
+  - `src/infrastructure/` or `src/adapters/` — database, external services
+- ALWAYS define port interfaces using `typing.Protocol` in the domain layer
+- ALWAYS implement the **Repository pattern** for data access
+- ALWAYS use **FastAPI `Depends()`** for dependency injection — no global state
+- NEVER put database logic directly in route handlers
+
+### Testing (Non-negotiable)
+- ALWAYS use **in-memory fakes** implementing the Protocol interfaces for testing
+- NEVER use `mock.patch`, `MagicMock`, or `AsyncMock`
+- ALWAYS include sad path tests (404, 422, validation errors)
+- Write tests BEFORE implementation code (TDD)
+
+### Logging & Config
+- ALWAYS use `structlog` for structured logging — not stdlib `logging` or `print()`
+- ALWAYS use `pydantic-settings` with `ConfigDict` for configuration
+- NEVER hardcode config values — use environment variables
+
+---
+
 ## Tech Stack
 
 ```
