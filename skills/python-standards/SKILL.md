@@ -123,17 +123,29 @@ anyio.run(main)
 
 Proper structured concurrency.
 
-### Validation: `pydantic`
+### Validation: `pydantic` (v2 — NEVER use v1 patterns)
 
 ```python
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 class User(BaseModel):
+    model_config = ConfigDict(from_attributes=True)  # NOT class Config
+
     name: str
     email: str
     age: int
 
 user = User(name="Alex", email="alex@example.com", age=30)
+```
+
+**DEPRECATED — never use:**
+```python
+# NO — Pydantic v1 pattern, deprecated
+class Config:
+    from_attributes = True
+
+# YES — Pydantic v2 pattern
+model_config = ConfigDict(from_attributes=True)
 ```
 
 Runtime validation that plays nice with type checkers. FastAPI's backbone.

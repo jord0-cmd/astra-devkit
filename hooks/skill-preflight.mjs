@@ -21,8 +21,8 @@ process.stdin.on("end", () => {
   const skillMap = [
     {
       keywords: ["fastapi", "uvicorn", "starlette"],
-      skills: "python-standards and backend-patterns",
-      note: "FastAPI detected",
+      skills: "python-standards, backend-patterns, and database-patterns",
+      note: "FastAPI detected — includes database patterns (most APIs need data persistence)",
     },
     {
       keywords: ["react", "next.js", "nextjs", "vite", "jsx", "tsx"],
@@ -45,9 +45,9 @@ process.stdin.on("end", () => {
       note: "Azure detected",
     },
     {
-      keywords: ["database", "postgresql", "postgres", "sqlite", "redis", "sqlalchemy", "prisma", "cosmos db", "mongodb"],
+      keywords: ["database", "postgresql", "postgres", "sqlite", "redis", "sqlalchemy", "prisma", "cosmos db", "mongodb", "rest api", "crud", "data storage", "persistence"],
       skills: "database-patterns",
-      note: "Database work detected",
+      note: "Database/persistence work detected",
     },
     {
       keywords: ["pytorch", "cuda", "gpu", "model serving", "inference", "training", "onnx"],

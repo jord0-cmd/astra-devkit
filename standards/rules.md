@@ -89,6 +89,15 @@ These rules apply to every coding session, every language, every project. No exc
 - Use async patterns where the framework supports them
 - The most common implementation on the internet is rarely the best one
 
+### 14. Use Current Library APIs — No Deprecated Patterns
+Common deprecated patterns to NEVER use:
+- **SQLAlchemy**: `from sqlalchemy.ext.declarative import declarative_base` is DEPRECATED. Use `from sqlalchemy.orm import DeclarativeBase` and `class Base(DeclarativeBase): pass`
+- **SQLAlchemy**: `Column(Integer)` style is DEPRECATED for new code. Use `Mapped[int]` with `mapped_column()`
+- **Pydantic**: `class Config:` inner class is DEPRECATED. Use `model_config = ConfigDict(from_attributes=True)`
+- **Pydantic**: `from typing import Optional` for optional fields. Use `field: str | None = None` (Python 3.10+)
+- **FastAPI**: Always create `__init__.py` in app/ and tests/ directories
+- **FastAPI**: Always create `pyproject.toml` at project setup — before writing any code
+
 ---
 
 ## No Mock Services
