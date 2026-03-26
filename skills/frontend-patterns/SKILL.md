@@ -9,6 +9,38 @@ Modern React, production-grade. Components, state, accessibility, performance.
 
 ---
 
+## Mandatory Rules — REQUIREMENTS
+
+These rules override tutorial defaults. Follow them exactly.
+
+### Project Setup
+- ALWAYS use Vite + React + TypeScript for SPAs, or Next.js for SSR/SSG
+- ALWAYS enable TypeScript strict mode in tsconfig.json
+- ALWAYS install and configure Tailwind CSS for styling
+- ALWAYS set up shadcn/ui (`npx shadcn@latest init`) for component primitives
+- ALWAYS create a proper directory structure: `components/ui/`, `components/features/`, `hooks/`, `lib/`, `types/`
+- NEVER put all components in a single file — one component per file
+
+### Accessibility (Non-negotiable)
+- ALWAYS use semantic HTML: `<main>`, `<nav>`, `<section>`, `<header>`, `<footer>`, `<article>`
+- ALWAYS add `aria-label` or `aria-labelledby` to interactive elements
+- ALWAYS use `htmlFor` on labels (not implicit label wrapping alone)
+- ALWAYS add a "Skip to main content" link as the first focusable element
+- ALWAYS define focus-visible styles — keyboard users must see focus state
+- NEVER use `<div>` when a semantic element exists (`<button>`, `<nav>`, `<main>`)
+
+### TypeScript
+- ALWAYS define typed props with `interface` or `type` for every component
+- NEVER use `any` type — use `unknown` and narrow with type guards
+- ALWAYS export types from `types/` directory for shared models
+
+### Styling
+- ALWAYS use Tailwind utility classes — no inline `style={{}}` objects
+- ALWAYS implement responsive design with Tailwind breakpoints (`sm:`, `md:`, `lg:`)
+- For government/professional UIs: clean white backgrounds, minimal colour, functional layout
+
+---
+
 ## Tech Stack (2026)
 
 ```
