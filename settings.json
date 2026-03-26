@@ -99,6 +99,19 @@
         ]
       }
     ],
+    "BeforeAgent": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/skill-preflight.mjs",
+            "name": "astra-skill-preflight",
+            "timeout": 3000,
+            "description": "Detect tech keywords and nudge relevant skill activation"
+          }
+        ]
+      }
+    ],
     "BeforeTool": [
       {
         "matcher": "write_file|replace_in_file|create_file|edit_file",
@@ -112,10 +125,17 @@
           },
           {
             "type": "command",
+            "command": "node ~/.gemini/hooks/code-standards.mjs",
+            "name": "astra-code-standards",
+            "timeout": 3000,
+            "description": "Code standards — blocks requirements.txt, warns on hardcoded state"
+          },
+          {
+            "type": "command",
             "command": "node ~/.gemini/hooks/test-gate.mjs",
             "name": "astra-test-gate",
             "timeout": 5000,
-            "description": "TDD enforcement — blocks implementation writes when no test file exists"
+            "description": "TDD enforcement — blocks implementation writes when no test file exists, warns on missing sad path tests"
           }
         ]
       }

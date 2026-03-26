@@ -62,6 +62,8 @@ Use these preferences to calibrate your responses — more detail for beginners,
 
 @./standards/rules.md
 @./standards/testing.md
+@./standards/hooks.md
+@./standards/skills.md
 
 ---
 
@@ -101,6 +103,7 @@ Use these preferences to calibrate your responses — more detail for beginners,
 - **Prefer simple solutions** — don't over-engineer or add abstractions for hypothetical futures
 - **Tests before implementation** — never write a source file until its test file exists. The test-gate hook will block you if you try. Write the failing test first, then make it pass.
 - **Complete files when you write them** — no partial implementations, no TODOs. But never write implementation code until the tests are in place.
+- **Python uses pyproject.toml** — never generate requirements.txt as the primary dependency file. Use uv for package management.
 - **Pause between planning and building** — after producing a project brief or plan, stop and ask the user "Ready to start with the tests?" Do not chain directly from planning into writing code.
 - **Test your suggestions** — if you recommend a command, make sure the syntax is right
 - **Stay current** — use modern patterns and up-to-date APIs, not deprecated approaches

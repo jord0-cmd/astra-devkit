@@ -11,7 +11,7 @@
  * - Skips scaffolding, configs, types, schemas, entry points, migrations
  */
 
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync, appendFileSync, mkdirSync } from "node:fs";
 import { basename, dirname, join, extname } from "node:path";
 
 const chunks = [];
@@ -140,18 +140,99 @@ process.stdin.on("end", () => {
   if (!hasTests) {
     const testExamples = testLocations.slice(0, 2).join("\n    or ");
     const reason =
-      `TDD Gate: Blocked write to ${name}\n\n` +
-      `No test file found. Before writing this implementation, create the test file first:\n` +
+      `ASTRA-BLOCK: test-gate — No test file found for ${name}\n\n` +
+      `Before writing this implementation, create the test file first:\n` +
       `    ${testExamples}\n\n` +
       `Write failing tests that define the expected behaviour, then implement the code to make them pass.\n\n` +
-      `If this is exploratory/spike work, the user can set ASTRA_TDD=off to temporarily bypass this gate.`;
+      `If this is exploratory/spike work, the user can set ASTRA_TDD=off to temporarily bypass.`;
+
+    writeGateReport({
+      hook: "test-gate",
+      event: "BeforeTool",
+      action: "denied",
+      file: name,
+      reason: "No test file found",
+    });
 
     console.log(JSON.stringify({ decision: "deny", reason }));
     process.stderr.write(`TEST GATE: Blocked ${name} — no test file found\n`);
     process.exit(0);
   }
 
-  // Tests exist — allow
+  // --- Tests exist. Check for sad path coverage (warn only, don't block) ---
+  const content = input.tool_input?.content || input.tool_input?.new_string || "";
+
+  if (content) {
+    const sadPathWarnings = [];
+
+    // Detect exception patterns in the implementation
+    const exceptionPatterns = [
+      { regex: /raise\s+\w*(?:Error|Exception|HTTPException)/g, lang: "python" },
+      { regex: /throw\s+new\s+\w*(?:Error|Exception)/g, lang: "javascript" },
+      { regex: /HTTPException\s*\(\s*status_code\s*=\s*(\d+)/g, lang: "fastapi" },
+    ];
+
+    const raisedExceptions = [];
+    for (const { regex } of exceptionPatterns) {
+      const matches = content.match(regex);
+      if (matches) raisedExceptions.push(...matches);
+    }
+
+    if (raisedExceptions.length > 0) {
+      // Check if the test file contains error-testing patterns
+      const testFile = testLocations.find((loc) => existsSync(loc));
+      if (testFile) {
+        try {
+          const testContent = readFileSync(testFile, "utf-8");
+          const hasErrorTests =
+            /pytest\.raises|expect\(.*\)\.toThrow|expect\(.*\)\.toReject|assert.*status_code.*[45]\d\d|\.raises\(|error|Error|exception|Exception/i.test(
+              testContent
+            );
+
+          if (!hasErrorTests) {
+            sadPathWarnings.push(
+              `Your implementation raises ${raisedExceptions.length} exception(s) ` +
+              `(${raisedExceptions.slice(0, 3).join(", ")}${raisedExceptions.length > 3 ? "..." : ""}) ` +
+              `but the test file doesn't appear to test error paths. ` +
+              `Consider adding tests for: invalid inputs, missing resources (404), and edge cases.`
+            );
+          }
+        } catch {
+          // Can't read test file — skip sad path check
+        }
+      }
+    }
+
+    if (sadPathWarnings.length > 0) {
+      // Warn, don't block
+      console.log(
+        JSON.stringify({
+          hookSpecificOutput: {
+            additionalContext:
+              "TEST GATE WARNING: " + sadPathWarnings.join(" "),
+          },
+        })
+      );
+      process.exit(0);
+    }
+  }
+
+  // All good — allow
   console.log("{}");
   process.exit(0);
 });
+
+function writeGateReport(report) {
+  try {
+    const reportDir = join(process.cwd(), ".astra");
+    mkdirSync(reportDir, { recursive: true });
+    const entry = JSON.stringify({
+      ...report,
+      timestamp: new Date().toISOString(),
+      session_id: "",
+    });
+    appendFileSync(join(reportDir, "gate-reports.jsonl"), entry + "\n");
+  } catch {
+    // Best-effort — don't crash the hook
+  }
+}

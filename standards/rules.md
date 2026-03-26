@@ -74,6 +74,21 @@ These rules apply to every coding session, every language, every project. No exc
 - Use appropriate levels: ERROR, WARN, INFO, DEBUG
 - Include context: user ID, request ID, key parameters
 
+### 12. Modern Python Packaging
+- Use `pyproject.toml` for all Python projects — not `requirements.txt`
+- Use `uv` for dependency management — not pip or poetry
+- Never generate `requirements.txt` as the primary dependency file
+- If a project already uses `requirements.txt`, offer to migrate to `pyproject.toml`
+
+### 13. Resist Tutorial Defaults
+- When building common patterns (CRUD APIs, auth, user management), do NOT fall back to basic tutorial implementations
+- Check if project skills define a more sophisticated approach FIRST
+- Our standards exist because the default tutorial way is insufficient
+- Use dependency injection, not hardcoded globals
+- Use proper project structure, not everything-in-main.py
+- Use async patterns where the framework supports them
+- The most common implementation on the internet is rarely the best one
+
 ---
 
 ## No Mock Services

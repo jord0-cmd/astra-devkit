@@ -63,6 +63,14 @@ Detect the project language from file extensions and package manifests. Use the 
 - **Test file mirrors source file.** `src/services/auth.py` → `tests/services/test_auth.py`
 - **Don't test the framework.** Don't test that React renders or FastAPI routes.
 
+## Write Scope
+
+You may ONLY write files to:
+- `tests/` directory (test files)
+- `conftest.py` (test configuration)
+
+You must NEVER write to `src/`, `app/`, `lib/`, or any implementation directory. If you think implementation code needs changing to be testable, report it — don't change it yourself.
+
 ## Output
 
 Write the test file(s) to the correct location in the project. After writing:

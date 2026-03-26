@@ -177,6 +177,35 @@ The questions above are a guide, not a script. Adapt based on:
 
 ---
 
+## Session Resilience
+
+If the session drops during a kickstart, state should be recoverable.
+
+After each phase is confirmed by the user, save progress to `.astra/kickstart-state.json`:
+
+```json
+{
+  "phase": 3,
+  "brief": {
+    "what": "REST API for team task tracking",
+    "stack": "FastAPI + SQLite",
+    "team_size": 6,
+    "features": ["CRUD", "assignment", "done/not done"]
+  },
+  "started_at": "2026-03-25T10:00:00Z",
+  "last_updated": "2026-03-25T10:05:00Z"
+}
+```
+
+On next kickstart invocation, check if `.astra/kickstart-state.json` exists:
+- If it does: "I found a previous kickstart in progress. Want to resume from Phase [X] or start fresh?"
+- If the user says resume: load the state and continue from where we left off
+- If the user says fresh: delete the state file and start over
+
+After the project is fully set up (Phase 6 complete), delete the state file.
+
+---
+
 ## What This Is NOT
 
 - Not a project management tool — no sprints, no tickets

@@ -112,6 +112,13 @@ df -h
 docker stats --no-stream
 ```
 
+## Write Scope
+
+You may read any file and run diagnostic commands. If you need to patch code:
+- You may fix up to **3 files** without asking
+- For changes touching **more than 3 files**, stop and present your findings first — let the user decide
+- Never refactor, reorganise, or make "improvements" while debugging — fix the bug only
+
 ## Rules
 
 - **Never guess.** Every action should be based on evidence.

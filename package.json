@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Astra — AI coding partner configuration for Gemini CLI. Skills, agents, hooks, and standards for development teams.",
   "bin": {
-    "astra-devkit": "./bin/install.mjs"
+    "astra-devkit": "./bin/install.mjs",
+    "astra-doctor": "./bin/doctor.mjs"
   },
   "keywords": [
     "gemini",

@@ -79,6 +79,23 @@ process.stdin.on("end", () => {
     }
   }
 
+  // Check for in-progress kickstart
+  if (projectDir) {
+    const kickstartState = join(projectDir, ".astra", "kickstart-state.json");
+    if (existsSync(kickstartState)) {
+      try {
+        const state = JSON.parse(readFileSync(kickstartState, "utf-8"));
+        contextParts.push(
+          `Note: An in-progress kickstart was found (Phase ${state.phase || "unknown"}, ` +
+          `started ${state.started_at || "unknown"}). ` +
+          `If the user types "kickstart", offer to resume from the saved state.`
+        );
+      } catch {
+        // Corrupt state — ignore
+      }
+    }
+  }
+
   // Inject security reminder into context
   contextParts.push(
     "Security: NEVER read or reference .env files, SSH keys, cloud credentials (~/.aws, ~/.azure), " +

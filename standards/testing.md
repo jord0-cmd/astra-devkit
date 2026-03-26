@@ -154,6 +154,49 @@ This keeps you in control of WHAT the code should do. The AI handles HOW.
 
 ---
 
+## Test Environment Isolation
+
+Tests must NEVER share state with the development environment.
+
+**The anti-pattern:** Tests and the dev server use the same database file, same config, same ports. Running `pytest` wipes your development data. Running the dev server corrupts test state.
+
+**The fix:** Isolate test state completely.
+
+```python
+# YES — use tmp_path fixture (pytest provides a unique temp dir per test)
+@pytest.fixture
+def storage(tmp_path):
+    data_file = tmp_path / "tasks.json"
+    data_file.write_text("[]")
+    return Storage(data_file=str(data_file))
+
+# YES — dependency injection for configuration
+class Storage:
+    def __init__(self, data_file: str = "data/tasks.json"):
+        self.data_file = data_file
+
+# NO — hardcoded paths shared between tests and production
+DATA_FILE = "data/tasks.json"  # Tests nuke this file every run!
+```
+
+```typescript
+// YES — unique test database per test suite
+const testDb = `test_${Date.now()}.db`;
+afterAll(() => fs.unlinkSync(testDb));
+
+// NO — shared development database
+const db = new Database("app.db"); // Tests corrupt dev data!
+```
+
+**Rules:**
+- Use `tmp_path` (pytest) or `tmpdir` for file-based tests
+- Use separate test databases with unique names
+- Use dependency injection — pass config, don't hardcode paths
+- Tests must create their own state and clean up after themselves
+- Never reference the same data store as the development server
+
+---
+
 ## Flaky Tests
 
 A flaky test is worse than no test. It erodes trust in the entire suite.

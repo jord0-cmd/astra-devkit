@@ -5,6 +5,9 @@
  * Cross-platform (Node.js).
  */
 
+import { appendFileSync, mkdirSync } from "node:fs";
+import { join } from "node:path";
+
 const chunks = [];
 process.stdin.on("data", (chunk) => chunks.push(chunk));
 process.stdin.on("end", () => {
@@ -47,7 +50,17 @@ process.stdin.on("end", () => {
   for (const { regex, name } of patterns) {
     if (regex.test(content)) {
       const match = content.match(regex)?.[0]?.slice(0, 30) || "";
-      const reason = `Blocked: ${name} detected in ${file} (matched: "${match}..."). Use environment variables or a secrets manager instead.`;
+      const reason = `ASTRA-BLOCK: secret-scanner — ${name} detected in ${file} (matched: "${match}..."). Use environment variables or a secrets manager instead.`;
+
+      try {
+        const reportDir = join(process.cwd(), ".astra");
+        mkdirSync(reportDir, { recursive: true });
+        appendFileSync(
+          join(reportDir, "gate-reports.jsonl"),
+          JSON.stringify({ hook: "secret-scanner", event: "BeforeTool", action: "denied", file, reason: name, timestamp: new Date().toISOString() }) + "\n"
+        );
+      } catch { /* best-effort */ }
+
       console.log(JSON.stringify({ decision: "deny", reason }));
       process.stderr.write(`SECRET SCANNER: Blocked write to ${file} — ${name}\n`);
       process.exit(0);

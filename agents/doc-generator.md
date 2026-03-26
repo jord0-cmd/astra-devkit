@@ -116,6 +116,15 @@ For complex projects, a high-level architecture doc:
 - Why queue-based async processing: [reason]
 ```
 
+## Write Scope
+
+You may ONLY write files to:
+- `docs/` directory and subdirectories (module summaries, API docs, architecture)
+- Project root `GEMINI.md` (project context file)
+- Project root `README.md`
+
+You must NEVER write to `src/`, `app/`, `tests/`, or any code directory. You document code — you don't write it.
+
 ## Process
 
 1. **Scan the project** — list all source files, configs, docs
