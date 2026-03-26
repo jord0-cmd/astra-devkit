@@ -20,7 +20,10 @@
 | `settings.json` | `~/.gemini/settings.json` | `%USERPROFILE%\.gemini\settings.json` | Main config — theme, approval mode, tools, hooks, MCP | DONE |
 | `user.json` | `~/.gemini/user.json` | `%USERPROFILE%\.gemini\user.json` | User profile — name, preferences (created on first session by Astra) | AUTO |
 | `GEMINI.md` | `~/.gemini/GEMINI.md` | `%USERPROFILE%\.gemini\GEMINI.md` | Astra persona — personality, communication, teaching style | DONE |
-| `standards/rules.md` | `~/.gemini/standards/rules.md` | `%USERPROFILE%\.gemini\standards\rules.md` | Core dev standards — 11 Rules, Confirm Protocol, Three Fix, Quality Gates | DONE |
+| `standards/rules.md` | `~/.gemini/standards/rules.md` | `%USERPROFILE%\.gemini\standards\rules.md` | Core dev standards — 13 Rules, Confirm Protocol, Three Fix, Quality Gates | DONE |
+| `standards/testing.md` | `~/.gemini/standards/testing.md` | `%USERPROFILE%\.gemini\standards\testing.md` | TDD, test pyramid, test isolation, AI+TDD synergy | DONE |
+| `standards/hooks.md` | `~/.gemini/standards/hooks.md` | `%USERPROFILE%\.gemini\standards\hooks.md` | Hook policy — execution order, block format, precedence, escape hatches | DONE |
+| `standards/skills.md` | `~/.gemini/standards/skills.md` | `%USERPROFILE%\.gemini\standards\skills.md` | Skill compatibility matrix for common tech stacks | DONE |
 
 ### Skills (destination: `~/.gemini/skills/<name>/SKILL.md`)
 | Skill | Description | Status |
@@ -61,7 +64,9 @@
 | `auto-lint.mjs` | `AfterTool` (write/edit) | Auto-formats with ruff (Python), biome (TS), rustfmt (Rust) | DONE |
 | `context-loader.mjs` | `SessionStart` | Loads user.json preferences + kickstart-refs detection | DONE |
 | `build-gate.mjs` | `AfterAgent` | Runs build/lint/type checks after coding tasks, forces retry on failure | DONE |
-| `test-gate.mjs` | `BeforeTool` (write/edit) | TDD enforcement — blocks implementation writes when no test file exists | DONE |
+| `code-standards.mjs` | `BeforeTool` (write/edit) | Blocks requirements.txt, warns on hardcoded global state | DONE |
+| `test-gate.mjs` | `BeforeTool` (write/edit) | TDD enforcement + sad path detection, gate reports | DONE |
+| `skill-preflight.mjs` | `BeforeAgent` | Detects tech keywords, nudges relevant skill activation | DONE |
 
 ---
 

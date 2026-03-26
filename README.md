@@ -63,20 +63,27 @@ Skills use progressive disclosure — only metadata loads until activated. No co
 | Debugger | Systematic root-cause analysis | `@debugger` or `/debug` |
 | Doc Generator | Module summaries, API docs | `@doc-generator` or `/gendocs` |
 
-### 4 Automated Hooks (Node.js, cross-platform)
+### 7 Automated Hooks (Node.js, cross-platform)
 
-| Hook | What It Does |
-|------|-------------|
-| Secret Scanner | Blocks file writes containing API keys, passwords, tokens |
-| Auto Lint | Runs ruff/biome/rustfmt after file writes |
-| Context Loader | Loads user preferences on session start |
-| Build Gate | Runs build/type checks after coding, forces retry on failure (3-strike circuit breaker) |
+| Hook | Event | What It Does |
+|------|-------|-------------|
+| Secret Scanner | BeforeTool | Blocks file writes containing API keys, passwords, tokens |
+| Code Standards | BeforeTool | Blocks requirements.txt (use pyproject.toml), warns on hardcoded state |
+| Test Gate | BeforeTool | TDD enforcement — blocks implementation without tests, warns on missing sad path coverage |
+| Auto Lint | AfterTool | Runs ruff/biome/rustfmt after file writes |
+| Build Gate | AfterAgent | Runs build/type checks after coding, forces retry (3-strike circuit breaker) |
+| Skill Pre-Flight | BeforeAgent | Detects tech keywords, nudges relevant skill activation |
+| Context Loader | SessionStart | Loads user preferences, detects kickstart state |
+
+All hooks write reports to `.astra/gate-reports.jsonl` when they block. TDD gate has an escape hatch: `ASTRA_TDD=off`.
 
 ### Always-On Standards
 Loaded every session via `@import`:
-- **11 Development Rules** — no unauthorized changes, no placeholders, confirm before building
-- **Testing Standards** — TDD workflow, test pyramid, AI+TDD synergy, anti-patterns
+- **13 Development Rules** — no unauthorized changes, no placeholders, confirm before building, pyproject.toml mandate, resist tutorial defaults
+- **Testing Standards** — TDD workflow, test pyramid, AI+TDD synergy, test isolation, anti-patterns
 - **Quality Gates** — verify at build, test, and pre-commit boundaries
+- **Hook Policy** — execution order, block message format, precedence, escape hatches
+- **Skill Compatibility** — which skills work together for common tech stacks
 
 ### Custom Commands
 
@@ -98,6 +105,16 @@ Loaded every session via `@import`:
 
 ---
 
+## Diagnostics
+
+```bash
+node bin/doctor.mjs
+```
+
+Runs 23 health checks — Node version, Gemini CLI, core files, all hooks, all agents, all skills, custom commands. Green/yellow/red per check. Run after install or whenever something feels off.
+
+---
+
 ## What Gets Installed
 
 ```
@@ -106,12 +123,14 @@ Loaded every session via `@import`:
   settings.json          Theme, hooks, agents, skills config (merged, auth preserved)
   user.json              Your name + preferences (created by Astra on first chat)
   standards/
-    rules.md             11 Rules, Confirm Protocol, Three Fix, Quality Gates
-    testing.md           TDD, test pyramid, AI+TDD synergy
-  skills/                17 domain skill directories
+    rules.md             13 Rules, Confirm Protocol, Three Fix, Quality Gates
+    testing.md           TDD, test pyramid, test isolation, AI+TDD synergy
+    hooks.md             Hook policy, execution order, block format, escape hatches
+    skills.md            Skill compatibility matrix for common tech stacks
+  skills/                16 domain skill directories
   agents/                4 specialist agent definitions
-  hooks/                 4 Node.js automation scripts
-  commands/              5 custom slash commands
+  hooks/                 7 Node.js automation scripts
+  commands/              4 custom slash commands
 ```
 
 Your existing config is automatically backed up to `~/.gemini/backup_TIMESTAMP/` before any changes.
