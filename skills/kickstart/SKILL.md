@@ -164,22 +164,26 @@ Once the brief is confirmed, take action:
    - Step 8: CI/CD (pipelines)
 
    **For Frontend / Dashboard / SPA projects:**
+   **IMPORTANT: Frontend projects REQUIRE Plan Mode.** The component hierarchy architecture must be planned by a higher-reasoning model before implementation begins. A Vite app that builds with just App.tsx is NOT complete.
    - Step 1: Project scaffold (`npm create vite@latest` with React + TypeScript template, OR `npx create-next-app@latest`)
    - Step 2: Configure TypeScript strict mode, linting (ESLint or Biome), Tailwind CSS
-   - Step 3: Install component library (shadcn/ui: `npx shadcn@latest init`)
-   - Step 4: Create project structure (components/ui/, components/features/, hooks/, lib/, types/)
-   - Step 5: Define TypeScript interfaces and types for all data models
-   - Step 6: Build layout components (Header, Sidebar, Footer with semantic HTML: `<main>`, `<nav>`, `<section>`)
-   - Step 7: Build feature components (cards, tables, charts, forms)
-   - Step 8: Add accessibility (aria-labels, focus states, keyboard navigation, skip-to-content link)
-   - Step 9: Component tests (Vitest + Testing Library)
+   - Step 3: Install component library (shadcn/ui: `npx shadcn@latest init`) and chart library (recharts)
+   - Step 4: Create `src/types/index.ts` with ALL TypeScript interfaces for data models
+   - Step 5: Create `src/lib/mockData.ts` with realistic typed mock data arrays (minimum 5 items per array)
+   - Step 6: Create project structure: `components/layout/`, `components/features/`, `hooks/`, `lib/`
+   - Step 7: Build Layout component (Header, Sidebar nav, main content area — semantic HTML)
+   - Step 8: Build EACH feature component in its own file (minimum 4 distinct components — e.g., MetricCard, DataTable, Chart, Navigation)
+   - Step 9: Wire mock data into components via typed props
+   - Step 10: Add accessibility (aria-labels, focus states, keyboard navigation, skip-to-content link)
+   - Step 11: Component tests (Vitest + Testing Library)
+   Do NOT stop after scaffolding. Count your component files — if the spec asks for 5 features, you need 5+ component files.
 
    Do NOT reorder these steps. Scaffold and config come FIRST, feature code comes LAST.
 4. **Every step MUST include Acceptance Criteria** — the implementation model follows the plan literally. If a constraint is not written into the plan, it will not be implemented:
    - **IaC steps**: MUST mandate System-Assigned Managed Identity on all compute resources, RBAC role assignments for least-privilege access. Hardcoded keys are forbidden.
    - **Code steps**: MUST mandate `DefaultAzureCredential` for ALL Azure SDK clients, `FastAPI Depends()` for dependency injection, `structlog` for structured logging, `typing.Protocol` for port definitions, in-memory fakes for testing (NEVER mock.patch).
    - **Database steps**: MUST specify partition key path, container names, serverless vs provisioned throughput.
-   - **Frontend steps**: MUST mandate TypeScript strict mode, semantic HTML (`<main>`, `<nav>`, `<section>`, `<header>`), `aria-label`/`htmlFor` on interactive elements, typed component props (interfaces), responsive layout (grid/flex), components in separate files under `components/`.
+   - **Frontend steps**: MUST mandate TypeScript strict mode, semantic HTML (`<main>`, `<nav>`, `<section>`, `<header>`), `aria-label`/`htmlFor` on interactive elements, typed component props (interfaces), responsive layout (grid/flex), components in separate files under `components/`. MUST list every component by name with its file path. MUST include a `mockData.ts` step. MUST specify "minimum 4 feature components" — a skeleton App.tsx is NOT acceptable.
    - **Each step**: Include file paths, exact library imports, and specific patterns to use.
 5. **Exit Plan Mode** — present the plan for user approval. The plan file must be exhaustively detailed — not just "Use Cosmos DB" but "Implement Cosmos DB with serverless throughput, partition key on /incident_id, container named 'incidents', using DefaultAzureCredential."
 5. **Implement the plan** — after approval, implement each step in order. Write test files BEFORE implementation code for each module. Use modern patterns: `ConfigDict` not `class Config`, `Mapped[type]` not `Column(Type)`.

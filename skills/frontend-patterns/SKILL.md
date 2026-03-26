@@ -1,6 +1,6 @@
 ---
 name: frontend-patterns
-description: Use this skill when building React frontends, making component architecture decisions, working with state management (Zustand, TanStack Query), styling with Tailwind/shadcn, or integrating AI-generated UI code. Contains component patterns, accessibility standards, performance optimization, and the integration pipeline.
+description: Use this skill when building React frontends, designing component hierarchy architecture, making state management decisions (Zustand, TanStack Query), implementing data fetching strategies, styling with Tailwind/shadcn, building accessible dashboard UIs, or creating multi-component applications. Contains component architecture patterns, accessibility standards, data binding strategies, and the integration pipeline.
 ---
 
 # Frontend Patterns
@@ -20,6 +20,16 @@ These rules override tutorial defaults. Follow them exactly.
 - ALWAYS set up shadcn/ui (`npx shadcn@latest init`) for component primitives
 - ALWAYS create a proper directory structure: `components/ui/`, `components/features/`, `hooks/`, `lib/`, `types/`
 - NEVER put all components in a single file — one component per file
+
+### Component Hierarchy Architecture (Non-negotiable)
+- NEVER build a monolithic App.tsx — this is the #1 frontend anti-pattern
+- ALWAYS split the UI into a MINIMUM of 4 distinct feature components in separate files
+- ALWAYS create a `src/lib/mockData.ts` file with realistic, typed mock data arrays
+- ALWAYS bind mock data to components via props — no hardcoded values in JSX
+- A dashboard MUST have separate components for: Layout, Cards/Metrics, DataTable, Chart, Navigation
+- A form page MUST have separate components for: Layout, FormFields, ValidationFeedback, SubmitHandler
+- The build passing with a skeleton App.tsx is NOT complete — you must implement ALL requested feature components
+- Count your components before declaring done. If the spec asks for 5 features, you need 5+ component files
 
 ### Accessibility (Non-negotiable)
 - ALWAYS use semantic HTML: `<main>`, `<nav>`, `<section>`, `<header>`, `<footer>`, `<article>`
