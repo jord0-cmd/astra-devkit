@@ -1,0 +1,4 @@
+id: frontend-api-calls
+language: typescript
+rule:
+  pattern: "apiClient.$METHOD($$$ARGS)"

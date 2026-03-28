@@ -8,7 +8,7 @@
  * Never blocks or modifies behavior.
  */
 
-import { appendFileSync, mkdirSync } from "node:fs";
+import { appendFileSync, mkdirSync, existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 // Error patterns — things that indicate something went wrong
@@ -112,6 +112,27 @@ process.stdin.on("end", () => {
       (t) => t === "sed_awk_deprecated" || t === "npm_command" || t === "pip_command"
     );
 
+
+
+    // Capture AAG State Drift if available
+    let aagState = { available: false, in_sync: null, high_warnings: 0 };
+    const cwd = input.cwd || process.cwd();
+    const graphPath = join(cwd, "docs", "architectural-graph.json");
+    if (existsSync(graphPath)) {
+        try {
+            const graph = JSON.parse(readFileSync(graphPath, "utf-8"));
+            const warnings = graph.drift_warnings || [];
+            const highWarnings = warnings.filter((w) => w.severity === "high").length;
+            aagState = {
+                available: true,
+                in_sync: highWarnings === 0,
+                high_warnings: highWarnings
+            };
+        } catch (e) {
+            // Ignore parse errors, aagState stays unavailable
+        }
+    }
+
     const entry = {
       timestamp: new Date().toISOString(),
       session_id: sessionId,
@@ -124,10 +145,11 @@ process.stdin.on("end", () => {
       deprecated_tools: [...new Set(deprecatedTools)],
       error_count: detectedErrors.length,
       recovery_detected: detectedErrors.length > 0 && successSignals.length > 0,
+      aag_state: aagState,
     };
 
     // Write to telemetry log
-    const reportDir = join(process.cwd(), ".astra");
+    const reportDir = join(cwd, ".astra");
     mkdirSync(reportDir, { recursive: true });
     appendFileSync(
       join(reportDir, "agent-telemetry.jsonl"),

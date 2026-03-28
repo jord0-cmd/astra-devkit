@@ -185,6 +185,13 @@
             "name": "astra-telemetry",
             "timeout": 5000,
             "description": "Captures failure signals and tool usage from agent responses for analysis"
+          },
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/drift-check.mjs",
+            "name": "astra-drift-check",
+            "timeout": 45000,
+            "description": "Runs AAG engine to detect State Drift between backend and frontend after agent completes"
           }
         ]
       }

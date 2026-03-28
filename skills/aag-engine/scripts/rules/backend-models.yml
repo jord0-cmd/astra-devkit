@@ -1,0 +1,5 @@
+id: backend-models
+language: python
+rule:
+  kind: class_definition
+  pattern: "class $NAME($BASE): $$$BODY"

@@ -1,0 +1,5 @@
+id: frontend-types
+language: typescript
+rule:
+  kind: interface_declaration
+  pattern: "interface $NAME { $$$BODY }"
