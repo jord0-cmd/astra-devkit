@@ -3,7 +3,7 @@
  * BeforeTool hook — Contract-First Gate
  * Warns when frontend (.tsx) files are written in a fullstack project
  * without an API contract document existing.
- * Advisory only — warns, never blocks.
+ * Blocks frontend file writes until API contract exists.
  */
 
 import { existsSync } from "node:fs";
@@ -29,7 +29,7 @@ process.stdin.on("end", () => {
   }
 
   // Check if this looks like a fullstack project (has Python files alongside frontend)
-  const cwd = process.cwd();
+  const cwd = input.cwd || process.cwd();
   const hasPython = existsSync(join(cwd, "pyproject.toml")) ||
                     existsSync(join(cwd, "src", "api")) ||
                     existsSync(join(cwd, "src", "domain"));
@@ -49,16 +49,16 @@ process.stdin.on("end", () => {
   const hasContract = contractPaths.some((p) => existsSync(p));
 
   if (!hasContract) {
-    // Warn, don't block — nudge toward contract-first
+    // Block — contract MUST exist before frontend code
     console.log(
       JSON.stringify({
-        hookSpecificOutput: {
-          additionalContext:
-            "CONTRACT-FIRST WARNING: You're writing frontend code in a fullstack project " +
-            "but no docs/api-contract.md exists yet. Consider creating the API contract " +
-            "first so frontend types match backend models. The contract should contain: " +
-            "domain model, endpoint definitions, enum values, and shared conventions.",
-        },
+        decision: "block",
+        reason:
+          "CONTRACT-FIRST GATE: You're writing frontend code in a fullstack project " +
+          "but no docs/api-contract.md exists yet. Create the API contract FIRST " +
+          "(domain model, endpoint definitions, enum values, shared conventions) " +
+          "before writing any frontend code. This ensures TypeScript types match " +
+          "Pydantic models exactly.",
       })
     );
     process.exit(0);

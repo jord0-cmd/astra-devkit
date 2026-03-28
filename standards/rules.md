@@ -135,6 +135,13 @@ All frontend code MUST include accessibility attributes — this is not optional
 - ast-grep operates on the abstract syntax tree and is format-independent
 - If `sg` is not available, use the `replace` tool with sufficient context — never `sed -i`
 
+### 20. Runtime Tool Creation
+- If no existing tool solves a problem during implementation, **create a script** in `scripts/` that does
+- Save it, use it, document it in GEMINI.md under Key Directories or Commands
+- Self-created tools persist across sessions via the hippocampus
+- Examples: data migration scripts, custom validators, format converters, test data generators, CSV parsers
+- A purpose-built script beats a generic workaround every time
+
 ---
 
 ## No Mock Services

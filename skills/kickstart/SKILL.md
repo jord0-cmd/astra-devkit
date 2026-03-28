@@ -162,13 +162,15 @@ The contract MUST contain:
    | Incident | severity | enum: "low" \| "medium" \| "high" \| "critical" | |
    ```
 
-2. **API Endpoints** — method, path, request body shape, response body shape, error responses:
+2. **API Endpoints** — method and path TOGETHER on one line, request body shape, response body shape, error responses. Use this EXACT format:
    ```markdown
    ## Endpoints
    | Method | Path | Request Body | Success Response | Error Responses |
    |--------|------|-------------|-----------------|-----------------|
-   | POST | /incidents | CreateIncidentRequest | IncidentResponse (201) | 422 validation |
+   | POST | /api/v1/incidents | CreateIncidentRequest | IncidentResponse (201) | 422 validation |
+   | GET | /api/v1/incidents | — | list[IncidentResponse] (200) | — |
    ```
+   CRITICAL: Each endpoint MUST show the HTTP method AND full path with API prefix in the table. Do NOT split method and path into separate lines or use prose format like "Method: GET".
 
 3. **Shared Conventions** — ID format (UUID v4), timestamp format (ISO 8601 UTC), API prefix, CORS origin, frontend directory path
 
@@ -178,7 +180,7 @@ The architectural state tracks the living state of the build. It MUST contain:
 
 1. **Project** — name, type (fullstack), stack for each layer
 2. **Domain Model** — entities with fields, types, enum values, and source file paths
-3. **Completion Tracker** — every component with agent assignment and status (pending/done)
+3. **Completion Tracker** — every component with agent assignment and status. Use EXACTLY these words: `pending`, `done`, or `complete`. Example: `- [x] Backend: **done**` / `- [ ] Frontend: **pending**`
 4. **Shared Decisions** — enum values, ID format, timestamps, CORS origin, directory layout
 5. **Quality Gates** — checklist of what must exist before the project is complete
 
@@ -237,6 +239,7 @@ Once the brief is confirmed, take action:
    - **Database steps**: MUST specify partition key path, container names, serverless vs provisioned throughput.
    - **Frontend steps**: MUST mandate TypeScript strict mode, semantic HTML (`<main>`, `<nav>`, `<section>`, `<header>`), `aria-label`/`htmlFor` on interactive elements, typed component props (interfaces), responsive layout (grid/flex), components in separate files under `components/`. MUST list every component by name with its file path. MUST include a `mockData.ts` step. MUST specify "minimum 4 feature components" — a skeleton App.tsx is NOT acceptable.
    - **Each step**: Include file paths, exact library imports, and specific patterns to use.
+   - **Tool creation**: If a step requires a tool that doesn't exist, CREATE it in `scripts/` and use it. Document in GEMINI.md.
 5. **Exit Plan Mode** — present the plan for user approval. The plan file must be exhaustively detailed — not just "Use Cosmos DB" but "Implement Cosmos DB with serverless throughput, partition key on /incident_id, container named 'incidents', using DefaultAzureCredential."
 5. **Implement the plan** — after approval, implement each step in order. Write test files BEFORE implementation code for each module. Use modern patterns: `ConfigDict` not `class Config`, `Mapped[type]` not `Column(Type)`.
 6. **STOP between major steps** and confirm with the user if the plan has more than 5 steps.

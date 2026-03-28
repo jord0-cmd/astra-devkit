@@ -109,6 +109,13 @@
             "name": "astra-skill-preflight",
             "timeout": 3000,
             "description": "Detect tech keywords and nudge relevant skill activation"
+          },
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/spec-mining.mjs",
+            "name": "astra-spec-mining",
+            "timeout": 3000,
+            "description": "Detect ambiguous build specs and nudge clarifying questions before contract"
           }
         ]
       }
@@ -174,17 +181,38 @@
           },
           {
             "type": "command",
-            "command": "node ~/.gemini/hooks/root-files-gate.mjs",
-            "name": "astra-root-files",
-            "timeout": 5000,
-            "description": "Checks for required root-level project files after agent completes"
+            "command": "node ~/.gemini/hooks/fault-localiser.mjs",
+            "name": "astra-fault-localiser",
+            "timeout": 15000,
+            "description": "Parse test failures into fault capsules with causal reasoning and source file targets"
           },
           {
             "type": "command",
-            "command": "node ~/.gemini/hooks/agent-telemetry.mjs",
-            "name": "astra-telemetry",
+            "command": "node ~/.gemini/hooks/cegis-repair.mjs",
+            "name": "astra-cegis-repair",
+            "timeout": 10000,
+            "description": "Track repeated test failures, provide minimal counterexamples, escalate after 3 retries"
+          },
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/mutation-gate.mjs",
+            "name": "astra-mutation-gate",
+            "timeout": 45000,
+            "description": "Run AST mutations on critical code paths to detect test gaps"
+          },
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/artifact-checker.mjs",
+            "name": "astra-artifact-checker",
             "timeout": 5000,
-            "description": "Captures failure signals and tool usage from agent responses for analysis"
+            "description": "Scan for required project artifacts and nudge creation of missing ones"
+          },
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/hippocampus.mjs",
+            "name": "astra-hippocampus",
+            "timeout": 3000,
+            "description": "Ensure GEMINI.md exists with required sections for session continuity"
           },
           {
             "type": "command",
@@ -192,6 +220,13 @@
             "name": "astra-drift-check",
             "timeout": 45000,
             "description": "Runs AAG engine to detect State Drift between backend and frontend after agent completes"
+          },
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/agent-telemetry.mjs",
+            "name": "astra-telemetry",
+            "timeout": 5000,
+            "description": "Captures failure signals and tool usage from agent responses for analysis"
           }
         ]
       }
