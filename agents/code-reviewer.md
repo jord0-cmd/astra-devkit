@@ -5,7 +5,7 @@ tools:
   - read_file
   - grep_search
   - list_directory
-  - read_many_files
+  - glob
 model: inherit
 temperature: 0.2
 max_turns: 15

@@ -83,6 +83,57 @@ process.stdin.on("end", () => {
     }
   }
 
+  // --- Check 3: Block `import logging` in Python source files ---
+  if (extname(file) === ".py" && /\/(app|src|lib)\//.test(normalizedPath) && content) {
+    const loggingImport = /^(?:import logging|from logging import)/m;
+    if (loggingImport.test(content)) {
+      const reason =
+        "ASTRA-BLOCK: code-standards — `import logging` is not allowed in source files.\n\n" +
+        "Use structlog for structured, JSON-serializable logging:\n\n" +
+        "```python\nimport structlog\nlogger = structlog.get_logger()\n```\n\n" +
+        "structlog provides structured context binding, automatic key-value formatting, " +
+        "and integrates with standard library logging as a renderer.";
+
+      writeGateReport({
+        hook: "code-standards",
+        event: "BeforeTool",
+        action: "denied",
+        file: name,
+        reason: "stdlib logging blocked — use structlog",
+        session_id: sessionId,
+      });
+
+      console.log(JSON.stringify({ decision: "deny", reason }));
+      process.stderr.write("CODE STANDARDS: Blocked import logging — use structlog\n");
+      process.exit(0);
+    }
+  }
+
+  // --- Check 4: Warn on primitive types for domain concepts in Python ---
+  if (extname(file) === ".py" && /\/(app|src|lib)\/domain\//.test(normalizedPath) && content) {
+    // Look for function params using bare str/int where domain types should exist
+    const primitiveWarnings = [];
+    if (/def\s+\w+\(.*\b(user_id|incident_id|task_id|booking_id|equipment_id)\s*:\s*str\b/.test(content)) {
+      primitiveWarnings.push(
+        "Domain IDs typed as bare `str` — consider using `NewType` or a branded type " +
+        "(e.g., `TaskId = NewType('TaskId', str)`) to prevent accidental misuse."
+      );
+    }
+
+    if (primitiveWarnings.length > 0) {
+      console.log(
+        JSON.stringify({
+          hookSpecificOutput: {
+            additionalContext:
+              "CODE STANDARDS WARNING: " + primitiveWarnings.join(" | ") +
+              " This is advisory — domain types prevent bugs at boundaries.",
+          },
+        })
+      );
+      process.exit(0);
+    }
+  }
+
   // All checks passed
   console.log("{}");
   process.exit(0);

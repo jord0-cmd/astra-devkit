@@ -137,6 +137,13 @@
             "name": "astra-test-gate",
             "timeout": 5000,
             "description": "TDD enforcement — blocks implementation writes when no test file exists, warns on missing sad path tests"
+          },
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/contract-first-gate.mjs",
+            "name": "astra-contract-first",
+            "timeout": 3000,
+            "description": "Warns when frontend code is written without an API contract in fullstack projects"
           }
         ]
       }
@@ -164,6 +171,20 @@
             "name": "astra-build-gate",
             "timeout": 30000,
             "description": "Run build and type checks after agent completes coding tasks"
+          },
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/root-files-gate.mjs",
+            "name": "astra-root-files",
+            "timeout": 5000,
+            "description": "Checks for required root-level project files after agent completes"
+          },
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/agent-telemetry.mjs",
+            "name": "astra-telemetry",
+            "timeout": 5000,
+            "description": "Captures failure signals and tool usage from agent responses for analysis"
           }
         ]
       }

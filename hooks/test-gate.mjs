@@ -83,7 +83,22 @@ process.stdin.on("end", () => {
     /models?\./,
     // Dependencies / DI wiring
     /deps\./, /dependencies\./,
-    // Utilities under 50 lines are borderline — allow for now
+    // --- Context-aware skips (v2.0 — Astra's request) ---
+    // UI primitives (shadcn-style library components — don't need unit tests)
+    /\/components\/ui\//,
+    // Style and CSS files
+    /\/styles\//, /\.css$/,
+    // Generated code
+    /\/@generated\//, /\.generated\./,
+    // Infrastructure files (not logic)
+    /docker-compose/, /Makefile/, /Dockerfile/,
+    // Build/tool configuration
+    /\.config\.(ts|js|mjs)$/, /tailwind\.config/, /vite\.config/, /postcss\.config/,
+    /tsconfig/, /biome\.json/, /\.eslintrc/,
+    // API client (thin fetch wrapper, tested via integration)
+    /\/api\/client/,
+    // Mock data files
+    /mock[Dd]ata/, /fixtures/,
   ];
 
   if (skipPatterns.some((p) => p.test(name) || p.test(normalizedPath))) {

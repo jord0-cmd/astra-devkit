@@ -145,6 +145,58 @@ Save the confirmed spec to `docs/project-brief.md` in the project.
 
 ---
 
+### Phase 5.5: Architectural State (Fullstack Projects)
+
+If the project involves BOTH backend AND frontend (fullstack), generate TWO documents IMMEDIATELY after the spec is confirmed. These documents bridge the gap between stateless builder agents.
+
+#### A. `docs/api-contract.md` — The Handshake Protocol
+
+The contract MUST contain:
+
+1. **Domain Model** — every entity with field names, exact types, and enum values (verbatim strings):
+   ```markdown
+   ## Domain Model
+   | Entity | Field | Type | Notes |
+   |--------|-------|------|-------|
+   | Incident | id | UUID | Primary key |
+   | Incident | severity | enum: "low" \| "medium" \| "high" \| "critical" | |
+   ```
+
+2. **API Endpoints** — method, path, request body shape, response body shape, error responses:
+   ```markdown
+   ## Endpoints
+   | Method | Path | Request Body | Success Response | Error Responses |
+   |--------|------|-------------|-----------------|-----------------|
+   | POST | /incidents | CreateIncidentRequest | IncidentResponse (201) | 422 validation |
+   ```
+
+3. **Shared Conventions** — ID format (UUID v4), timestamp format (ISO 8601 UTC), API prefix, CORS origin, frontend directory path
+
+#### B. `docs/architectural-state.md` — The Architect's Dashboard
+
+The architectural state tracks the living state of the build. It MUST contain:
+
+1. **Project** — name, type (fullstack), stack for each layer
+2. **Domain Model** — entities with fields, types, enum values, and source file paths
+3. **Completion Tracker** — every component with agent assignment and status (pending/done)
+4. **Shared Decisions** — enum values, ID format, timestamps, CORS origin, directory layout
+5. **Quality Gates** — checklist of what must exist before the project is complete
+
+The Architect (you) updates this document as agents complete their work. It is the SINGLE SOURCE OF TRUTH for what has been built and what remains.
+
+#### C. Routing Decision
+
+When delegating to builder agents:
+- **Backend**: Delegate to `@backend-builder` with spec + path to both documents. Backend-builder uses Flash model (fast, compiler-guided).
+- **Frontend**: Delegate to `@frontend-builder` ONLY after backend is complete and has updated the contract. Frontend-builder uses Pro model (needs planning capacity).
+- **Integration**: Handle in main session. Verify contract alignment between stacks.
+
+**Sequencing Rule**: Backend MUST complete and update `docs/api-contract.md` before frontend starts. Verify the contract exists and has endpoint details before launching `@frontend-builder`.
+
+**For backend-only or frontend-only projects**: Skip this phase.
+
+---
+
 ### Phase 6: Plan and Build
 
 Once the brief is confirmed, take action:

@@ -104,6 +104,37 @@ Different domains need different approaches:
 - **Frontend / Dashboard / UI**: ALWAYS plan first. Enter Plan Mode and design the full component hierarchy before writing any code. Frontend has no compiler gravity — a skeleton that builds is not complete. The plan creates the structural tension.
 - **Full-stack**: Build backend first (no plan needed), then plan the frontend component tree before building it.
 
+### 16. Contract-First Integration
+For fullstack projects, the API contract MUST exist before frontend implementation begins:
+- `docs/api-contract.md` documents every endpoint with method, path, request/response schemas, enum values
+- Frontend TypeScript interfaces are DERIVED from the contract — never invented independently
+- If you're about to write `.tsx` code and no contract exists, create it first
+- Enum values, field names, and types must match EXACTLY between backend and frontend
+
+### 17. Domain Types Over Primitives
+Use domain-specific types for business concepts — not bare primitives:
+- Python: `NewType("TaskId", str)` or `enum.StrEnum` — not bare `str` for IDs, statuses, priorities
+- TypeScript: `type TaskId = string & { __brand: "TaskId" }` or union string literals — not bare `string`
+- This prevents accidental misuse: passing a `user_id` where `task_id` is expected
+- At minimum, ALL enums MUST be proper enum types, not loose strings
+
+### 18. Accessibility Is Mandatory
+All frontend code MUST include accessibility attributes — this is not optional:
+- Every interactive element needs `aria-label` or `aria-labelledby`
+- Use semantic HTML: `<main>`, `<nav>`, `<section>`, `<header>`, `<footer>` — not `<div>` for everything
+- Labels MUST use `htmlFor` to associate with inputs
+- Focus states MUST be visible (Tailwind `ring` utilities or equivalent)
+- A skip-to-main-content link MUST be the first focusable element
+- Colour contrast: 4.5:1 minimum for text
+
+### 19. AST-Aware Code Modification
+- NEVER use `sed`, `awk`, or string replacement for modifying source code files
+- Use `sg` (ast-grep) for structural code edits: `sg -p 'pattern' -r 'replacement' -i file`
+- Use `sg` for structural code search: `sg -p 'pattern' dir/`
+- String replacement is fragile — it breaks on whitespace, indentation, and formatting changes
+- ast-grep operates on the abstract syntax tree and is format-independent
+- If `sg` is not available, use the `replace` tool with sufficient context — never `sed -i`
+
 ---
 
 ## No Mock Services

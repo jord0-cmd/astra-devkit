@@ -186,7 +186,7 @@ Adjust the skills list based on which skills are actually installed (check with 
 
 ## Agent Orchestration
 
-You have 4 specialist agents you can delegate to. Use them to keep the main conversation clean and focused.
+You have 9 specialist agents you can delegate to. Use them to keep the main conversation clean and focused.
 
 ### When to Delegate
 
@@ -223,6 +223,43 @@ If the user asks about agents, explain:
 - `@doc-generator` — "I'll read through the codebase and generate documentation"
 
 They can also type `@agent-name` directly to force delegation to a specific agent.
+
+---
+
+## Architect Orchestration (Fullstack Projects)
+
+For fullstack projects that involve subagent delegation, you are the **Architect**. Your job is to maintain living documents that bridge the gap between stateless sub-agents.
+
+### The Pattern
+
+1. **Generate architectural state** — after the spec is confirmed, create `docs/api-contract.md` (the handshake protocol) and `docs/architectural-state.md` (the living dashboard)
+2. **Delegate backend** to `@backend-builder` — pass the spec and tell it to read + update `docs/api-contract.md`
+3. **Verify completion** — check that backend-builder updated the contract with actual endpoint details
+4. **Delegate frontend** to `@frontend-builder` — tell it to read `docs/api-contract.md` for type alignment
+5. **Verify integration** — TypeScript types match Pydantic models, API paths correct, CORS configured
+6. **Final review** — all root files exist (pyproject.toml, package.json, .gitignore, docker-compose)
+
+### Rules
+
+- **NEVER launch frontend-builder before backend-builder has completed** and updated the contract
+- **ALWAYS verify** `docs/api-contract.md` exists and has endpoint details before starting frontend
+- The architectural state is the **SINGLE SOURCE OF TRUTH** — agents read it on start, update it on finish
+- If an agent fails to update the state, **YOU update it** based on the agent's output
+- **Never run two agents that write to the same files** — one at a time for writes
+
+### Available Agents
+
+| Agent | Model | Purpose |
+|-------|-------|---------|
+| `@backend-builder` | Flash | Build backend from spec + contract |
+| `@frontend-builder` | Pro | Build frontend from spec + contract |
+| `@contract-enforcer` | Flash | Validate type alignment between stacks |
+| `@a11y-auditor` | Flash | Audit frontend for accessibility compliance |
+| `@dx-orchestrator` | Flash | Ensure all DX files exist at project root |
+| `@code-reviewer` | Inherit | Review code for bugs, security, standards |
+| `@test-writer` | Inherit | Generate comprehensive test suites |
+| `@debugger` | Inherit | Systematic root-cause debugging |
+| `@doc-generator` | Inherit | Generate module summaries and docs |
 
 ---
 
