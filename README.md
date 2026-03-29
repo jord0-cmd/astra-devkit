@@ -3,6 +3,10 @@
 </p>
 
 <p align="center">
+  <img src="docs/images/astra-icon.png" width="80" alt="Astra Icon">
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/version-4.0.0-blue?style=for-the-badge" alt="Version">
   <img src="https://img.shields.io/badge/node-20+-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js">
   <img src="https://img.shields.io/badge/Gemini_CLI-0.36+-4285F4?style=for-the-badge&logo=google&logoColor=white" alt="Gemini CLI">
@@ -415,33 +419,42 @@ Because `"Deploying to prod on a Friday..."` is more fun than a spinner.
 After installing globally:
 
 ```bash
-astra-devkit setup       # Interactive first-time setup (name, experience, focus, MCPs, theme)
+astra-devkit             # Launch Gemini (runs setup first if needed)
+astra-devkit setup       # Interactive setup (profile, MCPs, theme, desktop shortcut)
 astra-devkit update      # Update all components to latest
-astra-devkit mcps        # Interactive MCP enable/disable menu
+astra-devkit mcps        # Interactive MCP enable/disable with dependency detection
 astra-devkit theme       # Switch between themes
 astra-devkit doctor      # Health check — verifies all components
+astra-devkit extend      # Install internal team skill pack (requires GitHub access)
+astra-devkit guide beginner   # Open the beginner visual guide
+astra-devkit guide developer  # Open the developer visual guide
 astra-devkit uninstall   # Clean removal of all Astra components
 astra-devkit help        # Show available commands
 astra-devkit --version   # Show version
 ```
+
+> **Windows users**: Setup offers to create a desktop shortcut with the Astra icon. Double-click it to launch Gemini in Windows Terminal.
 
 ### Doctor Output (example)
 
 ```
 Astra DevKit — Health Check
 
-  ✓ Node.js: v24.11.0 (OK)
-  ✓ Gemini CLI: 0.36.0-preview.3
-  ✓ Python + uv: Python 3.12.12 + uv installed
-  ✓ Skills: 24 installed (OK)
+  ✓ Node.js: v20.x.x (OK)
+  ✓ Gemini CLI: 0.36.x
+  ✓ Python + uv: Python 3.x.x + uv installed
+  ✓ Skills: 21 installed (OK)
   ✓ Hooks: 17 installed (OK)
   ✓ Agents: 9 installed (OK)
   ✓ Standards: 4 installed (OK)
   ✓ Settings + MCPs: 7 MCPs, hooks ON, skills ON
   ✓ Themes: 3 available (OK)
-  ✓ Pandoc: pandoc 3.1.11.1
+  ✓ ast-grep: ast-grep 0.x.x
+  ✓ Pandoc: pandoc 3.x.x
 
-10/10 checks passed.
+11/11 checks passed.
+
+  ★ Internal skill pack: 4.0.0  (or: — not installed)
 
 All systems operational. You're good to go.
 ```
