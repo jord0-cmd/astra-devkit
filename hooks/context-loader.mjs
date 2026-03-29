@@ -34,8 +34,14 @@ function isSensitive(filePath) {
 }
 
 // --- Astra Banner ---
-function getAstraBanner(userName, skillCount, hookCount, mcpCount) {
+function getAstraBanner(userName, skillCount, hookCount, mcpCount, mode, hasInternal) {
   const name = userName || "Engineer";
+  const edition = hasInternal ? "OPS" : "";
+  const versionLine = edition
+    ? `  \u2551       DevKit v4.0 ${edition}                     \u2551`
+    : "  \u2551            DevKit v4.0                        \u2551";
+  const modeLabel = mode === "office" ? "Office Mode" : "Code Mode";
+
   return [
     "",
     "  \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557",
@@ -45,9 +51,9 @@ function getAstraBanner(userName, skillCount, hookCount, mcpCount) {
     "  \u2551   \u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2551\u255a\u2550\u2550\u2550\u2550\u2588\u2588\u2551   \u2588\u2588\u2551   \u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2551  \u2551",
     "  \u2551   \u2588\u2588\u2551  \u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551   \u2588\u2588\u2551   \u2588\u2588\u2551  \u2588\u2588\u2551\u2588\u2588\u2551  \u2588\u2588\u2551  \u2551",
     "  \u2551   \u255a\u2550\u255d  \u255a\u2550\u255d\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d   \u255a\u2550\u255d   \u255a\u2550\u255d  \u255a\u2550\u255d\u255a\u2550\u255d  \u255a\u2550\u255d  \u2551",
-    "  \u2551            DevKit v4.0                        \u2551",
+    versionLine,
     "  \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d",
-    `  Welcome back, ${name}. ${skillCount} skills \u00b7 ${hookCount} hooks \u00b7 ${mcpCount} MCPs loaded.`,
+    `  ${modeLabel} \u00b7 ${name} \u00b7 ${skillCount} skills \u00b7 ${hookCount} hooks \u00b7 ${mcpCount} MCPs`,
     "",
   ].join("\n");
 }
@@ -158,14 +164,18 @@ process.stdin.on("end", () => {
 
   // Display Astra banner
   let userName = null;
+  let userMode = "code";
   if (existsSync(userFile)) {
     try {
       const ud = JSON.parse(readFileSync(userFile, "utf-8"));
       userName = ud.name || null;
+      userMode = ud.mode || "code";
     } catch {}
   }
+  // Detect internal skill pack (check for internal-only skills as a proxy)
+  const hasInternal = existsSync(join(geminiHome, "skills", "card-builder"));
   const counts = countComponents(geminiHome);
-  process.stderr.write(getAstraBanner(userName, counts.skills, counts.hooks, counts.mcps));
+  process.stderr.write(getAstraBanner(userName, counts.skills, counts.hooks, counts.mcps, userMode, hasInternal));
 
   // Build output
   if (contextParts.length > 0) {
