@@ -1,0 +1,29 @@
+{
+  "name": "Astra Retro Amber",
+  "type": "custom",
+  "background": {
+    "primary": "#0a0800",
+    "diff": { "added": "#1a1a00", "removed": "#1a0a00" }
+  },
+  "text": {
+    "primary": "#ffb000",
+    "secondary": "#cc8800",
+    "link": "#ffc633",
+    "accent": "#ffcc00",
+    "response": "#ffbb33"
+  },
+  "border": {
+    "default": "#332a00",
+    "focused": "#ffb000"
+  },
+  "status": {
+    "success": "#ffcc00",
+    "warning": "#ff9900",
+    "error": "#ff3300"
+  },
+  "ui": {
+    "comment": "#996600",
+    "symbol": "#ffdd44",
+    "gradient": ["#331a00", "#ffb000", "#ffcc33"]
+  }
+}

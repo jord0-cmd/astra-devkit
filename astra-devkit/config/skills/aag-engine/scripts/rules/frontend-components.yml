@@ -1,0 +1,5 @@
+id: frontend-components
+language: tsx
+rule:
+  kind: function_declaration
+  pattern: "function $COMP($$$ARGS) { $$$BODY }"

@@ -1,0 +1,29 @@
+{
+  "name": "Astra Retro Green",
+  "type": "custom",
+  "background": {
+    "primary": "#0a0a0a",
+    "diff": { "added": "#0a1a0a", "removed": "#1a0a0a" }
+  },
+  "text": {
+    "primary": "#33ff33",
+    "secondary": "#1a9a1a",
+    "link": "#66ff66",
+    "accent": "#00ff00",
+    "response": "#44ff44"
+  },
+  "border": {
+    "default": "#1a3a1a",
+    "focused": "#33ff33"
+  },
+  "status": {
+    "success": "#00ff00",
+    "warning": "#ccff00",
+    "error": "#ff3333"
+  },
+  "ui": {
+    "comment": "#1a6a1a",
+    "symbol": "#00ff99",
+    "gradient": ["#003300", "#00ff00", "#66ff66"]
+  }
+}

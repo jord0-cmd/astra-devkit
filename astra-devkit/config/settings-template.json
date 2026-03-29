@@ -1,9 +1,4 @@
 {
-  "security": {
-    "auth": {
-      "selectedType": "oauth-personal"
-    }
-  },
   "tools": {
     "shell": {
       "showColor": true
@@ -81,32 +76,50 @@
   "mcpServers": {
     "context7": {
       "command": "npx",
-      "args": ["-y", "@upstash/context7-mcp@latest"],
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ],
       "timeout": 30000
     },
     "pandoc": {
       "command": "uvx",
-      "args": ["mcp-pandoc"],
+      "args": [
+        "mcp-pandoc"
+      ],
       "timeout": 15000
     },
     "powerpoint": {
       "command": "uvx",
-      "args": ["--from", "office-powerpoint-mcp-server", "ppt_mcp_server"],
+      "args": [
+        "--from",
+        "office-powerpoint-mcp-server",
+        "ppt_mcp_server"
+      ],
       "timeout": 15000
     },
     "excel": {
       "command": "uvx",
-      "args": ["excel-mcp-server"],
+      "args": [
+        "excel-mcp-server"
+      ],
       "timeout": 15000
     },
     "word-docs": {
       "command": "uvx",
-      "args": ["--from", "office-word-mcp-server", "word_mcp_server"],
+      "args": [
+        "--from",
+        "office-word-mcp-server",
+        "word_mcp_server"
+      ],
       "timeout": 15000
     },
     "gemini-image": {
       "command": "npx",
-      "args": ["-y", "mcp-image"],
+      "args": [
+        "-y",
+        "mcp-image"
+      ],
       "env": {
         "GEMINI_API_KEY": "$GEMINI_API_KEY",
         "IMAGE_OUTPUT_DIR": "./generated-images",
@@ -116,7 +129,10 @@
     },
     "playwright": {
       "command": "npx",
-      "args": ["-y", "@anthropic-ai/mcp-playwright"],
+      "args": [
+        "-y",
+        "@anthropic-ai/mcp-playwright"
+      ],
       "timeout": 30000
     }
   },
@@ -179,14 +195,14 @@
             "command": "node ~/.gemini/hooks/code-standards.mjs",
             "name": "astra-code-standards",
             "timeout": 3000,
-            "description": "Code standards — blocks requirements.txt, warns on hardcoded state"
+            "description": "Code standards \u2014 blocks requirements.txt, warns on hardcoded state"
           },
           {
             "type": "command",
             "command": "node ~/.gemini/hooks/test-gate.mjs",
             "name": "astra-test-gate",
             "timeout": 5000,
-            "description": "TDD enforcement — blocks implementation writes when no test file exists, warns on missing sad path tests"
+            "description": "TDD enforcement \u2014 blocks implementation writes when no test file exists, warns on missing sad path tests"
           },
           {
             "type": "command",

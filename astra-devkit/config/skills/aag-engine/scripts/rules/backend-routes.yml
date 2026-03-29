@@ -1,0 +1,10 @@
+id: backend-routes
+language: python
+rule:
+  kind: decorated_definition
+  has:
+    kind: decorator
+    pattern: "@$ROUTER.$METHOD($$$ARGS)"
+    constraints:
+      METHOD:
+        regex: "^(get|post|put|delete|patch)$"

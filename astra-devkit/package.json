@@ -1,0 +1,33 @@
+{
+  "name": "astra-devkit",
+  "version": "4.0.0",
+  "description": "AI Engineering Partner for Gemini CLI — skills, hooks, agents, MCPs, and themes",
+  "type": "module",
+  "bin": {
+    "astra-devkit": "./bin/astra-devkit.mjs"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "config/"
+  ],
+  "keywords": [
+    "gemini",
+    "gemini-cli",
+    "ai",
+    "devkit",
+    "skills",
+    "hooks",
+    "mcp",
+    "engineering"
+  ],
+  "author": "jord0-cmd",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jord0-cmd/astra-devkit.git"
+  }
+}

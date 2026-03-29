@@ -1,0 +1,29 @@
+{
+  "name": "Astra",
+  "type": "custom",
+  "background": {
+    "primary": "#0d1117",
+    "diff": { "added": "#1a2b1a", "removed": "#2b1a1a" }
+  },
+  "text": {
+    "primary": "#e6edf3",
+    "secondary": "#8b949e",
+    "link": "#58a6ff",
+    "accent": "#7ee787",
+    "response": "#f0f6fc"
+  },
+  "border": {
+    "default": "#30363d",
+    "focused": "#58a6ff"
+  },
+  "status": {
+    "success": "#7ee787",
+    "warning": "#d29922",
+    "error": "#f85149"
+  },
+  "ui": {
+    "comment": "#8b949e",
+    "symbol": "#79c0ff",
+    "gradient": ["#58a6ff", "#7ee787", "#d2a8ff"]
+  }
+}

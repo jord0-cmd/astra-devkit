@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{REPORT_TITLE}}</title>
+  <style>
+    /* === RESET === */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* === PAGE SETUP === */
+    @page {
+      size: A4;
+      margin: 20mm;
+      @bottom-center {
+        content: counter(page) " / " counter(pages);
+        font-size: 9pt;
+        color: #666;
+      }
+    }
+
+    /* === BODY === */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 11pt;
+      line-height: 1.6;
+      color: #1a1a2e;
+      background: #fff;
+    }
+
+    /* === TITLE PAGE === */
+    .title-page {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+      page-break-after: always;
+    }
+    .title-page h1 {
+      font-size: 28pt;
+      font-weight: 700;
+      color: #0d1117;
+      margin-bottom: 0.5em;
+    }
+    .title-page .subtitle {
+      font-size: 14pt;
+      color: #586069;
+      margin-bottom: 2em;
+    }
+    .title-page .meta {
+      font-size: 10pt;
+      color: #8b949e;
+    }
+    .title-page .meta p { margin: 0.3em 0; }
+
+    /* === TABLE OF CONTENTS === */
+    .toc {
+      page-break-after: always;
+    }
+    .toc h2 {
+      font-size: 18pt;
+      margin-bottom: 1em;
+      border-bottom: 2px solid #0d1117;
+      padding-bottom: 0.3em;
+    }
+    .toc ul {
+      list-style: none;
+      padding: 0;
+    }
+    .toc li {
+      padding: 0.4em 0;
+      border-bottom: 1px dotted #ddd;
+    }
+    .toc li a {
+      text-decoration: none;
+      color: #0366d6;
+    }
+    .toc li.toc-h3 {
+      padding-left: 1.5em;
+      font-size: 10pt;
+    }
+
+    /* === HEADINGS === */
+    h2 {
+      font-size: 18pt;
+      font-weight: 700;
+      color: #0d1117;
+      border-bottom: 2px solid #e1e4e8;
+      padding-bottom: 0.3em;
+      margin-top: 1.5em;
+      margin-bottom: 0.8em;
+      page-break-before: always;
+    }
+    h2:first-of-type { page-break-before: avoid; }
+    h3 {
+      font-size: 14pt;
+      font-weight: 600;
+      color: #24292e;
+      margin-top: 1.2em;
+      margin-bottom: 0.5em;
+    }
+
+    /* === PARAGRAPHS === */
+    p { margin-bottom: 0.8em; }
+
+    /* === TABLES === */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1em 0;
+      font-size: 10pt;
+    }
+    th, td {
+      padding: 8px 12px;
+      border: 1px solid #d0d7de;
+      text-align: left;
+      word-wrap: break-word;
+    }
+    th {
+      background: #f6f8fa;
+      font-weight: 600;
+      color: #24292e;
+    }
+    tr:nth-child(even) td { background: #fafbfc; }
+
+    /* === CODE === */
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 9pt;
+      background: #f6f8fa;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    pre {
+      background: #f6f8fa;
+      border: 1px solid #e1e4e8;
+      border-radius: 6px;
+      padding: 12px;
+      overflow-x: auto;
+      font-size: 9pt;
+      line-height: 1.5;
+      margin: 1em 0;
+    }
+    pre code { background: none; padding: 0; }
+
+    /* === LISTS === */
+    ul, ol {
+      margin: 0.5em 0 1em 1.5em;
+    }
+    li { margin-bottom: 0.3em; }
+
+    /* === IMAGES === */
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 1em auto;
+    }
+    .caption {
+      text-align: center;
+      font-size: 9pt;
+      color: #586069;
+      margin-top: -0.5em;
+      margin-bottom: 1em;
+    }
+
+    /* === CALLOUTS === */
+    .callout {
+      border-left: 4px solid #0366d6;
+      background: #f1f8ff;
+      padding: 12px 16px;
+      margin: 1em 0;
+      border-radius: 0 6px 6px 0;
+    }
+    .callout.warning {
+      border-left-color: #d29922;
+      background: #fffbdd;
+    }
+    .callout.error {
+      border-left-color: #cb2431;
+      background: #ffeef0;
+    }
+
+    /* === FOOTER === */
+    .report-footer {
+      margin-top: 3em;
+      padding-top: 1em;
+      border-top: 1px solid #e1e4e8;
+      font-size: 9pt;
+      color: #8b949e;
+      text-align: center;
+    }
+
+    /* === PRINT UTILITIES === */
+    .page-break { page-break-before: always; }
+    .no-break { page-break-inside: avoid; }
+
+    @media print {
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      a { color: #0366d6; text-decoration: none; }
+      .no-print { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TITLE PAGE -->
+  <div class="title-page">
+    <h1>{{REPORT_TITLE}}</h1>
+    <p class="subtitle">{{REPORT_SUBTITLE}}</p>
+    <div class="meta">
+      <p><strong>Author:</strong> {{AUTHOR}}</p>
+      <p><strong>Date:</strong> {{DATE}}</p>
+      <p><strong>Version:</strong> {{VERSION}}</p>
+    </div>
+  </div>
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc">
+    <h2>Table of Contents</h2>
+    <ul>
+      <li><a href="#executive-summary">Executive Summary</a></li>
+      <li><a href="#section-1">Section 1</a></li>
+      <li class="toc-h3"><a href="#subsection-1a">Subsection 1a</a></li>
+      <li><a href="#section-2">Section 2</a></li>
+      <!-- Add entries for each h2/h3 -->
+    </ul>
+  </div>
+
+  <!-- EXECUTIVE SUMMARY -->
+  <h2 id="executive-summary">Executive Summary</h2>
+  <p>{{EXECUTIVE_SUMMARY}}</p>
+
+  <!-- BODY SECTIONS -->
+  <h2 id="section-1">Section 1</h2>
+  <p>{{SECTION_CONTENT}}</p>
+
+  <h3 id="subsection-1a">Subsection 1a</h3>
+  <p>{{SUBSECTION_CONTENT}}</p>
+
+  <!-- Example table -->
+  <table>
+    <thead>
+      <tr><th>Metric</th><th>Value</th><th>Change</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Score</td><td>97%</td><td>+12%</td></tr>
+      <tr><td>Cost</td><td>$1.61</td><td>-79%</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Example callout -->
+  <div class="callout">
+    <strong>Note:</strong> This is an informational callout.
+  </div>
+
+  <h2 id="section-2">Section 2</h2>
+  <p>{{SECTION_CONTENT}}</p>
+
+  <!-- FOOTER -->
+  <div class="report-footer">
+    Generated on {{DATE}} by Astra DevKit v4.0
+  </div>
+
+</body>
+</html>
