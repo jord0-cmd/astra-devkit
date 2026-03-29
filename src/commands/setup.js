@@ -1,6 +1,6 @@
 import {Command, Flags, run} from '@oclif/core'
 import {confirm, input, select} from '@inquirer/prompts'
-import {existsSync, writeFileSync} from 'node:fs'
+import {existsSync, readFileSync, writeFileSync} from 'node:fs'
 import {join} from 'node:path'
 import {homedir, platform} from 'node:os'
 import {execSync} from 'node:child_process'
@@ -193,6 +193,25 @@ export default class Setup extends Command {
     mergeSettings(configDir)
     this.log('  \u2713 settings.json: merged\n')
 
+    // ── Step 5b: Create workspace folder ──────
+    const defaultWorkspace = join(homedir(), 'AstraProjects')
+    if (!existsSync(defaultWorkspace)) {
+      ensureDir(defaultWorkspace)
+      this.log(`  \u2713 Created workspace folder: ${defaultWorkspace}`)
+      this.log('    This is your safe space — Astra will work inside this folder.')
+      this.log('    Create sub-folders here for each project.\n')
+    } else {
+      this.log(`  \u2713 Workspace folder exists: ${defaultWorkspace}\n`)
+    }
+
+    // Save workspace path in user.json for the launcher
+    try {
+      const userPath = join(GEMINI_HOME, 'user.json')
+      const userData = JSON.parse(readFileSync(userPath, 'utf-8'))
+      userData.workspace = defaultWorkspace
+      writeFileSync(userPath, JSON.stringify(userData, null, 2) + '\n')
+    } catch {}
+
     // ── Step 6: MCP Configuration ──────────────
     this.log('Now let\'s configure your MCP servers.\n')
     this.log('  MCPs give Astra extra capabilities — document creation,')
@@ -283,7 +302,7 @@ $sc = $ws.CreateShortcut('${shortcutPath.replace(/\\/g, '\\\\').replace(/'/g, "'
 $wtCmd = Get-Command wt -ErrorAction SilentlyContinue;
 if ($wtCmd) { $sc.TargetPath = $wtCmd.Source; $sc.Arguments = '-p "Command Prompt" cmd /k gemini' }
 else { $sc.TargetPath = 'cmd.exe'; $sc.Arguments = '/k gemini' };
-$sc.WorkingDirectory = $env:USERPROFILE;
+$sc.WorkingDirectory = '$env:USERPROFILE\\AstraProjects';
 $iconFile = '${iconDest.replace(/\\/g, '\\\\').replace(/'/g, "''")}';
 if (Test-Path $iconFile) { $sc.IconLocation = $iconFile };
 $sc.Description = 'Astra DevKit - AI Engineering Partner';
