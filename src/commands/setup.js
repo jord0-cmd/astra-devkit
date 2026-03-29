@@ -336,22 +336,35 @@ export default class Setup extends Command {
     const desktopPath = join(homedir(), 'Desktop')
     const shortcutPath = join(desktopPath, 'Astra.lnk')
 
+    // Read workspace from user.json
+    let workspacePath = join(homedir(), 'AstraProjects')
+    try {
+      const ud = JSON.parse(readFileSync(join(GEMINI_HOME, 'user.json'), 'utf-8'))
+      if (ud.workspace) workspacePath = ud.workspace
+    } catch {}
+
     const ps = `
 $ws = New-Object -ComObject WScript.Shell;
 $sc = $ws.CreateShortcut('${shortcutPath.replace(/\\/g, '\\\\').replace(/'/g, "''")}');
 $wtCmd = Get-Command wt -ErrorAction SilentlyContinue;
-if ($wtCmd) { $sc.TargetPath = $wtCmd.Source; $sc.Arguments = '-p "Command Prompt" cmd /k gemini' }
-else { $sc.TargetPath = 'cmd.exe'; $sc.Arguments = '/k gemini' };
-$sc.WorkingDirectory = '$env:USERPROFILE\\AstraProjects';
+if ($wtCmd) { $sc.TargetPath = $wtCmd.Source; $sc.Arguments = 'cmd /k astra-devkit' }
+else { $sc.TargetPath = 'cmd.exe'; $sc.Arguments = '/k astra-devkit' };
+$sc.WorkingDirectory = '${workspacePath.replace(/\\/g, '\\\\').replace(/'/g, "''")}';
 $iconFile = '${iconDest.replace(/\\/g, '\\\\').replace(/'/g, "''")}';
 if (Test-Path $iconFile) { $sc.IconLocation = $iconFile };
 $sc.Description = 'Astra DevKit - AI Engineering Partner';
-$sc.Save()
+$sc.Save();
+$sc2 = $ws.CreateShortcut('${join(desktopPath, 'Astra Workspace.lnk').replace(/\\/g, '\\\\').replace(/'/g, "''")}');
+$sc2.TargetPath = '${workspacePath.replace(/\\/g, '\\\\').replace(/'/g, "''")}';
+$sc2.Description = 'Astra workspace folder';
+$sc2.Save()
 `.trim().replace(/\n/g, ' ')
 
     try {
       execSync(`powershell -NoProfile -Command "${ps}"`, {encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe']})
-      this.log(`  \u2713 Desktop shortcut created! Look for "Astra" on your desktop.\n`)
+      this.log(`  \u2713 Desktop shortcuts created!`)
+      this.log(`    "Astra" \u2014 launches Astra DevKit`)
+      this.log(`    "Astra Workspace" \u2014 opens your project folder\n`)
     } catch (err) {
       const stderr = err.stderr || err.message || 'unknown error'
       this.warn(`Could not create desktop shortcut: ${stderr.trim()}`)
