@@ -299,7 +299,7 @@ export default class Setup extends Command {
         // Normal exit (Ctrl+C) throws — that's fine
       }
     } else {
-      this.log('\n  Ready when you are. Just type: gemini\n')
+      this.log('\n  Ready when you are. Just type: astra-devkit\n')
     }
   }
 

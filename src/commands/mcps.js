@@ -99,6 +99,7 @@ export default class Mcps extends Command {
     const selected = await checkbox({
       message: 'Select MCP servers to enable',
       choices,
+      pageSize: 15,
     })
 
     const newMcps = {}
