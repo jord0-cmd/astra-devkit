@@ -1,12 +1,34 @@
 import {Command, Flags} from '@oclif/core'
-import {input, select} from '@inquirer/prompts'
+import {confirm, input, select} from '@inquirer/prompts'
 import {existsSync, writeFileSync} from 'node:fs'
 import {join} from 'node:path'
-import {homedir} from 'node:os'
+import {homedir, platform} from 'node:os'
 import {execSync} from 'node:child_process'
 import {deployComponent, mergeSettings, ensureDir} from '../../lib/file-ops.mjs'
 
 const GEMINI_HOME = join(homedir(), '.gemini')
+const isWin = platform() === 'win32'
+const REQUIRED_GEMINI_VERSION = '0.36.0'
+const GEMINI_NPM_PACKAGE = '@google/gemini-cli'
+const GEMINI_INSTALL_TAG = 'preview'
+
+function tryExec(cmd) {
+  return execSync(cmd, {encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe']}).trim()
+}
+
+/**
+ * Compare semver strings (ignoring prerelease tags for min version check).
+ * Returns: -1 if a < b, 0 if equal, 1 if a > b
+ */
+function compareSemver(a, b) {
+  const pa = a.replace(/-.*$/, '').split('.').map(Number)
+  const pb = b.replace(/-.*$/, '').split('.').map(Number)
+  for (let i = 0; i < 3; i++) {
+    if ((pa[i] || 0) < (pb[i] || 0)) return -1
+    if ((pa[i] || 0) > (pb[i] || 0)) return 1
+  }
+  return 0
+}
 
 const BANNER = `
   \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557
@@ -26,6 +48,7 @@ export default class Setup extends Command {
 
   static examples = [
     '<%= config.bin %> setup',
+    '<%= config.bin %> setup --force',
   ]
 
   static flags = {
@@ -43,11 +66,58 @@ export default class Setup extends Command {
     this.log(BANNER)
     this.log('  AI Engineering Partner \u2014 First-Time Setup\n')
 
-    // Check prerequisites
+    // ── Step 1: Prerequisites ──────────────────
     this.log('Checking prerequisites...\n')
-    this.#checkPrereqs()
 
-    // User profile
+    // Node.js
+    const nodeMajor = parseInt(process.version.slice(1))
+    this.log(`  ${nodeMajor >= 20 ? '\u2713' : '\u2717'} Node.js: ${process.version}`)
+    if (nodeMajor < 20) {
+      this.error('Node.js 20+ is required. Install from https://nodejs.org', {exit: 1})
+    }
+
+    // ── Step 2: Gemini CLI check ───────────────
+    await this.#ensureGeminiCli()
+
+    // Python + uv (optional, for document MCPs)
+    const pyCmd = isWin ? 'python --version' : 'python3 --version'
+    try {
+      const pyVer = tryExec(pyCmd)
+      try {
+        tryExec('uv --version')
+        this.log(`  \u2713 ${pyVer} + uv installed`)
+      } catch {
+        this.log(`  \u26a0 ${pyVer} found, but uv missing (needed for document MCPs)`)
+        this.log('    Install: curl -LsSf https://astral.sh/uv/install.sh | sh')
+      }
+    } catch {
+      this.log('  \u26a0 Python not found (optional \u2014 needed for document MCPs)')
+    }
+
+    // ── Step 3: Existing config warning ────────
+    const settingsPath = join(GEMINI_HOME, 'settings.json')
+    const geminiMdPath = join(GEMINI_HOME, 'GEMINI.md')
+    const hasExisting = existsSync(settingsPath) || existsSync(geminiMdPath)
+
+    if (hasExisting && !flags.force) {
+      this.log('\n  \u26a0  Existing Gemini CLI configuration detected.\n')
+      this.log('  Astra DevKit will deploy skills, hooks, agents, standards, and themes')
+      this.log('  into ~/.gemini/. Settings will be MERGED (your auth is preserved),')
+      this.log('  but skills, hooks, and agents will be overwritten.\n')
+      this.log('  For a clean install, remove ~/.gemini/ first and re-authenticate.\n')
+
+      const proceed = await confirm({
+        message: 'Proceed with installation? (existing settings will be merged)',
+        default: true,
+      })
+
+      if (!proceed) {
+        this.log('\nSetup cancelled. Run with --force to skip this check.\n')
+        return
+      }
+    }
+
+    // ── Step 4: User profile ───────────────────
     this.log('\nLet\'s set up your profile.\n')
 
     const name = await input({message: 'What\'s your name?'})
@@ -90,7 +160,7 @@ export default class Setup extends Command {
     writeFileSync(join(GEMINI_HOME, 'user.json'), JSON.stringify(userProfile, null, 2) + '\n')
     this.log(`\n  \u2713 Profile saved for ${name.trim()}.\n`)
 
-    // Deploy components
+    // ── Step 5: Deploy components ──────────────
     this.log('Deploying Astra DevKit components...\n')
     for (const comp of ['skills', 'hooks', 'agents', 'standards', 'themes']) {
       const result = deployComponent(configDir, comp)
@@ -99,24 +169,105 @@ export default class Setup extends Command {
     mergeSettings(configDir)
     this.log('  \u2713 settings.json: merged\n')
 
-    // Summary
+    // ── Step 6: Summary ────────────────────────
     this.log(`\n  \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557`)
     this.log(`  \u2551  Astra DevKit v${this.config.version} \u2014 Setup Complete!        \u2551`)
     this.log(`  \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d\n`)
     this.log(`  Welcome aboard, ${name.trim()}.`)
-    this.log(`  Run 'gemini' to start your first session.`)
+    this.log('  Run \'gemini\' to start your first session.')
     this.log(`  Run '${this.config.bin} doctor' to verify everything.\n`)
   }
 
-  #checkPrereqs() {
-    const major = parseInt(process.version.slice(1))
-    this.log(`  ${major >= 20 ? '\u2713' : '\u2717'} Node.js: ${process.version}`)
+  /**
+   * Check Gemini CLI: detect, version-check, install or upgrade.
+   */
+  async #ensureGeminiCli() {
+    let installedVersion = null
 
+    // Detect current installation
     try {
-      execSync('gemini --version', {stdio: ['pipe', 'pipe', 'pipe']})
-      this.log('  \u2713 Gemini CLI: installed')
+      installedVersion = tryExec('gemini --version')
+      this.log(`  \u2713 Gemini CLI: ${installedVersion}`)
     } catch {
-      this.log('  \u2717 Gemini CLI: not found \u2014 run: npm install -g @google/gemini-cli')
+      this.log('  \u2717 Gemini CLI: not installed')
+    }
+
+    // Check latest available version from npm
+    let latestVersion = null
+    try {
+      latestVersion = tryExec(`npm view ${GEMINI_NPM_PACKAGE}@${GEMINI_INSTALL_TAG} version`)
+    } catch {
+      // Can't reach npm registry — skip version check
+    }
+
+    // Case 1: Not installed at all
+    if (!installedVersion) {
+      this.log('')
+      this.log('  Gemini CLI is required for Astra DevKit to work.')
+      this.log(`  The DevKit requires Gemini CLI ${REQUIRED_GEMINI_VERSION}+ (preview channel)`)
+      this.log(`  for agents, skills, and hooks support.\n`)
+
+      const install = await confirm({
+        message: `Install Gemini CLI${latestVersion ? ` (${latestVersion})` : ''}?`,
+        default: true,
+      })
+
+      if (install) {
+        this.#installGeminiCli()
+      } else {
+        this.warn('Gemini CLI is required. Install manually: npm install -g @google/gemini-cli@preview')
+        this.warn('Then run this setup again.\n')
+        this.exit(1)
+      }
+      return
+    }
+
+    // Case 2: Installed but below minimum version
+    if (compareSemver(installedVersion, REQUIRED_GEMINI_VERSION) < 0) {
+      this.log('')
+      this.log(`  \u26a0  Gemini CLI ${installedVersion} is below the minimum required version (${REQUIRED_GEMINI_VERSION}).`)
+      this.log('  Agents, skills, and hooks require the preview channel.\n')
+
+      const upgrade = await confirm({
+        message: `Upgrade to Gemini CLI ${latestVersion || GEMINI_INSTALL_TAG}?`,
+        default: true,
+      })
+
+      if (upgrade) {
+        this.#installGeminiCli()
+      } else {
+        this.warn('Some features may not work with an older Gemini CLI version.')
+      }
+      return
+    }
+
+    // Case 3: Installed and meets minimum, but newer version available
+    if (latestVersion && compareSemver(installedVersion, latestVersion) < 0) {
+      this.log(`    Latest available: ${latestVersion}`)
+
+      const upgrade = await confirm({
+        message: `Update Gemini CLI to ${latestVersion}?`,
+        default: false,
+      })
+
+      if (upgrade) {
+        this.#installGeminiCli()
+      }
+    }
+  }
+
+  /**
+   * Install or upgrade Gemini CLI via npm.
+   */
+  #installGeminiCli() {
+    this.log(`\n  Installing ${GEMINI_NPM_PACKAGE}@${GEMINI_INSTALL_TAG}...\n`)
+    try {
+      execSync(`npm install -g ${GEMINI_NPM_PACKAGE}@${GEMINI_INSTALL_TAG}`, {stdio: 'inherit'})
+      const newVersion = tryExec('gemini --version')
+      this.log(`\n  \u2713 Gemini CLI ${newVersion} installed.\n`)
+    } catch {
+      this.warn('Failed to install Gemini CLI automatically.')
+      this.warn(`Install manually: npm install -g ${GEMINI_NPM_PACKAGE}@${GEMINI_INSTALL_TAG}`)
     }
   }
 }
