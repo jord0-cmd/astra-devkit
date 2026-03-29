@@ -190,6 +190,24 @@
             "#00838f"
           ]
         }
+      },
+      "Gemini Blue": {
+        "name": "Gemini Blue",
+        "type": "custom",
+        "background": {"primary": "#0a0e1a", "diff": {"added": "#0a1a2a", "removed": "#2a0a1a"}},
+        "text": {"primary": "#8ab4f8", "secondary": "#5f8ac0", "link": "#4fc3f7", "accent": "#80cbc4"},
+        "border": {"default": "#1a2744", "focused": "#4fc3f7"},
+        "status": {"success": "#80cbc4", "warning": "#ffd54f", "error": "#ef5350"},
+        "ui": {"comment": "#3f5f8a", "symbol": "#4fc3f7", "gradient": ["#1a73e8", "#4285f4", "#8ab4f8"]}
+      },
+      "Synthwave": {
+        "name": "Synthwave",
+        "type": "custom",
+        "background": {"primary": "#1a0a2e", "diff": {"added": "#1a2e1a", "removed": "#2e1a1a"}},
+        "text": {"primary": "#e0b0ff", "secondary": "#9b59b6", "link": "#00f0ff", "accent": "#ff2d95"},
+        "border": {"default": "#2d1b4e", "focused": "#ff2d95"},
+        "status": {"success": "#00ff9f", "warning": "#ffd700", "error": "#ff2d55"},
+        "ui": {"comment": "#6b3fa0", "symbol": "#00f0ff", "gradient": ["#ff2d95", "#00f0ff", "#ffd700"]}
       }
     },
     "customWittyPhrases": [
