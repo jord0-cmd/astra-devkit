@@ -137,10 +137,17 @@ All frontend code MUST include accessibility attributes — this is not optional
 
 ### 20. Runtime Tool Creation
 - If no existing tool solves a problem during implementation, **create a script** in `scripts/` that does
+- Utility scripts, data generators, and dev-ops tools MUST go in `scripts/`. NEVER place them in `tests/`
 - Save it, use it, document it in GEMINI.md under Key Directories or Commands
 - Self-created tools persist across sessions via the hippocampus
 - Examples: data migration scripts, custom validators, format converters, test data generators, CSV parsers
 - A purpose-built script beats a generic workaround every time
+
+### 21. Build at Project Root
+- ALL files and directories must be created in the current working directory root (`./`)
+- DO NOT wrap the project in a nested top-level directory named after the project
+- If asked to "build X", create `src/`, `tests/`, `pyproject.toml` etc at `./`, NOT inside `./X/`
+- The working directory IS the project root — don't create another one inside it
 
 ---
 

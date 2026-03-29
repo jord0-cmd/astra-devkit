@@ -94,6 +94,12 @@ process.stdin.on("end", () => {
       present: /(version|\/v1\/|\/v2\/|api.version|backward.compat)/.test(prompt),
       question: "Should the API be versioned? (/api/v1/ prefix?)",
     },
+    {
+      name: "domain_edge_cases",
+      weight: 0.15,
+      present: /(null|nan|missing.data|timezone|tz|empty|overflow|underflow|boundary|edge.case|infinity|negative|zero.length)/.test(prompt),
+      question: "How should edge cases be handled? (missing/null data, empty inputs, boundary values, timezone awareness?)",
+    },
   ];
 
   // Calculate ambiguity score (sum of weights for MISSING categories)

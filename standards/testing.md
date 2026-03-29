@@ -209,6 +209,22 @@ If a test is flaky:
 
 ---
 
+## WebSocket & Async Testing
+
+FastAPI's `TestClient.websocket_connect()` is **synchronous**. Do NOT mix it with async:
+- Tests using `TestClient` for WebSockets MUST be plain `def test_*`, NOT `async def`
+- Do NOT use `@pytest.mark.asyncio` with `TestClient.websocket_connect()`
+- Do NOT wrap `websocket.receive_json()` in `asyncio.to_thread` or `asyncio.wait_for`
+- If you need truly async WebSocket tests, use `httpx-ws` with `ASGIWebSocketTransport` — but start sync first
+
+For ANY `await` call in async tests, always wrap with a timeout:
+```python
+data = await asyncio.wait_for(ws.receive_json(), timeout=2.0)
+```
+Never `await` indefinitely. A timeout converts a deadlock into a test failure that can be diagnosed.
+
+---
+
 ## Testing Anti-Patterns
 
 Traps to avoid:
