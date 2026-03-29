@@ -57,12 +57,34 @@ Astra is the senior dev on your team who's sharp, approachable, and genuinely wa
 
 | Component | Count | Description |
 |-----------|-------|-------------|
-| **Skills** | 24 | On-demand expertise: Python, TypeScript, Rust, React, FastAPI, Docker, Azure, databases, PDF reports, card builder, and more |
+| **Skills** | 33 | 24 dev skills (Python, TypeScript, Rust, React, FastAPI, Docker, etc.) + 9 office skills (write, slides, spreadsheet, email, research, etc.) |
 | **Hooks** | 17 | Automated quality gates: secret scanning, TDD enforcement, build gates, mutation testing, drift detection |
 | **Agents** | 9 | Specialist subagents: backend/frontend builders, code reviewer, debugger, test writer, contract enforcer |
 | **MCP Servers** | 10 | Context7, Pandoc, PowerPoint, Excel, Word, Gemini Imagen, Playwright, DBHub, MongoDB, Azure |
 | **Standards** | 21 | Always-loaded development rules — no placeholders, no shortcuts, no excuses |
-| **Themes** | 3 | Astra (dark professional), Retro Green (CRT terminal), Retro Amber (warm CRT) |
+| **Themes** | 7 | Astra, Retro Green, Retro Amber, Gemini Blue, Synthwave, Office Cream, Office Blue |
+| **Modes** | 2 | Code Mode (engineering) + Office Mode (digital assistant) |
+
+---
+
+## Two Modes — One Tool
+
+Astra adapts to who you are. Choose your mode during setup, or switch anytime:
+
+| | Code Mode | Office Mode |
+|---|-----------|-------------|
+| **For** | Developers of all levels | Managers, analysts, researchers, admins |
+| **Persona** | Senior dev colleague | Warm digital assistant |
+| **Focus** | Architecture, testing, quality | Documents, research, presentations |
+| **Code** | Shows code, diffs, technical detail | Codes silently, shows finished files |
+| **Hooks** | All 17 quality gates active | Safety hooks only (no TDD warnings) |
+| **Skills** | /mentor, /engineer, /review, /test, /debug | /write, /slides, /spreadsheet, /email, /research, /meeting, /brief, /convert, /summarize |
+
+```bash
+astra-devkit mode           # show current mode
+astra-devkit mode office    # switch to office mode
+astra-devkit mode code      # switch to code mode
+```
 
 ---
 
@@ -287,7 +309,7 @@ The wizard walks you through everything:
 4. **Asks your name** — Astra will use it naturally in conversation
 5. **Asks your experience level** — beginner (detailed), intermediate (balanced), or senior (concise)
 6. **Asks what you build** — backend, frontend, fullstack, data, or libraries
-7. **Deploys everything** — 24 skills, 17 hooks, 9 agents, 4 standards, 3 themes
+7. **Deploys everything** — 33 skills, 17 hooks, 9 agents, 4 standards, 3 themes
 8. **Merges settings** — preserves your existing auth and preferences
 
 ### After Setup: Configure MCPs
@@ -346,7 +368,7 @@ On your first run, Gemini will open your browser to sign in with your Google acc
 
 ## What's Inside
 
-### 24 Skills (Domain + Mode)
+### 33 Skills (Domain + Mode)
 
 Skills use progressive disclosure — only metadata loads until activated. No context bloat.
 
@@ -678,7 +700,7 @@ cat .astra/gate-reports.jsonl 2>/dev/null
 
 | Version | Date | Highlights |
 |---------|------|-----------|
-| **v4.0** | 2026-03-28 | oclif CLI, 10 MCPs (DBHub, MongoDB, Azure, Playwright, Office Suite, Pandoc, Context7, Imagen), mentor/engineer modes, infographic guides, desktop shortcut, 24 skills, 17 hooks |
+| **v4.0** | 2026-03-28 | Dual-mode (Code + Office), oclif CLI, 10 MCPs (Database Toolbox, Docker, Azure, Playwright, Office Suite, Context7, Imagen), 33 skills (24 dev + 9 office), 7 custom themes, infographic guides, desktop shortcut, persona assembly system |
 | **v3.0** | 2026-03-27 | Architect Pattern, contract-first, AAG engine, mutation testing, 21 rules, 9 agents |
 | **v2.0** | 2026-03-25 | Hooks system, TDD gates, build gates, secret scanner, 17 skills |
 | **v1.0** | 2026-03-24 | Initial release — persona, standards, 4 agents, 7 hooks |
