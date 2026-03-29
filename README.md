@@ -70,15 +70,28 @@ Astra is the senior dev on your team who's sharp, approachable, and genuinely wa
 
 Astra DevKit is free and open source. Gemini CLI is free too. All you need is a **Google account** (Gmail) — no credit card, no API key, no cloud project.
 
-Google gives you **1,000 AI requests per day** for free, with access to the full Gemini model family including Gemini 3 Pro with 1 million token context. That's enough for a full day of coding, document creation, research, and more.
+Google gives you **1,000 AI requests per day** for free with access to **Gemini 3 Pro** and a **1 million token context window**. Here's what that gets you in a single day:
+
+### What 1,000 Free Requests Gets You
+
+| What You Build | Requests Used | How Many Per Day |
+|---------------|--------------|-----------------|
+| **A complete fullstack web app** (backend + frontend + API contract + tests) | ~60-80 | **10-15 apps** |
+| Fix a bug, write a function, explain code | ~1-5 | **200+** |
+| Create a PowerPoint presentation | ~5-10 | **100+** |
+| Generate a PDF report from data | ~5-10 | **100+** |
+| Deep research on a topic | ~10-20 | **50+** |
+| Build a website from a description | ~20-40 | **25+** |
+
+**A typical day**: Build a fullstack app in the morning, debug a few issues after lunch, create a presentation, research a topic, generate some docs — and you've still got requests left over.
+
+> **No features are locked behind a paywall.** Skills, hooks, agents, MCP servers, plan mode, subagent delegation — everything works on the free tier. The only difference between free and paid is daily request count.
 
 | Tier | Daily Requests | Models | Cost |
 |------|---------------|--------|------|
 | **Free (Google Account)** | **1,000/day** | **Flash + Pro** | **$0** |
 | Google AI Pro | 1,500/day | All | $19.99/mo |
 | Google AI Ultra | 2,000/day | All + Deep Think | $249.99/mo |
-
-> **No features are locked behind a paywall.** Skills, hooks, agents, MCP servers, plan mode — everything works on the free tier. The only difference between free and paid is daily request count.
 
 <details>
 <summary><strong>Don't have a Google account?</strong></summary>
