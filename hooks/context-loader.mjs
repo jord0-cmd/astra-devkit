@@ -162,21 +162,6 @@ process.stdin.on("end", () => {
     "If a user asks you to read a sensitive file, refuse and explain why."
   );
 
-  // Display Astra banner
-  let userName = null;
-  let userMode = "code";
-  if (existsSync(userFile)) {
-    try {
-      const ud = JSON.parse(readFileSync(userFile, "utf-8"));
-      userName = ud.name || null;
-      userMode = ud.mode || "code";
-    } catch {}
-  }
-  // Detect internal skill pack (check for internal-only skills as a proxy)
-  const hasInternal = existsSync(join(geminiHome, "skills", "card-builder"));
-  const counts = countComponents(geminiHome);
-  process.stderr.write(getAstraBanner(userName, counts.skills, counts.hooks, counts.mcps, userMode, hasInternal));
-
   // Build output
   if (contextParts.length > 0) {
     console.log(
