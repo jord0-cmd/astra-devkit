@@ -36,9 +36,9 @@ function isSensitive(filePath) {
 // --- Astra Banner ---
 function getAstraBanner(userName, skillCount, hookCount, mcpCount, mode, hasInternal) {
   const name = userName || "Engineer";
-  const edition = hasInternal ? "OPS" : "";
+  const edition = hasInternal ? "IOPs" : "";
   const versionLine = edition
-    ? `  \u2551       DevKit v4.0 ${edition}                     \u2551`
+    ? `  \u2551       DevKit v4.0 ${edition}                    \u2551`
     : "  \u2551            DevKit v4.0                        \u2551";
   const modeLabel = mode === "office" ? "Office Mode" : "Code Mode";
 
