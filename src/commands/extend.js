@@ -1,5 +1,6 @@
 import {Command} from '@oclif/core'
 import {execSync} from 'node:child_process'
+import {homedir} from 'node:os'
 import {confirm} from '@inquirer/prompts'
 
 const INTERNAL_REPO = 'github:jord0-cmd/astra-devkit-internal'
@@ -54,7 +55,8 @@ export default class Extend extends Command {
     this.log(`\n  Installing from ${INTERNAL_REPO}...\n`)
 
     try {
-      execSync(`npm install -g ${INTERNAL_REPO}`, {stdio: 'inherit'})
+      // Run npm install from home dir — postinstall scripts crash if cwd doesn't exist
+      execSync(`npm install -g ${INTERNAL_REPO}`, {stdio: 'inherit', cwd: homedir()})
       this.log('\n  \u2713 Internal skill pack installed.\n')
       this.log('  Run \'astra-devkit doctor\' to verify.')
       this.log('  Restart Gemini CLI to activate new skills.\n')
