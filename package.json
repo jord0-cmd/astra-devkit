@@ -10,6 +10,7 @@
     "bin/run.js",
     "src/",
     "lib/",
+    "docs/images/",
     "agents/",
     "commands/",
     "hooks/",
