@@ -19,7 +19,7 @@ const MCP_CATALOG = [
   {key: 'excel', name: 'Excel', category: 'DOCUMENTS', desc: 'Spreadsheets (20 tools)', requires: 'uvx', config: {command: 'uvx', args: ['excel-mcp-server'], timeout: 15000}},
   {key: 'word-docs', name: 'Word', category: 'DOCUMENTS', desc: 'Rich documents', requires: 'uvx', config: {command: 'uvx', args: ['--from', 'office-word-mcp-server', 'word_mcp_server'], timeout: 15000}},
   {key: 'gemini-image', name: 'Gemini Imagen', category: 'IMAGES', desc: 'AI image generation', requires: 'npx+GEMINI_API_KEY', config: {command: 'npx', args: ['-y', 'mcp-image'], env: {GEMINI_API_KEY: '$GEMINI_API_KEY', IMAGE_OUTPUT_DIR: './generated-images', IMAGE_QUALITY: 'balanced'}, timeout: 60000}},
-  {key: 'playwright', name: 'Playwright', category: 'CODING', desc: 'Browser automation', requires: 'npx', config: {command: 'npx', args: ['-y', '@anthropic-ai/mcp-playwright'], timeout: 30000}},
+  {key: 'playwright', name: 'Playwright', category: 'CODING', desc: 'Browser automation (needs Chromium install)', requires: 'npx', config: {command: 'npx', args: ['-y', '@anthropic-ai/mcp-playwright'], timeout: 30000}, postInstall: 'playwright'},
 ]
 
 export default class Mcps extends Command {
@@ -81,7 +81,14 @@ export default class Mcps extends Command {
 
     settings.mcpServers = newMcps
     writeFileSync(settingsPath, JSON.stringify(settings, null, 2) + '\n')
-    this.log(`\n\u2713 ${selected.length} MCP servers enabled. Restart Gemini CLI to apply.\n`)
+    this.log(`\n\u2713 ${selected.length} MCP servers enabled.\n`)
+
+    // Post-install: Playwright needs its own Chromium browser
+    if (selected.includes('playwright')) {
+      await this.#ensurePlaywrightBrowser()
+    }
+
+    this.log('Restart Gemini CLI to apply.\n')
   }
 
   #detectDeps() {
@@ -171,6 +178,50 @@ export default class Mcps extends Command {
           this.warn('uv installation failed. Install manually: https://docs.astral.sh/uv/')
         }
       }
+      this.log('')
+    }
+  }
+
+  async #ensurePlaywrightBrowser() {
+    // Check if Playwright's Chromium is already installed
+    let hasChromium = false
+    try {
+      // Playwright stores browsers in a known location
+      const result = tryExec('npx playwright install --dry-run chromium')
+      if (result.includes('already installed')) hasChromium = true
+    } catch {
+      // dry-run not supported in all versions, assume not installed
+    }
+
+    if (hasChromium) {
+      this.log('  \u2713 Playwright Chromium browser already installed.')
+      return
+    }
+
+    this.log('')
+    this.log('  Playwright requires its own Chromium browser to be installed.')
+    this.log('  This is separate from Chrome/Edge on your system — it is a')
+    this.log('  dedicated browser that Playwright controls for automation.')
+    this.log('')
+
+    const install = await confirm({
+      message: 'Install Playwright Chromium browser now? (about 150MB download)',
+      default: true,
+    })
+
+    if (install) {
+      this.log('\n  Installing Playwright Chromium...\n')
+      try {
+        execSync('npx playwright install chromium', {stdio: 'inherit'})
+        this.log('\n  \u2713 Playwright Chromium installed.\n')
+      } catch {
+        this.warn('Playwright Chromium installation failed.')
+        this.warn('Install manually: npx playwright install chromium')
+      }
+    } else {
+      this.log('')
+      this.log('  Playwright MCP is enabled but won\'t work without its browser.')
+      this.log('  Install later: npx playwright install chromium')
       this.log('')
     }
   }
