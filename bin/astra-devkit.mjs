@@ -18,7 +18,7 @@ import { homedir } from "node:os";
 import { fileURLToPath } from "node:url";
 
 const __dirname = join(fileURLToPath(import.meta.url), "..");
-const configDir = join(__dirname, "..", "config");
+const configDir = join(__dirname, "..");
 const libDir = join(__dirname, "..", "lib");
 
 const command = process.argv[2] || "help";

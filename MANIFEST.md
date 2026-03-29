@@ -11,7 +11,7 @@
 ### Installers
 | File | Platform | Description |
 |------|----------|-------------|
-| `astra-devkit/` | All (npm) | `npm install -g astra-devkit` — interactive setup wizard, doctor, update |
+| `astra-devkit/` | All (npm) | `npm install -g github:jord0-cmd/astra-devkit` — interactive setup wizard, doctor, update |
 | `install.sh` | Linux / macOS | Bash installer — merges settings, preserves auth |
 | `install.ps1` | Windows | PowerShell installer ��� same logic, Windows paths |
 

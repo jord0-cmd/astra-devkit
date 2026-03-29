@@ -1,0 +1,294 @@
+{
+  "tools": {
+    "shell": {
+      "showColor": true
+    }
+  },
+  "ui": {
+    "theme": "Dracula",
+    "hideBanner": true,
+    "autoThemeSwitching": false,
+    "inlineThinkingMode": "off",
+    "loadingPhrases": "witty",
+    "customWittyPhrases": [
+      "It works on my machine...",
+      "Have you tried turning it off and on again?",
+      "Blaming DNS...",
+      "It's always DNS.",
+      "No, seriously. It's DNS.",
+      "Checking if it's DNS... it's DNS.",
+      "Deploying to prod on a Friday...",
+      "LGTM. Didn't read it.",
+      "Resolving merge conflicts from 2019...",
+      "git push --force and pray...",
+      "Reverting the revert of the revert...",
+      "The CI pipeline is judging you...",
+      "Waiting for the pipeline... again...",
+      "Build failed. Surprise.",
+      "404: Motivation not found.",
+      "200 OK (probably)",
+      "503: Coffee service unavailable.",
+      "418: I'm a teapot.",
+      "Segfault in production. Classic.",
+      "rm -rf node_modules && npm install (the universal fix)",
+      "There are 2 hard problems in CS: cache invalidation, naming things, and off-by-1 errors.",
+      "Tabs vs spaces war: round 4,782...",
+      "Updating dependencies... pray for me.",
+      "This should only take five minutes...",
+      "Fixing the fix that fixed the fix...",
+      "Reading the error message this time...",
+      "Consulting Stack Overflow... oh wait, it's archived.",
+      "The intern pushed to main again...",
+      "chmod 777. Security is a spectrum.",
+      "sudo make me a sandwich.",
+      "Dockerizing the container that runs Docker...",
+      "Kubernetes wants more YAML. Feed it YAML.",
+      "The cloud is just someone else's computer...",
+      "Terraform plan: 47 to add, 0 to change, 312 to destroy. Proceed?",
+      "The helm chart has become sentient...",
+      "Scaling horizontally because fixing the bug is harder...",
+      "Adding more RAM should fix it.",
+      "Microservices: because one monolith wasn't enough problems.",
+      "The sprint ends tomorrow. We started yesterday.",
+      "Agile: moving fast in no particular direction.",
+      "Story points are made up and the deadlines don't matter.",
+      "Standup lasted 45 minutes. Nobody stood up.",
+      "Writing tests for code we'll delete next week...",
+      "100% code coverage. 0% confidence.",
+      "The regex works. Nobody knows why.",
+      "Commented out code from 2017. Too scared to delete it.",
+      "// TODO: fix this later (committed 3 years ago)",
+      "Works perfectly. Don't touch it. Don't look at it.",
+      "The logs say everything is fine. The users disagree.",
+      "Monitoring says green. Customers say red.",
+      "Alert fatigue is not a badge of honour.",
+      "On-call at 3am for a config typo. Living the dream.",
+      "The postmortem will be blameless. The Slack thread was not.",
+      "Rollback complete. Dignity not yet restored.",
+      "Feature flag everything. Trust nothing.",
+      "The database migration will be quick, they said.",
+      "SELECT * FROM problems WHERE solved = false; -- 47,000 rows",
+      "Caching: making the same mistake faster.",
+      "Premature optimisation is the root of all evil. But this is fine.",
+      "It compiled. Ship it."
+    ]
+  },
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ],
+      "timeout": 30000
+    },
+    "pandoc": {
+      "command": "uvx",
+      "args": [
+        "mcp-pandoc"
+      ],
+      "timeout": 15000
+    },
+    "powerpoint": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "office-powerpoint-mcp-server",
+        "ppt_mcp_server"
+      ],
+      "timeout": 15000
+    },
+    "excel": {
+      "command": "uvx",
+      "args": [
+        "excel-mcp-server"
+      ],
+      "timeout": 15000
+    },
+    "word-docs": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "office-word-mcp-server",
+        "word_mcp_server"
+      ],
+      "timeout": 15000
+    },
+    "gemini-image": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-image"
+      ],
+      "env": {
+        "GEMINI_API_KEY": "$GEMINI_API_KEY",
+        "IMAGE_OUTPUT_DIR": "./generated-images",
+        "IMAGE_QUALITY": "balanced"
+      },
+      "timeout": 60000
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@anthropic-ai/mcp-playwright"
+      ],
+      "timeout": 30000
+    }
+  },
+  "experimental": {
+    "enableAgents": true
+  },
+  "skills": {
+    "enabled": true
+  },
+  "hooksConfig": {
+    "enabled": true
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/context-loader.mjs",
+            "name": "astra-context-loader",
+            "timeout": 5000,
+            "description": "Load user preferences and project context on session start"
+          }
+        ]
+      }
+    ],
+    "BeforeAgent": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/skill-preflight.mjs",
+            "name": "astra-skill-preflight",
+            "timeout": 3000,
+            "description": "Detect tech keywords and nudge relevant skill activation"
+          },
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/spec-mining.mjs",
+            "name": "astra-spec-mining",
+            "timeout": 3000,
+            "description": "Detect ambiguous build specs and nudge clarifying questions before contract"
+          }
+        ]
+      }
+    ],
+    "BeforeTool": [
+      {
+        "matcher": "write_file|replace_in_file|create_file|edit_file",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/secret-scanner.mjs",
+            "name": "astra-secret-scanner",
+            "timeout": 5000,
+            "description": "Block file writes containing secrets, API keys, or credentials"
+          },
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/code-standards.mjs",
+            "name": "astra-code-standards",
+            "timeout": 3000,
+            "description": "Code standards \u2014 blocks requirements.txt, warns on hardcoded state"
+          },
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/test-gate.mjs",
+            "name": "astra-test-gate",
+            "timeout": 5000,
+            "description": "TDD enforcement \u2014 blocks implementation writes when no test file exists, warns on missing sad path tests"
+          },
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/contract-first-gate.mjs",
+            "name": "astra-contract-first",
+            "timeout": 3000,
+            "description": "Warns when frontend code is written without an API contract in fullstack projects"
+          }
+        ]
+      }
+    ],
+    "AfterTool": [
+      {
+        "matcher": "write_file|replace_in_file|create_file|edit_file",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/auto-lint.mjs",
+            "name": "astra-auto-lint",
+            "timeout": 15000,
+            "description": "Auto-format and lint files after writes (ruff, biome, rustfmt)"
+          }
+        ]
+      }
+    ],
+    "AfterAgent": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/build-gate.mjs",
+            "name": "astra-build-gate",
+            "timeout": 30000,
+            "description": "Run build and type checks after agent completes coding tasks"
+          },
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/fault-localiser.mjs",
+            "name": "astra-fault-localiser",
+            "timeout": 15000,
+            "description": "Parse test failures into fault capsules with causal reasoning and source file targets"
+          },
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/cegis-repair.mjs",
+            "name": "astra-cegis-repair",
+            "timeout": 10000,
+            "description": "Track repeated test failures, provide minimal counterexamples, escalate after 3 retries"
+          },
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/mutation-gate.mjs",
+            "name": "astra-mutation-gate",
+            "timeout": 45000,
+            "description": "Run AST mutations on critical code paths to detect test gaps"
+          },
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/artifact-checker.mjs",
+            "name": "astra-artifact-checker",
+            "timeout": 5000,
+            "description": "Scan for required project artifacts and nudge creation of missing ones"
+          },
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/hippocampus.mjs",
+            "name": "astra-hippocampus",
+            "timeout": 3000,
+            "description": "Ensure GEMINI.md exists with required sections for session continuity"
+          },
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/drift-check.mjs",
+            "name": "astra-drift-check",
+            "timeout": 45000,
+            "description": "Runs AAG engine to detect State Drift between backend and frontend after agent completes"
+          },
+          {
+            "type": "command",
+            "command": "node ~/.gemini/hooks/agent-telemetry.mjs",
+            "name": "astra-telemetry",
+            "timeout": 5000,
+            "description": "Captures failure signals and tool usage from agent responses for analysis"
+          }
+        ]
+      }
+    ]
+  }
+}

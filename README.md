@@ -49,17 +49,11 @@ Astra is the senior dev on your team who's sharp, approachable, and genuinely wa
 ## Quick Start
 
 ```bash
-# One-command install (npm)
-npm install -g astra-devkit
+# Install directly from GitHub
+npm install -g github:jord0-cmd/astra-devkit
+
+# Run interactive setup
 astra-devkit setup
-```
-
-Or clone and install manually:
-
-```bash
-git clone https://github.com/jord0-cmd/astra-devkit.git
-cd astra-devkit
-node astra-devkit/bin/astra-devkit.mjs setup
 ```
 
 Then start Gemini CLI:
@@ -117,7 +111,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 sudo apt install -y pandoc texlive-base
 
 # 6. Install Astra DevKit
-npm install -g astra-devkit
+npm install -g github:jord0-cmd/astra-devkit
 astra-devkit setup
 
 # 7. Verify
@@ -144,7 +138,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 brew install pandoc texlive
 
 # 6. Install Astra DevKit
-npm install -g astra-devkit
+npm install -g github:jord0-cmd/astra-devkit
 astra-devkit setup
 
 # 7. Verify
@@ -171,7 +165,7 @@ powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 winget install JohnMacFarlane.Pandoc
 
 # 6. Install Astra DevKit
-npm install -g astra-devkit
+npm install -g github:jord0-cmd/astra-devkit
 astra-devkit setup
 
 # 7. Verify
@@ -182,7 +176,7 @@ astra-devkit doctor
 
 ```bash
 docker run -it node:20 bash -c "
-  npm install -g @google/gemini-cli astra-devkit && \
+  npm install -g @google/gemini-cli github:jord0-cmd/astra-devkit && \
   astra-devkit doctor
 "
 ```
