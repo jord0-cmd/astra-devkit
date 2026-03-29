@@ -20,6 +20,9 @@ const MCP_CATALOG = [
   {key: 'word-docs', name: 'Word', category: 'DOCUMENTS', desc: 'Rich documents', requires: 'uvx', config: {command: 'uvx', args: ['--from', 'office-word-mcp-server', 'word_mcp_server'], timeout: 15000}},
   {key: 'gemini-image', name: 'Gemini Imagen', category: 'IMAGES', desc: 'AI image generation', requires: 'npx+GEMINI_API_KEY', config: {command: 'npx', args: ['-y', 'mcp-image'], env: {GEMINI_API_KEY: '$GEMINI_API_KEY', IMAGE_OUTPUT_DIR: './generated-images', IMAGE_QUALITY: 'balanced'}, timeout: 60000}},
   {key: 'playwright', name: 'Playwright', category: 'CODING', desc: 'Browser automation (auto-installs Chromium)', requires: 'npx', config: {command: 'npx', args: ['-y', '@playwright/mcp@latest'], timeout: 60000}},
+  {key: 'dbhub', name: 'DBHub', category: 'DATABASES', desc: 'Multi-DB: PostgreSQL, MySQL, MariaDB, SQL Server, SQLite', requires: 'npx', config: {command: 'npx', args: ['-y', '@bytebase/dbhub@latest', '--transport', 'stdio', '--readonly'], timeout: 30000}},
+  {key: 'mongodb', name: 'MongoDB', category: 'DATABASES', desc: 'MongoDB + Atlas (official, 30+ tools)', requires: 'npx', config: {command: 'npx', args: ['-y', 'mongodb-mcp-server@latest', '--readOnly'], timeout: 30000}},
+  {key: 'azure', name: 'Azure', category: 'CLOUD', desc: 'Full Azure tenant: Cosmos DB, SQL, Key Vault, AKS, Monitor (40+ services)', requires: 'npx', config: {command: 'npx', args: ['-y', '@azure/mcp@latest', 'server', 'start'], timeout: 60000}},
 ]
 
 export default class Mcps extends Command {
