@@ -136,21 +136,27 @@
       ],
       "timeout": 60000
     },
-    "dbhub": {
+    "database": {
       "command": "npx",
       "args": [
         "-y",
-        "@bytebase/dbhub@latest",
-        "--transport", "stdio"
+        "@toolbox-sdk/server",
+        "--prebuilt", "postgres",
+        "--stdio"
       ],
-      "timeout": 30000
+      "env": {
+        "POSTGRES_HOST": "localhost",
+        "POSTGRES_PORT": "5432",
+        "POSTGRES_DATABASE": "mydb",
+        "POSTGRES_USER": "myuser",
+        "POSTGRES_PASSWORD": "mypassword"
+      },
+      "timeout": 60000
     },
-    "mongodb": {
-      "command": "npx",
+    "docker": {
+      "command": "uvx",
       "args": [
-        "-y",
-        "mongodb-mcp-server@latest",
-        "--readOnly"
+        "mcp-server-docker"
       ],
       "timeout": 30000
     },

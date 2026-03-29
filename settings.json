@@ -119,17 +119,21 @@
       "args": ["-y", "@playwright/mcp@latest"],
       "timeout": 60000
     },
-    "dbhub": {
+    "database": {
       "command": "npx",
-      "args": ["-y", "@bytebase/dbhub@latest", "--transport", "stdio"],
-      "timeout": 30000,
+      "args": ["-y", "@toolbox-sdk/server", "--prebuilt", "postgres", "--stdio"],
+      "timeout": 60000,
       "env": {
-        "DSN": "postgres://user:password@localhost:5432/mydb"
+        "POSTGRES_HOST": "localhost",
+        "POSTGRES_PORT": "5432",
+        "POSTGRES_DATABASE": "mydb",
+        "POSTGRES_USER": "myuser",
+        "POSTGRES_PASSWORD": "mypassword"
       }
     },
-    "mongodb": {
-      "command": "npx",
-      "args": ["-y", "mongodb-mcp-server@latest", "--readOnly"],
+    "docker": {
+      "command": "uvx",
+      "args": ["mcp-server-docker"],
       "timeout": 30000
     },
     "azure": {
