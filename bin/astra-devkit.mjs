@@ -13,13 +13,19 @@
  */
 
 import { existsSync } from "node:fs";
-import { join } from "node:path";
+import { join, dirname } from "node:path";
 import { homedir } from "node:os";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
-const __dirname = join(fileURLToPath(import.meta.url), "..");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const configDir = join(__dirname, "..");
 const libDir = join(__dirname, "..", "lib");
+
+// Dynamic import() on Windows requires file:// URLs, not bare absolute paths
+function libImport(file) {
+  return import(pathToFileURL(join(libDir, file)).href);
+}
 
 const command = process.argv[2] || "help";
 
@@ -65,32 +71,32 @@ async function main() {
   switch (command) {
     case "setup": {
       console.log(BANNER);
-      const { runSetup } = await import(join(libDir, "setup-wizard.mjs"));
+      const { runSetup } = await libImport("setup-wizard.mjs");
       await runSetup(configDir);
       break;
     }
     case "update": {
-      const { runUpdate } = await import(join(libDir, "installer.mjs"));
+      const { runUpdate } = await libImport("installer.mjs");
       await runUpdate(configDir);
       break;
     }
     case "mcps": {
-      const { runMcpSelector } = await import(join(libDir, "mcp-selector.mjs"));
+      const { runMcpSelector } = await libImport("mcp-selector.mjs");
       await runMcpSelector(configDir);
       break;
     }
     case "theme": {
-      const { runThemeSelector } = await import(join(libDir, "theme-selector.mjs"));
+      const { runThemeSelector } = await libImport("theme-selector.mjs");
       await runThemeSelector(configDir);
       break;
     }
     case "doctor": {
-      const { runDoctor } = await import(join(libDir, "doctor.mjs"));
+      const { runDoctor } = await libImport("doctor.mjs");
       await runDoctor();
       break;
     }
     case "uninstall": {
-      const { runUninstall } = await import(join(libDir, "installer.mjs"));
+      const { runUninstall } = await libImport("installer.mjs");
       await runUninstall();
       break;
     }
