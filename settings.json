@@ -19,47 +19,177 @@
       "Astra": {
         "name": "Astra",
         "type": "custom",
-        "background": {"primary": "#0d1117", "diff": {"added": "#1a2b1a", "removed": "#2b1a1a"}},
-        "text": {"primary": "#e6edf3", "secondary": "#8b949e", "link": "#58a6ff", "accent": "#7ee787", "response": "#f0f6fc"},
-        "border": {"default": "#30363d", "focused": "#58a6ff"},
-        "status": {"success": "#7ee787", "warning": "#d29922", "error": "#f85149"},
-        "ui": {"comment": "#8b949e", "symbol": "#79c0ff", "gradient": ["#58a6ff", "#7ee787", "#d2a8ff"]}
+        "background": {
+          "primary": "#0d1117",
+          "diff": {
+            "added": "#1a2b1a",
+            "removed": "#2b1a1a"
+          }
+        },
+        "text": {
+          "primary": "#e6edf3",
+          "secondary": "#8b949e",
+          "link": "#58a6ff",
+          "accent": "#7ee787"
+        },
+        "border": {
+          "default": "#30363d",
+          "focused": "#58a6ff"
+        },
+        "status": {
+          "success": "#7ee787",
+          "warning": "#d29922",
+          "error": "#f85149"
+        },
+        "ui": {
+          "comment": "#8b949e",
+          "symbol": "#79c0ff",
+          "gradient": [
+            "#58a6ff",
+            "#7ee787",
+            "#d2a8ff"
+          ]
+        }
       },
       "Retro Green": {
         "name": "Retro Green",
         "type": "custom",
-        "background": {"primary": "#0a0a0a", "diff": {"added": "#0a1a0a", "removed": "#1a0a0a"}},
-        "text": {"primary": "#33ff33", "secondary": "#1a9a1a", "link": "#66ff66", "accent": "#00ff00", "response": "#44ff44"},
-        "border": {"default": "#1a3a1a", "focused": "#33ff33"},
-        "status": {"success": "#00ff00", "warning": "#ccff00", "error": "#ff3333"},
-        "ui": {"comment": "#1a6a1a", "symbol": "#00ff99", "gradient": ["#003300", "#00ff00", "#66ff66"]}
+        "background": {
+          "primary": "#0a0a0a",
+          "diff": {
+            "added": "#0a1a0a",
+            "removed": "#1a0a0a"
+          }
+        },
+        "text": {
+          "primary": "#33ff33",
+          "secondary": "#1a9a1a",
+          "link": "#66ff66",
+          "accent": "#00ff00"
+        },
+        "border": {
+          "default": "#1a3a1a",
+          "focused": "#33ff33"
+        },
+        "status": {
+          "success": "#00ff00",
+          "warning": "#ccff00",
+          "error": "#ff3333"
+        },
+        "ui": {
+          "comment": "#1a6a1a",
+          "symbol": "#00ff99",
+          "gradient": [
+            "#003300",
+            "#00ff00",
+            "#66ff66"
+          ]
+        }
       },
       "Retro Amber": {
         "name": "Retro Amber",
         "type": "custom",
-        "background": {"primary": "#0a0800", "diff": {"added": "#1a1a00", "removed": "#1a0a00"}},
-        "text": {"primary": "#ffb000", "secondary": "#cc8800", "link": "#ffc633", "accent": "#ffcc00", "response": "#ffbb33"},
-        "border": {"default": "#332a00", "focused": "#ffb000"},
-        "status": {"success": "#ffcc00", "warning": "#ff9900", "error": "#ff3300"},
-        "ui": {"comment": "#996600", "symbol": "#ffdd44", "gradient": ["#331a00", "#ffb000", "#ffcc33"]}
+        "background": {
+          "primary": "#0a0800",
+          "diff": {
+            "added": "#1a1a00",
+            "removed": "#1a0a00"
+          }
+        },
+        "text": {
+          "primary": "#ffb000",
+          "secondary": "#cc8800",
+          "link": "#ffc633",
+          "accent": "#ffcc00"
+        },
+        "border": {
+          "default": "#332a00",
+          "focused": "#ffb000"
+        },
+        "status": {
+          "success": "#ffcc00",
+          "warning": "#ff9900",
+          "error": "#ff3300"
+        },
+        "ui": {
+          "comment": "#996600",
+          "symbol": "#ffdd44",
+          "gradient": [
+            "#331a00",
+            "#ffb000",
+            "#ffcc33"
+          ]
+        }
       },
       "Office Cream": {
         "name": "Office Cream",
         "type": "custom",
-        "background": {"primary": "#faf8f5", "diff": {"added": "#e8f5e9", "removed": "#fce4ec"}},
-        "text": {"primary": "#3d3d3d", "secondary": "#757575", "link": "#1565c0", "accent": "#2e7d32", "response": "#212121"},
-        "border": {"default": "#e0dcd7", "focused": "#1565c0"},
-        "status": {"success": "#2e7d32", "warning": "#ef6c00", "error": "#c62828"},
-        "ui": {"comment": "#9e9e9e", "symbol": "#1565c0", "gradient": ["#1565c0", "#2e7d32", "#6a1b9a"]}
+        "background": {
+          "primary": "#faf8f5",
+          "diff": {
+            "added": "#e8f5e9",
+            "removed": "#fce4ec"
+          }
+        },
+        "text": {
+          "primary": "#3d3d3d",
+          "secondary": "#757575",
+          "link": "#1565c0",
+          "accent": "#2e7d32"
+        },
+        "border": {
+          "default": "#e0dcd7",
+          "focused": "#1565c0"
+        },
+        "status": {
+          "success": "#2e7d32",
+          "warning": "#ef6c00",
+          "error": "#c62828"
+        },
+        "ui": {
+          "comment": "#9e9e9e",
+          "symbol": "#1565c0",
+          "gradient": [
+            "#1565c0",
+            "#2e7d32",
+            "#6a1b9a"
+          ]
+        }
       },
       "Office Blue": {
         "name": "Office Blue",
         "type": "custom",
-        "background": {"primary": "#f5f7fa", "diff": {"added": "#e3f2fd", "removed": "#fce4ec"}},
-        "text": {"primary": "#37474f", "secondary": "#78909c", "link": "#1976d2", "accent": "#0277bd", "response": "#263238"},
-        "border": {"default": "#cfd8dc", "focused": "#1976d2"},
-        "status": {"success": "#388e3c", "warning": "#f57c00", "error": "#d32f2f"},
-        "ui": {"comment": "#90a4ae", "symbol": "#0277bd", "gradient": ["#1976d2", "#0277bd", "#00838f"]}
+        "background": {
+          "primary": "#f5f7fa",
+          "diff": {
+            "added": "#e3f2fd",
+            "removed": "#fce4ec"
+          }
+        },
+        "text": {
+          "primary": "#37474f",
+          "secondary": "#78909c",
+          "link": "#1976d2",
+          "accent": "#0277bd"
+        },
+        "border": {
+          "default": "#cfd8dc",
+          "focused": "#1976d2"
+        },
+        "status": {
+          "success": "#388e3c",
+          "warning": "#f57c00",
+          "error": "#d32f2f"
+        },
+        "ui": {
+          "comment": "#90a4ae",
+          "symbol": "#0277bd",
+          "gradient": [
+            "#1976d2",
+            "#0277bd",
+            "#00838f"
+          ]
+        }
       }
     },
     "customWittyPhrases": [
@@ -128,32 +258,51 @@
   "mcpServers": {
     "context7": {
       "command": "npx",
-      "args": ["-y", "@upstash/context7-mcp@latest"],
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ],
       "timeout": 30000
     },
     "pandoc": {
       "command": "uvx",
-      "args": ["mcp-pandoc"],
+      "args": [
+        "mcp-pandoc"
+      ],
       "timeout": 15000
     },
     "powerpoint": {
       "command": "uvx",
-      "args": ["--from", "office-powerpoint-mcp-server", "ppt_mcp_server"],
+      "args": [
+        "--from",
+        "office-powerpoint-mcp-server",
+        "ppt_mcp_server"
+      ],
       "timeout": 15000
     },
     "excel": {
       "command": "uvx",
-      "args": ["excel-mcp-server", "stdio"],
+      "args": [
+        "excel-mcp-server",
+        "stdio"
+      ],
       "timeout": 15000
     },
     "word-docs": {
       "command": "uvx",
-      "args": ["--from", "office-word-mcp-server", "word_mcp_server"],
+      "args": [
+        "--from",
+        "office-word-mcp-server",
+        "word_mcp_server"
+      ],
       "timeout": 15000
     },
     "gemini-image": {
       "command": "npx",
-      "args": ["-y", "mcp-image"],
+      "args": [
+        "-y",
+        "mcp-image"
+      ],
       "env": {
         "GEMINI_API_KEY": "$GEMINI_API_KEY",
         "IMAGE_OUTPUT_DIR": "./generated-images",
@@ -163,12 +312,21 @@
     },
     "playwright": {
       "command": "npx",
-      "args": ["-y", "@playwright/mcp@latest"],
+      "args": [
+        "-y",
+        "@playwright/mcp@latest"
+      ],
       "timeout": 60000
     },
     "database": {
       "command": "npx",
-      "args": ["-y", "@toolbox-sdk/server", "--prebuilt", "postgres", "--stdio"],
+      "args": [
+        "-y",
+        "@toolbox-sdk/server",
+        "--prebuilt",
+        "postgres",
+        "--stdio"
+      ],
       "timeout": 60000,
       "env": {
         "POSTGRES_HOST": "localhost",
@@ -180,12 +338,19 @@
     },
     "docker": {
       "command": "uvx",
-      "args": ["mcp-server-docker"],
+      "args": [
+        "mcp-server-docker"
+      ],
       "timeout": 30000
     },
     "azure": {
       "command": "npx",
-      "args": ["-y", "@azure/mcp@latest", "server", "start"],
+      "args": [
+        "-y",
+        "@azure/mcp@latest",
+        "server",
+        "start"
+      ],
       "timeout": 60000
     }
   },
@@ -248,14 +413,14 @@
             "command": "node $HOME/.gemini/hooks/code-standards.mjs",
             "name": "astra-code-standards",
             "timeout": 3000,
-            "description": "Code standards — blocks requirements.txt, warns on hardcoded state"
+            "description": "Code standards \u2014 blocks requirements.txt, warns on hardcoded state"
           },
           {
             "type": "command",
             "command": "node $HOME/.gemini/hooks/test-gate.mjs",
             "name": "astra-test-gate",
             "timeout": 5000,
-            "description": "TDD enforcement — blocks implementation writes when no test file exists, warns on missing sad path tests"
+            "description": "TDD enforcement \u2014 blocks implementation writes when no test file exists, warns on missing sad path tests"
           },
           {
             "type": "command",
