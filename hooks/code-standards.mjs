@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+// Office mode bypass — dev hooks exit silently in office mode
+import { existsSync as _exF, readFileSync as _rdF } from "node:fs";
+import { join as _jn } from "node:path";
+import { homedir as _hd } from "node:os";
+const _uf = _jn(_hd(), ".gemini", "user.json");
+if (_exF(_uf)) { try { if (JSON.parse(_rdF(_uf, "utf-8")).mode === "office") { console.log("{}"); process.exit(0); } } catch {} }
+
 /**
  * BeforeTool hook — Code Standards Gate
  * Fast static checks combined into one hook (< 1.5s).

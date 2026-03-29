@@ -11,6 +11,7 @@
     "src/",
     "lib/",
     "docs/images/",
+    "personas/",
     "agents/",
     "commands/",
     "hooks/",

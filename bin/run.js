@@ -22,10 +22,12 @@ if (args.length === 0) {
     // Already set up — launch Gemini in the workspace folder
     let workspace = join(homedir(), 'AstraProjects')
 
-    // Check if user has a custom workspace set
+    // Read user config for mode and workspace
+    let mode = 'code'
     try {
       const userData = JSON.parse(readFileSync(join(GEMINI_HOME, 'user.json'), 'utf-8'))
       if (userData.workspace) workspace = userData.workspace
+      if (userData.mode) mode = userData.mode
     } catch {}
 
     // Ensure workspace exists
@@ -35,7 +37,8 @@ if (args.length === 0) {
 
     // Change to workspace before launching Gemini
     process.chdir(workspace)
-    console.log(`  Workspace: ${workspace}`)
+    const modeLabel = mode === 'office' ? 'Office Mode' : 'Code Mode'
+    console.log(`  ${modeLabel} | Workspace: ${workspace}`)
     console.log('  Starting Gemini CLI with Astra...\n')
     try {
       execSync('gemini', {stdio: 'inherit', cwd: workspace})

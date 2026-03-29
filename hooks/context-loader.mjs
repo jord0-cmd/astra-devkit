@@ -93,6 +93,20 @@ process.stdin.on("end", () => {
         contextParts.push(`Explanation preference: ${userData.preferences.explanations}`);
       if (userData.preferences?.primary_language)
         contextParts.push(`Primary language: ${userData.preferences.primary_language}`);
+
+      // Mode-specific context injection
+      const mode = userData.mode || "code";
+      if (mode === "office") {
+        contextParts.push("Mode: Office — you are a warm, capable digital assistant.");
+        contextParts.push("Focus on documents, research, data analysis, and productivity.");
+        contextParts.push("Hide code unless asked. Present finished artifacts.");
+        contextParts.push("Available commands: /write, /slides, /spreadsheet, /research, /summarize, /email, /meeting, /convert, /brief");
+        contextParts.push("Proactively suggest task chains (research → write → slides). Remember user preferences via save_memory.");
+        contextParts.push("Never show stack traces. If something fails, explain in plain language.");
+      } else {
+        contextParts.push("Mode: Code — senior dev colleague.");
+        contextParts.push("Available commands: /mentor, /engineer, /review, /test, /debug, /skills, kickstart");
+      }
     } catch {
       process.stderr.write("CONTEXT LOADER: Failed to parse user.json\n");
     }

@@ -4,7 +4,7 @@ import {existsSync, readFileSync, writeFileSync} from 'node:fs'
 import {join} from 'node:path'
 import {homedir, platform} from 'node:os'
 import {execSync} from 'node:child_process'
-import {deployComponent, mergeSettings, ensureDir} from '../../lib/file-ops.mjs'
+import {deployComponent, mergeSettings, ensureDir, assemblePersona} from '../../lib/file-ops.mjs'
 
 const GEMINI_HOME = join(homedir(), '.gemini')
 const isWin = platform() === 'win32'
@@ -137,43 +137,67 @@ export default class Setup extends Command {
 
     const name = await input({message: 'What\'s your name?'})
 
-    const experience = await select({
-      message: 'How would you describe yourself?',
+    // ── Mode selection (FIRST question after name) ──
+    const mode = await select({
+      message: 'How will you use Astra?',
       choices: [
-        {name: 'New to coding \u2014 I want to learn, explain everything', value: 'beginner'},
-        {name: 'I know some coding \u2014 balanced guidance', value: 'intermediate'},
-        {name: 'Experienced developer \u2014 keep it concise', value: 'senior'},
+        {name: 'Office Mode \u2014 documents, spreadsheets, research, presentations', value: 'office'},
+        {name: 'Code Mode  \u2014 software engineering, debugging, architecture', value: 'code'},
       ],
     })
 
-    const focus = await select({
-      message: 'What will you mainly use Astra for?',
-      choices: [
-        {name: 'Documents \u2014 presentations, reports, spreadsheets, PDFs', value: 'documents'},
-        {name: 'Learning \u2014 I want to learn coding with a mentor', value: 'learning'},
-        {name: 'Building apps \u2014 websites, APIs, fullstack projects', value: 'fullstack'},
-        {name: 'Data \u2014 databases, analysis, pipelines, ML', value: 'data'},
-        {name: 'Everything \u2014 coding, docs, research, the works', value: 'everything'},
-      ],
-    })
+    let experience = 'beginner'
+    let focus = 'everything'
+    const baseWorkspace = join(homedir(), 'AstraProjects')
+
+    if (mode === 'code') {
+      // Code path — ask experience level
+      experience = await select({
+        message: 'How would you describe yourself?',
+        choices: [
+          {name: 'New to coding \u2014 I want to learn, explain everything', value: 'beginner'},
+          {name: 'I know some coding \u2014 balanced guidance', value: 'intermediate'},
+          {name: 'Experienced developer \u2014 keep it concise', value: 'senior'},
+        ],
+      })
+
+      focus = await select({
+        message: 'What will you mainly build?',
+        choices: [
+          {name: 'Fullstack \u2014 end-to-end applications', value: 'fullstack'},
+          {name: 'Backend \u2014 APIs, services, CLI tools', value: 'backend'},
+          {name: 'Frontend \u2014 React, Vue, web apps', value: 'frontend'},
+          {name: 'Data \u2014 databases, analysis, pipelines, ML', value: 'data'},
+          {name: 'Everything \u2014 all of the above', value: 'everything'},
+        ],
+      })
+    } else {
+      // Office path — skip experience level (always detailed)
+      this.log('\n  Office Mode selected \u2014 Astra will be your digital assistant.')
+      this.log('  No coding experience needed. She handles the technical side.\n')
+      experience = 'beginner'
+      focus = 'documents'
+    }
 
     const explanationMap = {beginner: 'detailed', intermediate: 'balanced', senior: 'concise'}
 
     const userProfile = {
       name: name.trim(),
+      mode,
       preferences: {
         experience,
         explanations: explanationMap[experience],
         focus,
         primary_language: 'en',
       },
+      workspace: mode === 'office' ? join(baseWorkspace, 'Office') : baseWorkspace,
       created: new Date().toISOString(),
       devkit_version: this.config.version,
     }
 
     ensureDir(GEMINI_HOME)
     writeFileSync(join(GEMINI_HOME, 'user.json'), JSON.stringify(userProfile, null, 2) + '\n')
-    this.log(`\n  \u2713 Profile saved for ${name.trim()}.\n`)
+    this.log(`\n  \u2713 Profile saved for ${name.trim()} (${mode === 'office' ? 'Office' : 'Code'} Mode).\n`)
 
     // ── Step 5: Deploy components ──────────────
     this.log('Deploying Astra DevKit components...\n')
@@ -191,45 +215,61 @@ export default class Setup extends Command {
       }
     }
     mergeSettings(configDir)
-    this.log('  \u2713 settings.json: merged\n')
+    this.log('  \u2713 settings.json: merged')
 
-    // ── Step 5b: Create workspace folder ──────
-    const defaultWorkspace = join(homedir(), 'AstraProjects')
-    if (!existsSync(defaultWorkspace)) {
-      ensureDir(defaultWorkspace)
-      this.log(`  \u2713 Created workspace folder: ${defaultWorkspace}`)
-      this.log('    This is your safe space — Astra will work inside this folder.')
-      this.log('    Create sub-folders here for each project.\n')
+    // ── Step 5b: Assemble persona for mode ──────
+    const personaResult = assemblePersona(configDir, mode)
+    if (personaResult.ok) {
+      this.log(`  \u2713 Persona assembled: ${mode === 'office' ? 'Office' : 'Code'} Mode`)
     } else {
-      this.log(`  \u2713 Workspace folder exists: ${defaultWorkspace}\n`)
+      this.log(`  \u26a0 Persona assembly: ${personaResult.error}`)
     }
 
-    // Save workspace path in user.json for the launcher
-    try {
-      const userPath = join(GEMINI_HOME, 'user.json')
-      const userData = JSON.parse(readFileSync(userPath, 'utf-8'))
-      userData.workspace = defaultWorkspace
-      writeFileSync(userPath, JSON.stringify(userData, null, 2) + '\n')
-    } catch {}
+    // ── Step 5c: Create workspace folder ──────
+    const workspace = userProfile.workspace
+    if (!existsSync(workspace)) {
+      ensureDir(workspace)
+    }
+    this.log(`  \u2713 Workspace: ${workspace}\n`)
 
     // ── Step 6: MCP Configuration ──────────────
-    this.log('Now let\'s configure your MCP servers.\n')
-    this.log('  MCPs give Astra extra capabilities — document creation,')
-    this.log('  image generation, live library docs, and browser automation.\n')
-    this.log('  \u26a0  Tip: Only enable the MCPs you actually need.')
-    this.log('  Each active MCP uses context tokens. Running all of them at')
-    this.log('  once can slow things down. You can turn them on and off')
-    this.log('  anytime with: astra-devkit mcps\n')
-
-    const configureMcps = await confirm({
-      message: 'Configure MCP servers now?',
-      default: true,
-    })
-
-    if (configureMcps) {
-      await run(['mcps'], this.config)
+    if (mode === 'office') {
+      this.log('Setting up your tools...\n')
+      this.log('  Astra needs a few tools to create documents, spreadsheets,')
+      this.log('  and presentations for you. These are being enabled now.\n')
+      this.log('  You can change these anytime with: astra-devkit mcps\n')
     } else {
-      this.log('\n  Skipped. Run \'astra-devkit mcps\' anytime to configure.\n')
+      this.log('Now let\'s configure your MCP servers.\n')
+      this.log('  MCPs give Astra extra capabilities — document creation,')
+      this.log('  image generation, live library docs, and browser automation.\n')
+      this.log('  \u26a0  Tip: Only enable the MCPs you actually need.')
+      this.log('  Each active MCP uses context tokens. Running all of them at')
+      this.log('  once can slow things down. You can turn them on and off')
+      this.log('  anytime with: astra-devkit mcps\n')
+    }
+
+    if (mode === 'office') {
+      // Office mode — auto-enable doc MCPs, ask about optional ones
+      this.log('  \u2713 Document tools enabled (Word, Excel, PowerPoint, PDF)\n')
+      // Still run the MCP selector so they can customize
+      const customizeMcps = await confirm({
+        message: 'Customize which tools are enabled?',
+        default: false,
+      })
+      if (customizeMcps) {
+        await run(['mcps'], this.config)
+      }
+    } else {
+      // Code mode — full MCP selector
+      const configureMcps = await confirm({
+        message: 'Configure MCP servers now?',
+        default: true,
+      })
+      if (configureMcps) {
+        await run(['mcps'], this.config)
+      } else {
+        this.log('\n  Skipped. Run \'astra-devkit mcps\' anytime to configure.\n')
+      }
     }
 
     // ── Step 7: Summary ────────────────────────
