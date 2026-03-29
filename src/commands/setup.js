@@ -194,6 +194,12 @@ export default class Setup extends Command {
     this.log(`  Run '${this.config.bin} doctor' to verify everything.`)
     this.log(`  Run '${this.config.bin} guide beginner' for the visual quick-start.\n`)
 
+    // ── Step 8: Desktop shortcut (Windows only) ──
+    if (isWin) {
+      await this.#offerDesktopShortcut()
+    }
+
+    // ── Step 9: Launch ─────────────────────────
     const launchNow = await confirm({
       message: 'Launch Astra now?',
       default: true,
@@ -208,6 +214,60 @@ export default class Setup extends Command {
       }
     } else {
       this.log('\n  Ready when you are. Just type: gemini\n')
+    }
+  }
+
+  /**
+   * Offer to create a desktop shortcut on Windows.
+   * Uses Windows Terminal (wt) to launch gemini in a proper terminal window.
+   */
+  async #offerDesktopShortcut() {
+    const createShortcut = await confirm({
+      message: 'Create a desktop shortcut for Astra?',
+      default: true,
+    })
+
+    if (!createShortcut) return
+
+    // Copy icon to a permanent location
+    const iconSrc = join(this.config.root, 'docs', 'images', 'astra-icon.ico')
+    const iconDest = join(homedir(), '.gemini', 'astra-icon.ico')
+
+    if (existsSync(iconSrc)) {
+      const {copyFileSync} = await import('node:fs')
+      copyFileSync(iconSrc, iconDest)
+    }
+
+    // Build PowerShell command to create a .lnk shortcut
+    const desktopPath = join(homedir(), 'Desktop')
+    const shortcutPath = join(desktopPath, 'Astra.lnk')
+
+    // Use wt (Windows Terminal) to launch gemini
+    // Falls back to cmd if wt isn't available
+    const ps = `
+$ws = New-Object -ComObject WScript.Shell
+$sc = $ws.CreateShortcut('${shortcutPath.replace(/'/g, "''")}')
+$sc.TargetPath = (Get-Command wt -ErrorAction SilentlyContinue)?.Source ?? 'cmd.exe'
+if ($sc.TargetPath -like '*wt*') {
+  $sc.Arguments = '-p "Command Prompt" cmd /k gemini'
+} else {
+  $sc.Arguments = '/k gemini'
+}
+$sc.WorkingDirectory = '%USERPROFILE%'
+$iconPath = '${iconDest.replace(/'/g, "''")}'
+if (Test-Path $iconPath) { $sc.IconLocation = $iconPath }
+$sc.Description = 'Astra DevKit - AI Engineering Partner'
+$sc.Save()
+`.trim().replace(/\n/g, '; ')
+
+    try {
+      execSync(`powershell -NoProfile -Command "${ps}"`, {stdio: ['pipe', 'pipe', 'pipe']})
+      this.log('\n  \u2713 Desktop shortcut created! Look for "Astra" on your desktop.\n')
+    } catch (err) {
+      this.warn('Could not create desktop shortcut automatically.')
+      this.log('  You can create one manually: right-click Desktop → New → Shortcut')
+      this.log('  Target: wt -p "Command Prompt" cmd /k gemini')
+      this.log(`  Icon: ${iconDest}\n`)
     }
   }
 
