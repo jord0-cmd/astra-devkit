@@ -94,7 +94,7 @@ export default class Doctor extends Command {
         const version = tryExec('sg --version')
         return {ok: true, detail: version}
       } catch {
-        return {ok: false, detail: 'not found \u2014 needed for AAG engine and mutation testing'}
+        return {ok: false, detail: 'not found \u2014 try: npm install -g @ast-grep/cli'}
       }
     })
 
@@ -103,7 +103,8 @@ export default class Doctor extends Command {
         const raw = tryExec('pandoc --version')
         return {ok: true, detail: raw.split('\n')[0]}
       } catch {
-        return {ok: false, detail: 'not found \u2014 optional, needed for PDF reports'}
+        const fix = isWin ? 'winget install JohnMacFarlane.Pandoc' : 'sudo apt install pandoc (or: brew install pandoc)'
+        return {ok: false, detail: `not found \u2014 optional. Install: ${fix}`}
       }
     })
 

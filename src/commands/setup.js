@@ -1,4 +1,4 @@
-import {Command, Flags} from '@oclif/core'
+import {Command, Flags, run} from '@oclif/core'
 import {confirm, input, select} from '@inquirer/prompts'
 import {existsSync, writeFileSync} from 'node:fs'
 import {join} from 'node:path'
@@ -100,19 +100,19 @@ export default class Setup extends Command {
     const hasExisting = existsSync(settingsPath) || existsSync(geminiMdPath)
 
     if (hasExisting && !flags.force) {
-      this.log('\n  \u26a0  Existing Gemini CLI configuration detected.\n')
-      this.log('  Astra DevKit will deploy skills, hooks, agents, standards, and themes')
-      this.log('  into ~/.gemini/. Settings will be MERGED (your auth is preserved),')
-      this.log('  but skills, hooks, and agents will be overwritten.\n')
-      this.log('  For a clean install, remove ~/.gemini/ first and re-authenticate.\n')
+      this.log('')
+      this.log('  Existing Gemini CLI configuration found — that\'s fine!')
+      this.log('  Your authentication and personal settings will be preserved.')
+      this.log('  Astra will add skills, hooks, agents, and themes alongside')
+      this.log('  your existing setup.\n')
 
       const proceed = await confirm({
-        message: 'Proceed with installation? (existing settings will be merged)',
+        message: 'Continue with setup?',
         default: true,
       })
 
       if (!proceed) {
-        this.log('\nSetup cancelled. Run with --force to skip this check.\n')
+        this.log('\nSetup cancelled.\n')
         return
       }
     }
@@ -169,7 +169,24 @@ export default class Setup extends Command {
     mergeSettings(configDir)
     this.log('  \u2713 settings.json: merged\n')
 
-    // ── Step 6: Summary ────────────────────────
+    // ── Step 6: MCP Configuration ──────────────
+    this.log('Now let\'s configure your MCP servers.\n')
+    this.log('  MCPs give Astra extra capabilities — document creation,')
+    this.log('  image generation, live library docs, and browser automation.')
+    this.log('  You can change these anytime with: astra-devkit mcps\n')
+
+    const configureMcps = await confirm({
+      message: 'Configure MCP servers now?',
+      default: true,
+    })
+
+    if (configureMcps) {
+      await run(['mcps'], this.config)
+    } else {
+      this.log('\n  Skipped. Run \'astra-devkit mcps\' anytime to configure.\n')
+    }
+
+    // ── Step 7: Summary ────────────────────────
     this.log(`\n  \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557`)
     this.log(`  \u2551  Astra DevKit v${this.config.version} \u2014 Setup Complete!        \u2551`)
     this.log(`  \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d\n`)
