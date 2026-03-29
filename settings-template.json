@@ -101,7 +101,8 @@
     "excel": {
       "command": "uvx",
       "args": [
-        "excel-mcp-server"
+        "excel-mcp-server",
+        "stdio"
       ],
       "timeout": 15000
     },

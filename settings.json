@@ -96,7 +96,7 @@
     },
     "excel": {
       "command": "uvx",
-      "args": ["excel-mcp-server"],
+      "args": ["excel-mcp-server", "stdio"],
       "timeout": 15000
     },
     "word-docs": {

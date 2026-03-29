@@ -16,7 +16,7 @@ const MCP_CATALOG = [
   {key: 'context7', name: 'Context7', category: 'CODING', desc: 'Live docs for 9K+ libraries', requires: 'npx', config: {command: 'npx', args: ['-y', '@upstash/context7-mcp@latest'], timeout: 30000}},
   {key: 'pandoc', name: 'Pandoc', category: 'DOCUMENTS', desc: 'Markdown \u2192 any format (PDF, DOCX, HTML)', requires: 'uvx+pandoc', config: {command: 'uvx', args: ['mcp-pandoc'], timeout: 15000}},
   {key: 'powerpoint', name: 'PowerPoint', category: 'DOCUMENTS', desc: 'Presentations (34 tools)', requires: 'uvx', config: {command: 'uvx', args: ['--from', 'office-powerpoint-mcp-server', 'ppt_mcp_server'], timeout: 15000}},
-  {key: 'excel', name: 'Excel', category: 'DOCUMENTS', desc: 'Spreadsheets (20 tools)', requires: 'uvx', config: {command: 'uvx', args: ['excel-mcp-server'], timeout: 15000}},
+  {key: 'excel', name: 'Excel', category: 'DOCUMENTS', desc: 'Spreadsheets (25 tools, charts, pivots)', requires: 'uvx', config: {command: 'uvx', args: ['excel-mcp-server', 'stdio'], timeout: 15000}},
   {key: 'word-docs', name: 'Word', category: 'DOCUMENTS', desc: 'Rich documents', requires: 'uvx', config: {command: 'uvx', args: ['--from', 'office-word-mcp-server', 'word_mcp_server'], timeout: 15000}},
   {key: 'gemini-image', name: 'Gemini Imagen', category: 'IMAGES', desc: 'AI image generation', requires: 'npx+GEMINI_API_KEY', config: {command: 'npx', args: ['-y', 'mcp-image'], env: {GEMINI_API_KEY: '$GEMINI_API_KEY', IMAGE_OUTPUT_DIR: './generated-images', IMAGE_QUALITY: 'balanced'}, timeout: 60000}},
   {key: 'playwright', name: 'Playwright', category: 'CODING', desc: 'Browser automation (auto-installs Chromium)', requires: 'npx', config: {command: 'npx', args: ['-y', '@playwright/mcp@latest'], timeout: 60000}},
