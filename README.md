@@ -48,138 +48,216 @@ Astra is the senior dev on your team who's sharp, approachable, and genuinely wa
 
 ## Quick Start
 
-```bash
-# Install directly from GitHub
-npm install -g github:jord0-cmd/astra-devkit
+You only need **Node.js** installed. The setup wizard handles everything else — Gemini CLI, MCP dependencies, themes, the lot.
 
-# Run interactive setup
+```bash
+npm install -g github:jord0-cmd/astra-devkit
 astra-devkit setup
 ```
 
-Then start Gemini CLI:
+The setup wizard will:
+- Check for Gemini CLI and install/upgrade it if needed
+- Ask your name, experience level, and what you build
+- Deploy all skills, hooks, agents, standards, and themes
+- Detect missing MCP dependencies and offer to install them
+
+Then start coding:
 
 ```bash
 gemini
 ```
 
-You'll see the Astra banner with your component counts, and she'll introduce herself.
+You'll see the Astra banner, and she'll introduce herself.
 
 ---
 
-## Prerequisites
+## Step 1: Install Node.js
 
-### Required
+Node.js is the only thing you need to install manually. It comes with `npm` (the package manager) built in.
 
-| Dependency | Version | How to Install |
-|-----------|---------|----------------|
-| **Node.js** | 20+ | [nodejs.org](https://nodejs.org/) or `nvm install 20` |
-| **Gemini CLI** | 0.36+ | `npm install -g @google/gemini-cli` |
+<details>
+<summary><strong>Windows</strong></summary>
 
-### Recommended (for full MCP support)
+**Option A: Download the installer (easiest)**
 
-| Dependency | Version | How to Install | Used By |
-|-----------|---------|----------------|---------|
-| **Python** | 3.11+ | [python.org](https://python.org/) | Document MCPs (Pandoc, PowerPoint, Excel, Word) |
-| **uv** | Latest | `curl -LsSf https://astral.sh/uv/install.sh \| sh` | Python MCP servers (runs via `uvx`) |
-| **pandoc** | 3.0+ | `apt install pandoc` / `brew install pandoc` | PDF generation via Pandoc MCP |
-| **texlive** | Any | `apt install texlive-base` / `brew install texlive` | PDF output from Pandoc |
+1. Go to [nodejs.org](https://nodejs.org/)
+2. Download the **LTS** version (the big green button)
+3. Run the installer — click Next through the defaults
+4. Restart your terminal (PowerShell or Command Prompt)
+5. Verify: `node --version` should show `v20` or higher
 
-> Without Python/uv, the document MCPs (Pandoc, PowerPoint, Excel, Word) won't be available. Everything else works fine with just Node.js.
-
----
-
-## Installation by Platform
-
-### Linux (Ubuntu/Debian)
-
-```bash
-# 1. Install Node.js 20+
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt install -y nodejs
-
-# 2. Install Gemini CLI
-npm install -g @google/gemini-cli
-
-# 3. Authenticate (run once — opens browser for OAuth)
-gemini
-
-# 4. Install Python + uv (for document MCPs)
-sudo apt install -y python3 python3-pip
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# 5. Install pandoc (for PDF generation)
-sudo apt install -y pandoc texlive-base
-
-# 6. Install Astra DevKit
-npm install -g github:jord0-cmd/astra-devkit
-astra-devkit setup
-
-# 7. Verify
-astra-devkit doctor
-```
-
-### macOS
-
-```bash
-# 1. Install Node.js 20+ (via Homebrew)
-brew install node@20
-
-# 2. Install Gemini CLI
-npm install -g @google/gemini-cli
-
-# 3. Authenticate
-gemini
-
-# 4. Install Python + uv (for document MCPs)
-brew install python@3.12
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# 5. Install pandoc (for PDF generation)
-brew install pandoc texlive
-
-# 6. Install Astra DevKit
-npm install -g github:jord0-cmd/astra-devkit
-astra-devkit setup
-
-# 7. Verify
-astra-devkit doctor
-```
-
-### Windows
+**Option B: Using winget (if you have it)**
 
 ```powershell
-# 1. Install Node.js 20+ (download from nodejs.org or use winget)
 winget install OpenJS.NodeJS.LTS
+```
 
-# 2. Install Gemini CLI
-npm install -g @google/gemini-cli
+Restart your terminal after install.
 
-# 3. Authenticate (run once — opens browser)
-gemini
+</details>
 
-# 4. Install Python + uv (for document MCPs)
-winget install Python.Python.3.12
-powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+<details>
+<summary><strong>macOS</strong></summary>
 
-# 5. Install pandoc (for PDF generation)
-winget install JohnMacFarlane.Pandoc
+**Option A: Download the installer**
 
-# 6. Install Astra DevKit
+1. Go to [nodejs.org](https://nodejs.org/)
+2. Download the **LTS** version
+3. Run the `.pkg` installer
+4. Verify: `node --version` in Terminal
+
+**Option B: Using Homebrew**
+
+```bash
+brew install node@20
+```
+
+**Option C: Using nvm (version manager)**
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+source ~/.bashrc
+nvm install 20
+```
+
+</details>
+
+<details>
+<summary><strong>Linux (Ubuntu / Debian)</strong></summary>
+
+**Option A: NodeSource repository (recommended)**
+
+```bash
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt install -y nodejs
+```
+
+**Option B: Using nvm**
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+source ~/.bashrc
+nvm install 20
+```
+
+**Option C: Snap**
+
+```bash
+sudo snap install node --classic --channel=20
+```
+
+</details>
+
+<details>
+<summary><strong>Linux (Fedora / RHEL)</strong></summary>
+
+```bash
+sudo dnf install -y nodejs
+```
+
+Or via NodeSource:
+
+```bash
+curl -fsSL https://rpm.nodesource.com/setup_20.x | sudo bash -
+sudo dnf install -y nodejs
+```
+
+</details>
+
+<details>
+<summary><strong>Linux (Arch)</strong></summary>
+
+```bash
+sudo pacman -S nodejs npm
+```
+
+</details>
+
+Verify your install on any platform:
+
+```bash
+node --version   # Should show v20.x.x or higher
+npm --version    # Should show 10.x.x or higher
+```
+
+---
+
+## Step 2: Install Astra DevKit
+
+```bash
 npm install -g github:jord0-cmd/astra-devkit
-astra-devkit setup
+```
 
-# 7. Verify
+This installs the `astra-devkit` command globally. It also installs `ast-grep` (for code analysis) automatically.
+
+---
+
+## Step 3: Run Setup
+
+```bash
+astra-devkit setup
+```
+
+The wizard walks you through everything:
+
+1. **Checks Node.js** version
+2. **Checks for Gemini CLI** — if not installed or outdated, offers to install/upgrade it (requires the preview channel for agents and skills support)
+3. **Checks for Python + uv** — warns if missing (needed for document MCPs), but doesn't block setup
+4. **Asks your name** — Astra will use it naturally in conversation
+5. **Asks your experience level** — beginner (detailed), intermediate (balanced), or senior (concise)
+6. **Asks what you build** — backend, frontend, fullstack, data, or libraries
+7. **Deploys everything** — 24 skills, 17 hooks, 9 agents, 4 standards, 3 themes
+8. **Merges settings** — preserves your existing auth and preferences
+
+### After Setup: Configure MCPs
+
+```bash
+astra-devkit mcps
+```
+
+This shows an interactive menu of all 7 MCP servers. It detects which dependencies you have and which you're missing:
+
+- **npx-based MCPs** (Context7, Playwright, Imagen) work immediately — you already have Node.js
+- **uvx-based MCPs** (Pandoc, PowerPoint, Excel, Word) need Python + uv — the wizard offers to install them for you
+- **Pandoc MCP** additionally needs the `pandoc` binary — the wizard offers to install it too
+
+---
+
+## Step 4: Verify
+
+```bash
 astra-devkit doctor
 ```
 
-### Docker (for testing)
+Runs a full health check. You should see all green:
+
+```
+Astra DevKit — Health Check
+
+  ✓ Node.js: v20.x.x (OK)
+  ✓ Gemini CLI: 0.36.x
+  ✓ Python + uv: Python 3.x.x + uv installed
+  ✓ Skills: 24 installed (OK)
+  ✓ Hooks: 17 installed (OK)
+  ✓ Agents: 9 installed (OK)
+  ✓ Standards: 4 installed (OK)
+  ✓ Settings + MCPs: 7 MCPs, hooks ON, skills ON
+  ✓ Themes: 3 available (OK)
+  ✓ ast-grep: ast-grep 0.x.x
+  ✓ Pandoc: pandoc 3.x.x
+
+11/11 checks passed.
+```
+
+---
+
+## Step 5: Start Coding
 
 ```bash
-docker run -it node:20 bash -c "
-  npm install -g @google/gemini-cli github:jord0-cmd/astra-devkit && \
-  astra-devkit doctor
-"
+gemini
 ```
+
+That's it. Astra is ready.
 
 ---
 
