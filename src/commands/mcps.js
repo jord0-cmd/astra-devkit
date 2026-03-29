@@ -13,18 +13,23 @@ function tryExec(cmd) {
 }
 
 const MCP_CATALOG = [
-  // READY TO USE — no configuration needed
-  {key: 'context7', name: 'Context7', category: 'CODING', desc: 'Live docs for 9K+ libraries', requires: 'npx', setup: 'Ready to use — no setup needed', config: {command: 'npx', args: ['-y', '@upstash/context7-mcp@latest'], timeout: 30000}},
-  {key: 'pandoc', name: 'Pandoc', category: 'DOCUMENTS', desc: 'Markdown \u2192 any format (PDF, DOCX, HTML)', requires: 'uvx+pandoc', setup: 'Needs Python + uv + pandoc installed', config: {command: 'uvx', args: ['mcp-pandoc'], timeout: 15000}},
-  {key: 'powerpoint', name: 'PowerPoint', category: 'DOCUMENTS', desc: 'Presentations (34 tools)', requires: 'uvx', setup: 'Needs Python + uv installed', config: {command: 'uvx', args: ['--from', 'office-powerpoint-mcp-server', 'ppt_mcp_server'], timeout: 15000}},
-  {key: 'excel', name: 'Excel', category: 'DOCUMENTS', desc: 'Spreadsheets (25 tools, charts, pivots)', requires: 'uvx', setup: 'Needs Python + uv installed', config: {command: 'uvx', args: ['excel-mcp-server', 'stdio'], timeout: 15000}},
-  {key: 'word-docs', name: 'Word', category: 'DOCUMENTS', desc: 'Rich documents', requires: 'uvx', setup: 'Needs Python + uv installed', config: {command: 'uvx', args: ['--from', 'office-word-mcp-server', 'word_mcp_server'], timeout: 15000}},
-  {key: 'playwright', name: 'Playwright', category: 'CODING', desc: 'Browser automation (auto-installs Chromium)', requires: 'npx', setup: 'Ready to use — auto-installs its own browser', config: {command: 'npx', args: ['-y', '@playwright/mcp@latest'], timeout: 60000}},
-  // NEEDS CONFIGURATION — credentials or services required
-  {key: 'gemini-image', name: 'Gemini Imagen', category: 'IMAGES', desc: 'AI image generation', requires: 'npx', setup: 'Needs a Gemini API key from aistudio.google.com/apikey — set GEMINI_API_KEY in your environment', config: {command: 'npx', args: ['-y', 'mcp-image'], env: {GEMINI_API_KEY: '$GEMINI_API_KEY', IMAGE_OUTPUT_DIR: './generated-images', IMAGE_QUALITY: 'balanced'}, timeout: 60000}},
-  {key: 'database', name: 'Database Toolbox', category: 'DATABASES', desc: '20+ databases: PostgreSQL (25 tools), MySQL, SQL Server, SQLite, MongoDB, Redis, BigQuery', requires: 'npx', setup: 'Needs database credentials — edit POSTGRES_* env vars in ~/.gemini/settings.json, or use --prebuilt mysql/mssql/sqlite', config: {command: 'npx', args: ['-y', '@toolbox-sdk/server', '--prebuilt', 'postgres', '--stdio'], env: {POSTGRES_HOST: 'localhost', POSTGRES_PORT: '5432', POSTGRES_DATABASE: 'mydb', POSTGRES_USER: 'myuser', POSTGRES_PASSWORD: 'mypassword'}, timeout: 60000}},
-  {key: 'docker', name: 'Docker', category: 'DEVOPS', desc: 'Manage containers, images, networks, volumes (19 tools)', requires: 'uvx', setup: 'Needs Docker Desktop or Docker Engine running on your machine', config: {command: 'uvx', args: ['mcp-server-docker'], timeout: 30000}},
-  {key: 'azure', name: 'Azure', category: 'CLOUD', desc: 'Full Azure tenant: Cosmos DB, SQL, Key Vault, AKS, Monitor (40+ services)', requires: 'npx', setup: 'Needs Azure CLI installed and authenticated — run: az login', config: {command: 'npx', args: ['-y', '@azure/mcp@latest', 'server', 'start'], timeout: 60000}},
+  // office: true = on by default in office mode, false = off, null = hidden
+  // DOCUMENTS — core for office users
+  {key: 'pandoc', name: 'Pandoc', category: 'DOCUMENTS', desc: 'Markdown \u2192 any format (PDF, DOCX, HTML)', requires: 'uvx+pandoc', setup: 'Needs Python + uv + pandoc installed', office: true, config: {command: 'uvx', args: ['mcp-pandoc'], timeout: 15000}},
+  {key: 'powerpoint', name: 'PowerPoint', category: 'DOCUMENTS', desc: 'Presentations (34 tools)', requires: 'uvx', setup: 'Needs Python + uv installed', office: true, config: {command: 'uvx', args: ['--from', 'office-powerpoint-mcp-server', 'ppt_mcp_server'], timeout: 15000}},
+  {key: 'excel', name: 'Excel', category: 'DOCUMENTS', desc: 'Spreadsheets (25 tools, charts, pivots)', requires: 'uvx', setup: 'Needs Python + uv installed', office: true, config: {command: 'uvx', args: ['excel-mcp-server', 'stdio'], timeout: 15000}},
+  {key: 'word-docs', name: 'Word', category: 'DOCUMENTS', desc: 'Rich documents', requires: 'uvx', setup: 'Needs Python + uv installed', office: true, config: {command: 'uvx', args: ['--from', 'office-word-mcp-server', 'word_mcp_server'], timeout: 15000}},
+  // CODING — dev tools
+  {key: 'context7', name: 'Context7', category: 'CODING', desc: 'Live docs for 9K+ libraries', requires: 'npx', setup: 'Ready to use \u2014 no setup needed', office: false, config: {command: 'npx', args: ['-y', '@upstash/context7-mcp@latest'], timeout: 30000}},
+  {key: 'playwright', name: 'Playwright', category: 'CODING', desc: 'Browser automation \u2014 web research and testing', requires: 'npx', setup: 'Ready to use \u2014 auto-installs its own browser', office: false, config: {command: 'npx', args: ['-y', '@playwright/mcp@latest'], timeout: 60000}},
+  // IMAGES
+  {key: 'gemini-image', name: 'Gemini Imagen', category: 'IMAGES', desc: 'AI image generation', requires: 'npx', setup: 'Needs a Gemini API key from aistudio.google.com/apikey \u2014 set GEMINI_API_KEY env var', office: false, config: {command: 'npx', args: ['-y', 'mcp-image'], env: {GEMINI_API_KEY: '$GEMINI_API_KEY', IMAGE_OUTPUT_DIR: './generated-images', IMAGE_QUALITY: 'balanced'}, timeout: 60000}},
+  // DATABASES
+  {key: 'database', name: 'Database Toolbox', category: 'DATABASES', desc: '20+ databases: PostgreSQL, MySQL, SQL Server, SQLite, MongoDB, Redis', requires: 'npx', setup: 'Needs database credentials \u2014 edit env vars in ~/.gemini/settings.json', office: false, config: {command: 'npx', args: ['-y', '@toolbox-sdk/server', '--prebuilt', 'postgres', '--stdio'], env: {POSTGRES_HOST: 'localhost', POSTGRES_PORT: '5432', POSTGRES_DATABASE: 'mydb', POSTGRES_USER: 'myuser', POSTGRES_PASSWORD: 'mypassword'}, timeout: 60000}},
+  // DEVOPS
+  {key: 'docker', name: 'Docker', category: 'DEVOPS', desc: 'Manage containers, images, networks, volumes (19 tools)', requires: 'uvx', setup: 'Needs Docker Desktop or Docker Engine running', office: false, config: {command: 'uvx', args: ['mcp-server-docker'], timeout: 30000}},
+  // CLOUD
+  {key: 'azure', name: 'Azure', category: 'CLOUD', desc: 'Full Azure tenant: Cosmos DB, SQL, Key Vault, AKS, Monitor (40+ services)', requires: 'npx', setup: 'Needs Azure CLI installed and authenticated \u2014 run: az login', office: false, config: {command: 'npx', args: ['-y', '@azure/mcp@latest', 'server', 'start'], timeout: 60000}},
 ]
 
 export default class Mcps extends Command {
@@ -61,14 +66,32 @@ export default class Mcps extends Command {
     // Re-detect after potential installs (detectDeps refreshes PATH on Windows)
     const freshDeps = this.#detectDeps()
 
-    // Build choices with availability markers
+    // Read user mode for smart defaults
+    let userMode = 'code'
+    const userFile = join(GEMINI_HOME, 'user.json')
+    if (existsSync(userFile)) {
+      try { userMode = JSON.parse(readFileSync(userFile, 'utf-8')).mode || 'code' } catch {}
+    }
+    const isFirstRun = Object.keys(currentMcps).length === 0 || !existsSync(userFile)
+
+    // Build choices with availability markers and mode-aware defaults
     const choices = MCP_CATALOG.map(srv => {
       const available = this.#checkRequirements(srv.requires, freshDeps)
       const status = available ? '' : ' \u26a0 (missing deps)'
+
+      // Smart default: first run uses mode defaults, subsequent runs use current config
+      let checked
+      if (isFirstRun || !(srv.key in currentMcps)) {
+        // First run or MCP not yet configured — use mode defaults
+        checked = userMode === 'office' ? (srv.office === true) : true
+      } else {
+        checked = srv.key in currentMcps
+      }
+
       return {
         name: `${srv.name.padEnd(16)} \u2014 ${srv.desc} [${srv.category}]${status}`,
         value: srv.key,
-        checked: srv.key in currentMcps,
+        checked,
         disabled: available ? false : this.#getMissingMessage(srv.requires, freshDeps),
       }
     })
