@@ -5,11 +5,258 @@
     }
   },
   "ui": {
-    "theme": "Dracula",
+    "theme": "Retro Green",
     "hideBanner": true,
     "autoThemeSwitching": false,
     "inlineThinkingMode": "off",
     "loadingPhrases": "witty",
+    "customThemes": {
+      "Astra": {
+        "name": "Astra",
+        "type": "custom",
+        "background": {
+          "primary": "#0d1117",
+          "diff": {
+            "added": "#1a2b1a",
+            "removed": "#2b1a1a"
+          }
+        },
+        "text": {
+          "primary": "#e6edf3",
+          "secondary": "#8b949e",
+          "link": "#58a6ff",
+          "accent": "#7ee787"
+        },
+        "border": {
+          "default": "#30363d",
+          "focused": "#58a6ff"
+        },
+        "status": {
+          "success": "#7ee787",
+          "warning": "#d29922",
+          "error": "#f85149"
+        },
+        "ui": {
+          "comment": "#8b949e",
+          "symbol": "#79c0ff",
+          "gradient": [
+            "#58a6ff",
+            "#7ee787",
+            "#d2a8ff"
+          ]
+        }
+      },
+      "Retro Green": {
+        "name": "Retro Green",
+        "type": "custom",
+        "background": {
+          "primary": "#0a0a0a",
+          "diff": {
+            "added": "#0a1a0a",
+            "removed": "#1a0a0a"
+          }
+        },
+        "text": {
+          "primary": "#33ff33",
+          "secondary": "#1a9a1a",
+          "link": "#66ff66",
+          "accent": "#ffb000"
+        },
+        "border": {
+          "default": "#1a3a1a",
+          "focused": "#33ff33"
+        },
+        "status": {
+          "success": "#00ff00",
+          "warning": "#ccff00",
+          "error": "#ff3333"
+        },
+        "ui": {
+          "comment": "#1a6a1a",
+          "symbol": "#00ff99",
+          "gradient": [
+            "#003300",
+            "#00ff00",
+            "#66ff66"
+          ]
+        }
+      },
+      "Retro Amber": {
+        "name": "Retro Amber",
+        "type": "custom",
+        "background": {
+          "primary": "#0a0800",
+          "diff": {
+            "added": "#1a1a00",
+            "removed": "#1a0a00"
+          }
+        },
+        "text": {
+          "primary": "#ffb000",
+          "secondary": "#cc8800",
+          "link": "#ffc633",
+          "accent": "#ffcc00"
+        },
+        "border": {
+          "default": "#332a00",
+          "focused": "#ffb000"
+        },
+        "status": {
+          "success": "#ffcc00",
+          "warning": "#ff9900",
+          "error": "#ff3300"
+        },
+        "ui": {
+          "comment": "#996600",
+          "symbol": "#ffdd44",
+          "gradient": [
+            "#331a00",
+            "#ffb000",
+            "#ffcc33"
+          ]
+        }
+      },
+      "Office Cream": {
+        "name": "Office Cream",
+        "type": "custom",
+        "background": {
+          "primary": "#faf8f5",
+          "diff": {
+            "added": "#e8f5e9",
+            "removed": "#fce4ec"
+          }
+        },
+        "text": {
+          "primary": "#3d3d3d",
+          "secondary": "#757575",
+          "link": "#1565c0",
+          "accent": "#2e7d32"
+        },
+        "border": {
+          "default": "#e0dcd7",
+          "focused": "#1565c0"
+        },
+        "status": {
+          "success": "#2e7d32",
+          "warning": "#ef6c00",
+          "error": "#c62828"
+        },
+        "ui": {
+          "comment": "#9e9e9e",
+          "symbol": "#1565c0",
+          "gradient": [
+            "#1565c0",
+            "#2e7d32",
+            "#6a1b9a"
+          ]
+        }
+      },
+      "Office Blue": {
+        "name": "Office Blue",
+        "type": "custom",
+        "background": {
+          "primary": "#f5f7fa",
+          "diff": {
+            "added": "#e3f2fd",
+            "removed": "#fce4ec"
+          }
+        },
+        "text": {
+          "primary": "#37474f",
+          "secondary": "#78909c",
+          "link": "#1976d2",
+          "accent": "#0277bd"
+        },
+        "border": {
+          "default": "#cfd8dc",
+          "focused": "#1976d2"
+        },
+        "status": {
+          "success": "#388e3c",
+          "warning": "#f57c00",
+          "error": "#d32f2f"
+        },
+        "ui": {
+          "comment": "#90a4ae",
+          "symbol": "#0277bd",
+          "gradient": [
+            "#1976d2",
+            "#0277bd",
+            "#00838f"
+          ]
+        }
+      },
+      "Gemini Blue": {
+        "name": "Gemini Blue",
+        "type": "custom",
+        "background": {
+          "primary": "#0a0e1a",
+          "diff": {
+            "added": "#0a1a2a",
+            "removed": "#2a0a1a"
+          }
+        },
+        "text": {
+          "primary": "#8ab4f8",
+          "secondary": "#5f8ac0",
+          "link": "#4fc3f7",
+          "accent": "#80cbc4"
+        },
+        "border": {
+          "default": "#1a2744",
+          "focused": "#4fc3f7"
+        },
+        "status": {
+          "success": "#80cbc4",
+          "warning": "#ffd54f",
+          "error": "#ef5350"
+        },
+        "ui": {
+          "comment": "#3f5f8a",
+          "symbol": "#4fc3f7",
+          "gradient": [
+            "#1a73e8",
+            "#4285f4",
+            "#8ab4f8"
+          ]
+        }
+      },
+      "Synthwave": {
+        "name": "Synthwave",
+        "type": "custom",
+        "background": {
+          "primary": "#1a0a2e",
+          "diff": {
+            "added": "#1a2e1a",
+            "removed": "#2e1a1a"
+          }
+        },
+        "text": {
+          "primary": "#e0b0ff",
+          "secondary": "#9b59b6",
+          "link": "#00f0ff",
+          "accent": "#ff2d95"
+        },
+        "border": {
+          "default": "#2d1b4e",
+          "focused": "#ff2d95"
+        },
+        "status": {
+          "success": "#00ff9f",
+          "warning": "#ffd700",
+          "error": "#ff2d55"
+        },
+        "ui": {
+          "comment": "#6b3fa0",
+          "symbol": "#00f0ff",
+          "gradient": [
+            "#ff2d95",
+            "#00f0ff",
+            "#ffd700"
+          ]
+        }
+      }
+    },
     "customWittyPhrases": [
       "It works on my machine...",
       "Have you tried turning it off and on again?",
@@ -141,17 +388,18 @@
       "args": [
         "-y",
         "@toolbox-sdk/server",
-        "--prebuilt", "postgres",
+        "--prebuilt",
+        "postgres",
         "--stdio"
       ],
+      "timeout": 60000,
       "env": {
         "POSTGRES_HOST": "localhost",
         "POSTGRES_PORT": "5432",
         "POSTGRES_DATABASE": "mydb",
         "POSTGRES_USER": "myuser",
         "POSTGRES_PASSWORD": "mypassword"
-      },
-      "timeout": 60000
+      }
     },
     "docker": {
       "command": "uvx",
@@ -165,7 +413,8 @@
       "args": [
         "-y",
         "@azure/mcp@latest",
-        "server", "start"
+        "server",
+        "start"
       ],
       "timeout": 60000
     }
