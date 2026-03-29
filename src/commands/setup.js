@@ -179,7 +179,16 @@ export default class Setup extends Command {
     this.log('Deploying Astra DevKit components...\n')
     for (const comp of ['skills', 'hooks', 'agents', 'standards', 'themes']) {
       const result = deployComponent(configDir, comp)
-      this.log(`  \u2713 ${result.component}: ${result.deployed} items deployed`)
+      if (result.error) {
+        this.log(`  \u2717 ${result.component}: ${result.error}`)
+      } else if (result.errors) {
+        this.log(`  \u26a0 ${result.component}: ${result.deployed} deployed, ${result.errors.length} failed`)
+        for (const err of result.errors) {
+          this.log(`      ${err}`)
+        }
+      } else {
+        this.log(`  \u2713 ${result.component}: ${result.deployed} items deployed`)
+      }
     }
     mergeSettings(configDir)
     this.log('  \u2713 settings.json: merged\n')

@@ -11,7 +11,13 @@ export default class Update extends Command {
 
     for (const comp of ['skills', 'hooks', 'agents', 'standards', 'themes']) {
       const result = deployComponent(configDir, comp)
-      this.log(`  \u2713 ${result.component}: ${result.deployed} items`)
+      if (result.error) {
+        this.log(`  \u2717 ${result.component}: ${result.error}`)
+      } else if (result.errors) {
+        this.log(`  \u26a0 ${result.component}: ${result.deployed} deployed, ${result.errors.length} failed`)
+      } else {
+        this.log(`  \u2713 ${result.component}: ${result.deployed} items`)
+      }
     }
     mergeSettings(configDir)
     this.log('  \u2713 settings.json: merged')
