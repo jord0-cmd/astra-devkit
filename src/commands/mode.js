@@ -1,7 +1,8 @@
-import {Command, Args} from '@oclif/core'
+import {Command, Args, run} from '@oclif/core'
 import {existsSync, readFileSync, writeFileSync} from 'node:fs'
 import {join} from 'node:path'
 import {homedir} from 'node:os'
+import {confirm} from '@inquirer/prompts'
 import {assemblePersona} from '../../lib/file-ops.mjs'
 
 const GEMINI_HOME = join(homedir(), '.gemini')
@@ -88,6 +89,19 @@ export default class Mode extends Command {
         this.log('  All hooks and developer tools are active.')
       }
       this.log('')
+
+      // If switching TO code mode for the first time, offer MCP configuration
+      if (args.mode === 'code' && currentMode === 'office') {
+        this.log('  Code Mode has additional tools available (databases, Docker, Azure).')
+        const configureMcps = await confirm({
+          message: 'Configure MCP servers for Code Mode?',
+          default: true,
+        })
+        if (configureMcps) {
+          await run(['mcps'], this.config)
+        }
+      }
+
       this.log('  Restart Gemini CLI to apply the change.\n')
     }
   }
