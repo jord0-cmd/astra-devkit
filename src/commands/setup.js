@@ -191,8 +191,24 @@ export default class Setup extends Command {
     this.log(`  \u2551  Astra DevKit v${this.config.version} \u2014 Setup Complete!        \u2551`)
     this.log(`  \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d\n`)
     this.log(`  Welcome aboard, ${name.trim()}.`)
-    this.log('  Run \'gemini\' to start your first session.')
-    this.log(`  Run '${this.config.bin} doctor' to verify everything.\n`)
+    this.log(`  Run '${this.config.bin} doctor' to verify everything.`)
+    this.log(`  Run '${this.config.bin} guide beginner' for the visual quick-start.\n`)
+
+    const launchNow = await confirm({
+      message: 'Launch Astra now?',
+      default: true,
+    })
+
+    if (launchNow) {
+      this.log('\n  Starting Gemini CLI with Astra...\n')
+      try {
+        execSync('gemini', {stdio: 'inherit'})
+      } catch {
+        // Normal exit (Ctrl+C) throws — that's fine
+      }
+    } else {
+      this.log('\n  Ready when you are. Just type: gemini\n')
+    }
   }
 
   /**
