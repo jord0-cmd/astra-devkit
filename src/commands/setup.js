@@ -354,8 +354,10 @@ $iconFile = '${iconDest.replace(/\\/g, '\\\\').replace(/'/g, "''")}';
 if (Test-Path $iconFile) { $sc.IconLocation = $iconFile };
 $sc.Description = 'Astra DevKit - AI Engineering Partner';
 $sc.Save();
-$sc2 = $ws.CreateShortcut('${join(desktopPath, 'Astra Workspace.lnk').replace(/\\/g, '\\\\').replace(/'/g, "''")}');
-$sc2.TargetPath = '${workspacePath.replace(/\\/g, '\\\\').replace(/'/g, "''")}';
+$wkPath = '${workspacePath.replace(/'/g, "''")}';
+if (!(Test-Path $wkPath)) { New-Item -ItemType Directory -Path $wkPath -Force | Out-Null };
+$sc2 = $ws.CreateShortcut('${join(desktopPath, 'Astra Workspace.lnk').replace(/'/g, "''")}');
+$sc2.TargetPath = $wkPath;
 $sc2.Description = 'Astra workspace folder';
 $sc2.Save()
 `.trim().replace(/\n/g, ' ')
