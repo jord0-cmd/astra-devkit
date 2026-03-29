@@ -54,6 +54,13 @@ export default class Mcps extends Command {
     }
 
     // Re-detect after potential installs
+    // On Windows, refresh PATH so newly installed binaries are found
+    if (isWin) {
+      try {
+        const freshPath = tryExec('powershell -NoProfile -Command "[Environment]::GetEnvironmentVariable(\'Path\', \'Machine\') + \';\' + [Environment]::GetEnvironmentVariable(\'Path\', \'User\')"')
+        process.env.PATH = freshPath
+      } catch {}
+    }
     const freshDeps = this.#detectDeps()
 
     // Build choices with availability markers
