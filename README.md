@@ -1,20 +1,5 @@
 <p align="center">
-  <pre align="center">
-  ╔══════════════════════════════════════════════╗
-  ║    █████╗ ███████╗████████╗██████╗  █████╗   ║
-  ║   ██╔══██╗██╔════╝╚══██╔══╝██╔══██╗██╔══██╗  ║
-  ║   ███████║███████╗   ██║   ██████╔╝███████║  ║
-  ║   ██╔══██║╚════██║   ██║   ██╔══██╗██╔══██║  ║
-  ║   ██║  ██║███████║   ██║   ██║  ██║██║  ██║  ║
-  ║   ╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝  ║
-  ║            DevKit v4.0                        ║
-  ╚══════════════════════════════════════════════╝
-  </pre>
-</p>
-
-<p align="center">
-  <strong>An AI Engineering Partner for Gemini CLI</strong><br>
-  <em>Skills, agents, hooks, MCPs, and standards that turn Gemini from a cold AI into a capable teammate.</em>
+  <img src="docs/images/hero-banner.png" alt="Astra DevKit v4.0 — AI Engineering Partner for Gemini CLI" width="100%">
 </p>
 
 <p align="center">
@@ -24,6 +9,41 @@
   <img src="https://img.shields.io/badge/platform-linux%20%7C%20macos%20%7C%20windows-lightgrey?style=for-the-badge" alt="Platform">
   <img src="https://img.shields.io/badge/license-MIT-green?style=for-the-badge" alt="License">
 </p>
+
+<p align="center">
+  <em>Skills, agents, hooks, MCPs, and standards that turn Gemini from a cold AI into a capable teammate.</em>
+</p>
+
+---
+
+## Visual Guides
+
+New to Astra? Start with the guide that matches your experience:
+
+<table>
+<tr>
+<td width="50%" align="center">
+
+**Beginners Guide**
+
+<a href="docs/images/astra-guide-beginners.png"><img src="docs/images/astra-guide-beginners.png" alt="Astra Guide for Beginners" width="100%"></a>
+
+*What Astra can do, how to talk to her, getting started*
+<br>Or run: `astra-devkit guide beginner`
+
+</td>
+<td width="50%" align="center">
+
+**Developers Guide**
+
+<a href="docs/images/astra-guide-developers.png"><img src="docs/images/astra-guide-developers.png" alt="Astra Guide for Developers" width="100%"></a>
+
+*Architect Pattern, quality gates, measured results, your stack*
+<br>Or run: `astra-devkit guide developer`
+
+</td>
+</tr>
+</table>
 
 ---
 
