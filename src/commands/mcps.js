@@ -53,14 +53,7 @@ export default class Mcps extends Command {
       await this.#offerInstallPandoc()
     }
 
-    // Re-detect after potential installs
-    // On Windows, refresh PATH so newly installed binaries are found
-    if (isWin) {
-      try {
-        const freshPath = tryExec('powershell -NoProfile -Command "[Environment]::GetEnvironmentVariable(\'Path\', \'Machine\') + \';\' + [Environment]::GetEnvironmentVariable(\'Path\', \'User\')"')
-        process.env.PATH = freshPath
-      } catch {}
-    }
+    // Re-detect after potential installs (detectDeps refreshes PATH on Windows)
     const freshDeps = this.#detectDeps()
 
     // Build choices with availability markers
@@ -99,6 +92,15 @@ export default class Mcps extends Command {
   }
 
   #detectDeps() {
+    // On Windows, refresh PATH from registry before every detection
+    // winget/installer installs update the registry but not the current process
+    if (isWin) {
+      try {
+        const freshPath = tryExec('powershell -NoProfile -Command "[Environment]::GetEnvironmentVariable(\'Path\', \'Machine\') + \';\' + [Environment]::GetEnvironmentVariable(\'Path\', \'User\')"')
+        process.env.PATH = freshPath
+      } catch {}
+    }
+
     const deps = {npx: false, python: false, uv: false, pandoc: false}
 
     try { tryExec('npx --version'); deps.npx = true } catch {}
@@ -107,7 +109,30 @@ export default class Mcps extends Command {
     try { tryExec(pyCmd); deps.python = true } catch {}
 
     try { tryExec('uv --version'); deps.uv = true } catch {}
-    try { tryExec('pandoc --version'); deps.pandoc = true } catch {}
+
+    // Pandoc: try command first, then check common Windows install locations
+    try {
+      tryExec('pandoc --version')
+      deps.pandoc = true
+    } catch {
+      if (isWin) {
+        const home = process.env.USERPROFILE || process.env.HOME || ''
+        const pandocPaths = [
+          join(home, 'AppData', 'Local', 'Pandoc', 'pandoc.exe'),
+          'C:\\Program Files\\Pandoc\\pandoc.exe',
+          'C:\\Program Files (x86)\\Pandoc\\pandoc.exe',
+        ]
+        for (const p of pandocPaths) {
+          if (existsSync(p)) {
+            // Add to PATH for this session so MCPs can find it too
+            const dir = p.replace(/\\pandoc\.exe$/, '')
+            process.env.PATH = `${dir};${process.env.PATH}`
+            deps.pandoc = true
+            break
+          }
+        }
+      }
+    }
 
     return deps
   }
@@ -190,18 +215,33 @@ export default class Mcps extends Command {
   }
 
   async #ensurePlaywrightBrowser() {
-    // Check if Playwright's Chromium is already installed
+    // Check if Playwright's Chromium is already installed by looking for browser dir
     let hasChromium = false
     try {
-      // Playwright stores browsers in a known location
-      const result = tryExec('npx playwright install --dry-run chromium')
-      if (result.includes('already installed')) hasChromium = true
+      // Playwright stores browsers in ~/.cache/ms-playwright/ (Linux/macOS)
+      // or %USERPROFILE%\AppData\Local\ms-playwright\ (Windows)
+      const home = process.env.USERPROFILE || process.env.HOME || homedir()
+      const playwrightDirs = isWin
+        ? [join(home, 'AppData', 'Local', 'ms-playwright')]
+        : [join(home, '.cache', 'ms-playwright')]
+
+      for (const dir of playwrightDirs) {
+        if (existsSync(dir)) {
+          // Check for any chromium directory inside
+          const {readdirSync} = await import('node:fs')
+          const entries = readdirSync(dir).filter(e => e.startsWith('chromium'))
+          if (entries.length > 0) {
+            hasChromium = true
+            break
+          }
+        }
+      }
     } catch {
-      // dry-run not supported in all versions, assume not installed
+      // Can't check — assume not installed
     }
 
     if (hasChromium) {
-      this.log('  \u2713 Playwright Chromium browser already installed.')
+      this.log('\n  \u2713 Playwright Chromium browser already installed.\n')
       return
     }
 
