@@ -138,22 +138,22 @@ export default class Setup extends Command {
     const name = await input({message: 'What\'s your name?'})
 
     const experience = await select({
-      message: 'Experience level?',
+      message: 'How would you describe yourself?',
       choices: [
-        {name: 'Beginner \u2014 detailed explanations', value: 'beginner'},
-        {name: 'Intermediate \u2014 balanced guidance', value: 'intermediate'},
-        {name: 'Senior \u2014 concise, direct', value: 'senior'},
+        {name: 'New to coding \u2014 I want to learn, explain everything', value: 'beginner'},
+        {name: 'I know some coding \u2014 balanced guidance', value: 'intermediate'},
+        {name: 'Experienced developer \u2014 keep it concise', value: 'senior'},
       ],
     })
 
     const focus = await select({
-      message: 'What do you mainly build?',
+      message: 'What will you mainly use Astra for?',
       choices: [
-        {name: 'Backend (APIs, services, CLI tools)', value: 'backend'},
-        {name: 'Frontend (React, Vue, web apps)', value: 'frontend'},
-        {name: 'Fullstack (end-to-end applications)', value: 'fullstack'},
-        {name: 'Data (pipelines, analysis, ML)', value: 'data'},
-        {name: 'Libraries (packages, SDKs, tools)', value: 'library'},
+        {name: 'Documents \u2014 presentations, reports, spreadsheets, PDFs', value: 'documents'},
+        {name: 'Learning \u2014 I want to learn coding with a mentor', value: 'learning'},
+        {name: 'Building apps \u2014 websites, APIs, fullstack projects', value: 'fullstack'},
+        {name: 'Data \u2014 databases, analysis, pipelines, ML', value: 'data'},
+        {name: 'Everything \u2014 coding, docs, research, the works', value: 'everything'},
       ],
     })
 
@@ -196,8 +196,11 @@ export default class Setup extends Command {
     // ── Step 6: MCP Configuration ──────────────
     this.log('Now let\'s configure your MCP servers.\n')
     this.log('  MCPs give Astra extra capabilities — document creation,')
-    this.log('  image generation, live library docs, and browser automation.')
-    this.log('  You can change these anytime with: astra-devkit mcps\n')
+    this.log('  image generation, live library docs, and browser automation.\n')
+    this.log('  \u26a0  Tip: Only enable the MCPs you actually need.')
+    this.log('  Each active MCP uses context tokens. Running all of them at')
+    this.log('  once can slow things down. You can turn them on and off')
+    this.log('  anytime with: astra-devkit mcps\n')
 
     const configureMcps = await confirm({
       message: 'Configure MCP servers now?',
