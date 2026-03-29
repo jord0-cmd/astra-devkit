@@ -23,8 +23,6 @@ const MCP_CATALOG = [
   {key: 'dbhub', name: 'DBHub', category: 'DATABASES', desc: 'Multi-DB: PostgreSQL, MySQL, MariaDB, SQL Server, SQLite', requires: 'npx', config: {command: 'npx', args: ['-y', '@bytebase/dbhub@latest', '--transport', 'stdio', '--readonly'], timeout: 30000}},
   {key: 'mongodb', name: 'MongoDB', category: 'DATABASES', desc: 'MongoDB + Atlas (official, 30+ tools)', requires: 'npx', config: {command: 'npx', args: ['-y', 'mongodb-mcp-server@latest', '--readOnly'], timeout: 30000}},
   {key: 'azure', name: 'Azure', category: 'CLOUD', desc: 'Full Azure tenant: Cosmos DB, SQL, Key Vault, AKS, Monitor (40+ services)', requires: 'npx', config: {command: 'npx', args: ['-y', '@azure/mcp@latest', 'server', 'start'], timeout: 60000}},
-  {key: 'google-cloud', name: 'Google Cloud', category: 'CLOUD', desc: 'BigQuery, Cloud Storage, Vertex AI, Cloud SQL (official Google)', requires: 'npx', config: {command: 'npx', args: ['-y', '@google-cloud/mcp-server@latest'], timeout: 60000}},
-  {key: 'google-maps', name: 'Google Maps', category: 'CLOUD', desc: 'Geocode, directions, places, elevation (official Google)', requires: 'npx', config: {command: 'npx', args: ['-y', '@googlemaps/mcp-server'], timeout: 30000}},
 ]
 
 export default class Mcps extends Command {

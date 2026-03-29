@@ -163,22 +163,6 @@
         "server", "start"
       ],
       "timeout": 60000
-    },
-    "google-cloud": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@google-cloud/mcp-server@latest"
-      ],
-      "timeout": 60000
-    },
-    "google-maps": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@googlemaps/mcp-server"
-      ],
-      "timeout": 30000
     }
   },
   "experimental": {
