@@ -66,9 +66,56 @@ Astra is the senior dev on your team who's sharp, approachable, and genuinely wa
 
 ---
 
+## It's Free
+
+Astra DevKit is free and open source. Gemini CLI is free too. All you need is a **Google account** (Gmail) — no credit card, no API key, no cloud project.
+
+Google gives you **1,000 AI requests per day** for free, with access to the full Gemini model family including Gemini 3 Pro with 1 million token context. That's enough for a full day of coding, document creation, research, and more.
+
+| Tier | Daily Requests | Models | Cost |
+|------|---------------|--------|------|
+| **Free (Google Account)** | **1,000/day** | **Flash + Pro** | **$0** |
+| Google AI Pro | 1,500/day | All | $19.99/mo |
+| Google AI Ultra | 2,000/day | All + Deep Think | $249.99/mo |
+
+> **No features are locked behind a paywall.** Skills, hooks, agents, MCP servers, plan mode — everything works on the free tier. The only difference between free and paid is daily request count.
+
+<details>
+<summary><strong>Don't have a Google account?</strong></summary>
+
+1. Go to [accounts.google.com/signup](https://accounts.google.com/signup)
+2. Create a free account (you get a Gmail address with it)
+3. That's it — this is the same account you use for YouTube, Google Drive, etc.
+
+**Important**: Use a personal Gmail account, not a work/school Google Workspace email. The free tier requires a personal account.
+
+</details>
+
+<details>
+<summary><strong>How does authentication work?</strong></summary>
+
+When you run `gemini` for the first time, it opens your browser and asks you to sign in with Google. Click through, and you're done. Your credentials are cached locally — you won't need to sign in again.
+
+That's it. No API keys to manage, no environment variables to set, no cloud console to navigate.
+
+If you're on a headless server (no browser), you can use a [Gemini API key](https://aistudio.google.com/apikey) instead, but the free tier is more limited (250 requests/day, Flash model only).
+
+</details>
+
+<details>
+<summary><strong>What counts as a "request"?</strong></summary>
+
+One message to Astra = one request in simple mode. But in agent mode (like the Architect Pattern), a single prompt can spawn multiple model calls — planning, tool use, subagent delegation. A complex fullstack build might use 50-100 requests.
+
+For most people, 1,000/day is plenty. If you're doing heavy agentic work all day, you might hit the limit. The `/stats model` command shows your current usage.
+
+</details>
+
+---
+
 ## Quick Start
 
-You only need **Node.js** installed. The setup wizard handles everything else — Gemini CLI, MCP dependencies, themes, the lot.
+You need two things: **Node.js** and a **Google account**. The setup wizard handles everything else.
 
 ```bash
 npm install -g github:jord0-cmd/astra-devkit
@@ -77,6 +124,7 @@ astra-devkit setup
 
 The setup wizard will:
 - Check for Gemini CLI and install/upgrade it if needed
+- Walk you through signing in with your Google account
 - Ask your name, experience level, and what you build
 - Deploy all skills, hooks, agents, standards, and themes
 - Detect missing MCP dependencies and offer to install them
@@ -278,6 +326,8 @@ gemini
 ```
 
 That's it. Astra is ready.
+
+On your first run, Gemini will open your browser to sign in with your Google account. This is a one-time step — after that, you're authenticated automatically. All you need is a free Google account (Gmail). No credit card, no API key. You get 1,000 AI requests per day for free.
 
 ---
 
