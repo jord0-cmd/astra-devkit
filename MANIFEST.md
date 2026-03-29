@@ -1,8 +1,8 @@
-# Gemini CLI Config Package
+# Astra DevKit v4.0 — Package Manifest
 
-**Purpose**: Portable Gemini CLI configuration for hackathon and general use.
-**Target**: Any machine with Node.js 20+ and npm (Linux, macOS, Windows 11).
-**Gemini CLI Version**: v0.36.0-preview.0+
+**Purpose**: Portable, installable Gemini CLI configuration package.
+**Target**: Any machine with Node.js 20+ (Linux, macOS, Windows).
+**Gemini CLI Version**: v0.36.0+
 
 ---
 
@@ -11,122 +11,111 @@
 ### Installers
 | File | Platform | Description |
 |------|----------|-------------|
-| `install.sh` | Linux / macOS | Bash installer — merges settings, preserves auth, installs skills/hooks |
-| `install.ps1` | Windows | PowerShell installer — same logic, Windows paths (`%USERPROFILE%\.gemini\`) |
+| `astra-devkit/` | All (npm) | `npm install -g astra-devkit` — interactive setup wizard, doctor, update |
+| `install.sh` | Linux / macOS | Bash installer — merges settings, preserves auth |
+| `install.ps1` | Windows | PowerShell installer ��� same logic, Windows paths |
 
 ### Core Config
-| File | Destination (Linux/macOS) | Destination (Windows) | Description | Status |
-|------|---------------------------|----------------------|-------------|--------|
-| `settings.json` | `~/.gemini/settings.json` | `%USERPROFILE%\.gemini\settings.json` | Main config — theme, approval mode, tools, hooks, MCP | DONE |
-| `user.json` | `~/.gemini/user.json` | `%USERPROFILE%\.gemini\user.json` | User profile — name, preferences (created on first session by Astra) | AUTO |
-| `GEMINI.md` | `~/.gemini/GEMINI.md` | `%USERPROFILE%\.gemini\GEMINI.md` | Astra persona — personality, communication, teaching style | DONE |
-| `standards/rules.md` | `~/.gemini/standards/rules.md` | `%USERPROFILE%\.gemini\standards\rules.md` | Core dev standards — 13 Rules, Confirm Protocol, Three Fix, Quality Gates | DONE |
-| `standards/testing.md` | `~/.gemini/standards/testing.md` | `%USERPROFILE%\.gemini\standards\testing.md` | TDD, test pyramid, test isolation, AI+TDD synergy | DONE |
-| `standards/hooks.md` | `~/.gemini/standards/hooks.md` | `%USERPROFILE%\.gemini\standards\hooks.md` | Hook policy — execution order, block format, precedence, escape hatches | DONE |
-| `standards/skills.md` | `~/.gemini/standards/skills.md` | `%USERPROFILE%\.gemini\standards\skills.md` | Skill compatibility matrix for common tech stacks | DONE |
+| File | Destination | Description |
+|------|-------------|-------------|
+| `settings.json` | `~/.gemini/settings.json` | Theme, hooks, MCPs, agents, skills config (merged, auth preserved) |
+| `GEMINI.md` | `~/.gemini/GEMINI.md` | Astra persona — personality, communication, teaching style |
+| `standards/rules.md` | `~/.gemini/standards/rules.md` | 21 Development Rules, Confirm Protocol, Quality Gates |
+| `standards/testing.md` | `~/.gemini/standards/testing.md` | TDD, test pyramid, test isolation, AI+TDD synergy |
+| `standards/hooks.md` | `~/.gemini/standards/hooks.md` | Hook policy — execution order, block format, escape hatches |
+| `standards/skills.md` | `~/.gemini/standards/skills.md` | Skill compatibility matrix for common tech stacks |
 
-### Skills (destination: `~/.gemini/skills/<name>/SKILL.md`)
-| Skill | Description | Status |
-|-------|-------------|--------|
-| ~~`dev-standards`~~ | ~~Moved to standards/rules.md (always-loaded via @import)~~ | DONE |
-| `python-standards` | Python standards (uv, ruff, polars, type hints, pytest, project structure) | DONE |
-| `typescript-standards` | TS/React — strict mode, type patterns, Vitest, Zustand, TanStack Query, Zod, Biome | DONE |
-| `rust-standards` | Rust — thiserror/anyhow, tokio production patterns, axum, proptest, cargo-nextest | DONE |
-| `backend-patterns` | FastAPI, SQLAlchemy 2.0, WebSocket, DI, testing, request tracing, health checks | DONE |
-| `frontend-patterns` | React 19, Zustand, TanStack Query, shadcn/ui, Tailwind, a11y, performance | DONE |
-| `integration-patterns` | OpenAPI type sync, API client, TanStack Query, WebSocket, CORS, Docker Compose | DONE |
-| `ml-ops` | PyTorch, CUDA, Docker GPU, model serving, ONNX, quantization, health checks | DONE |
-| `project-onboarding` | GEMINI.md creation, module summaries, cross-tool compatible | DONE |
-| `log-analysis` | Docker debugging, structured logging, root cause analysis, GPU/CUDA, health checks | DONE |
-| `openwebui` | OpenWebUI/Ollama API, RAG workflows, Docker deployment, troubleshooting | DONE |
-| `docker-ops` | Dockerfile best practices, Compose, multi-stage builds, security, debugging | DONE |
-| `database-patterns` | PostgreSQL, Cosmos DB, Redis, SQLAlchemy, Prisma, Alembic, query optimization | DONE |
-| `azure-ops` | App Service, Functions, Cosmos DB, Blob Storage, Key Vault, Bicep, DevOps Pipelines | DONE |
-| `kickstart` | Guided project discovery — scoping, tech stack, experience calibration, brief generation | DONE |
-| `git-github` | Git workflow, conventional commits, gh CLI, GitHub Actions CI/CD, branching, PRs, advanced Git | DONE |
-| `hooks-guide` | Hook system reference — all events, schemas, patterns, writing custom hooks | DONE |
-| ~~`image-gen`~~ | ~~Dropped — not needed for team package~~ | — |
-| ~~`code-viz`~~ | ~~Dropped — not needed for team package~~ | — |
-| ~~`regex-viz`~~ | ~~Dropped — not needed for team package~~ | — |
+### Skills (24) — `~/.gemini/skills/<name>/SKILL.md`
+| Skill | Description | New in v4 |
+|-------|-------------|-----------|
+| `kickstart` | Guided project discovery — scoping, tech stack, brief generation | |
+| `python-standards` | uv, ruff, polars, type hints, pytest, structlog | |
+| `typescript-standards` | Strict mode, Vitest, Zustand, TanStack Query, Zod, Biome | |
+| `rust-standards` | thiserror/anyhow, tokio, axum, proptest, cargo-nextest | |
+| `backend-patterns` | FastAPI, SQLAlchemy 2.0, WebSocket, DI, health checks | |
+| `frontend-patterns` | React 19, shadcn/ui, Tailwind, a11y, performance | |
+| `integration-patterns` | OpenAPI type sync, API client, CORS, Docker Compose | |
+| `database-patterns` | PostgreSQL, Cosmos DB, Redis, Prisma, Alembic | |
+| `docker-ops` | Dockerfile best practices, Compose, multi-stage builds, security | |
+| `azure-ops` | Functions, Blob Storage, Key Vault, Bicep, DevOps Pipelines | |
+| `ml-ops` | PyTorch, CUDA, Docker GPU, ONNX, model serving | |
+| `git-github` | Conventional commits, gh CLI, GitHub Actions, branching | |
+| `log-analysis` | Docker debugging, structured logging, root cause analysis | |
+| `openwebui` | OpenWebUI/Ollama API, RAG workflows | |
+| `project-onboarding` | GEMINI.md creation, module summaries | |
+| `hooks-guide` | Hook system reference for custom automation | |
+| `aag-engine` | AST-based architectural graph, drift detection | |
+| `ast-ops` | ast-grep structural code search and modification | |
+| `mutation-engine` | AST mutation testing for test quality verification | |
+| `property-testing` | Hypothesis/proptest property-based testing | |
+| `experience-replay` | Learn from past failures, pattern matching | |
+| `card-builder` | Interactive OpenWebUI card + model config generator | YES |
+| `pdf-reports` | Professional PDF reports via HTML + Pandoc MCP | YES |
+| `ollama-ops` | Local Ollama model management, VRAM budgeting | YES |
 
-### Agents (destination: `~/.gemini/agents/<name>.md`)
-| Agent | Description | Tools | Status |
-|-------|-------------|-------|--------|
-| `code-reviewer` | Reviews code for bugs, security, logic errors, standards compliance | read-only | DONE |
-| `test-writer` | Generates test suites — TDD, edge cases, all frameworks | read + write + shell | DONE |
-| `debugger` | Systematic root-cause debugging — logs, evidence, hypothesis testing | read + shell | DONE |
-| `doc-generator` | Generates module summaries, API docs, project GEMINI.md | read + write | DONE |
+### Agents (9) — `~/.gemini/agents/<name>.md`
+| Agent | Description |
+|-------|-------------|
+| `backend-builder` | Builds backend services following contract-first pattern |
+| `frontend-builder` | Builds frontend from API contract types |
+| `code-reviewer` | Bugs, security, logic, standards compliance |
+| `test-writer` | TDD test generation, all frameworks |
+| `debugger` | Systematic root-cause debugging |
+| `doc-generator` | Module summaries, API docs |
+| `contract-enforcer` | Validates API contract compliance |
+| `dx-orchestrator` | Full project orchestration — delegates to specialists |
+| `a11y-auditor` | Accessibility audit and WCAG compliance |
 
-### Hooks (destination: `~/.gemini/hooks/`, configured in settings.json)
-| Hook | Event | Description | Status |
-|------|-------|-------------|--------|
-| `secret-scanner.mjs` | `BeforeTool` (write/edit) | Blocks writes containing API keys, passwords, tokens, credentials | DONE |
-| `auto-lint.mjs` | `AfterTool` (write/edit) | Auto-formats with ruff (Python), biome (TS), rustfmt (Rust) | DONE |
-| `context-loader.mjs` | `SessionStart` | Loads user.json preferences + kickstart-refs detection | DONE |
-| `build-gate.mjs` | `AfterAgent` | Runs build/lint/type checks after coding tasks, forces retry on failure | DONE |
-| `code-standards.mjs` | `BeforeTool` (write/edit) | Blocks requirements.txt, warns on hardcoded global state | DONE |
-| `test-gate.mjs` | `BeforeTool` (write/edit) | TDD enforcement + sad path detection, gate reports | DONE |
-| `skill-preflight.mjs` | `BeforeAgent` | Detects tech keywords, nudges relevant skill activation | DONE |
+### Hooks (17) — `~/.gemini/hooks/*.mjs`
+| Hook | Event | Description |
+|------|-------|-------------|
+| `context-loader` | SessionStart | User preferences, Astra banner, kickstart state |
+| `skill-preflight` | BeforeAgent | Tech keyword detection, skill nudging |
+| `spec-mining` | BeforeAgent | Ambiguous spec detection, clarification nudging |
+| `secret-scanner` | BeforeTool | Blocks writes containing secrets |
+| `code-standards` | BeforeTool | Blocks requirements.txt, warns on hardcoded state |
+| `test-gate` | BeforeTool | TDD enforcement, sad path detection |
+| `contract-first-gate` | BeforeTool | Warns on frontend code without API contract |
+| `root-files-gate` | BeforeTool | Prevents writing to repo root |
+| `auto-lint` | AfterTool | ruff/biome/rustfmt after writes |
+| `build-gate` | AfterAgent | Build/type checks, 3-strike circuit breaker |
+| `fault-localiser` | AfterAgent | Test failure → fault capsule with causal reasoning |
+| `cegis-repair` | AfterAgent | Repeated failure tracking, counterexamples |
+| `mutation-gate` | AfterAgent | AST mutations to detect test gaps |
+| `artifact-checker` | AfterAgent | Required artifact detection |
+| `hippocampus` | AfterAgent | GEMINI.md continuity enforcement |
+| `drift-check` | AfterAgent | AAG engine drift detection |
+| `agent-telemetry` | AfterAgent | Failure signal capture for analysis |
 
----
+### MCP Servers (7) — configured in `settings.json`
+| MCP | Command | Category |
+|-----|---------|----------|
+| `context7` | `npx @upstash/context7-mcp@latest` | Coding |
+| `pandoc` | `uvx mcp-pandoc` | Documents |
+| `powerpoint` | `uvx office-powerpoint-mcp-server` | Documents |
+| `excel` | `uvx excel-mcp-server` | Documents |
+| `word-docs` | `uvx office-word-mcp-server` | Documents |
+| `gemini-image` | `npx mcp-image` | Images |
+| `playwright` | `npx @anthropic-ai/mcp-playwright` | Coding |
 
-## Install Steps
+### Themes (3) — `~/.gemini/themes/*.json`
+| Theme | Style |
+|-------|-------|
+| `astra.json` | Dark professional (GitHub-inspired) |
+| `retro-green.json` | CRT terminal (phosphor green) |
+| `retro-amber.json` | CRT terminal (warm amber) |
 
-### Linux / macOS
-```bash
-# 1. Install Gemini CLI
-npm install -g @google/gemini-cli@preview
-
-# 2. Run once to create ~/.gemini and do OAuth
-gemini
-
-# 3. Run the install script
-chmod +x install.sh && ./install.sh
-
-# Dry run (preview only):
-./install.sh --dry-run
-```
-
-### Windows (PowerShell)
-```powershell
-# 1. Install Gemini CLI
-npm install -g @google/gemini-cli@preview
-
-# 2. Run once to create ~\.gemini and do OAuth
-gemini
-
-# 3. Run the install script
-.\install.ps1
-
-# Dry run (preview only):
-.\install.ps1 -DryRun
-```
-
----
-
-## Customisation
-
-### Don't Like the Name "Astra"?
-Edit `GEMINI.md` — change the name in the first line and the closing line. The personality and standards still work regardless of what you call the AI.
-
-### Too Many Skills?
-Skills use progressive disclosure — only the name and description load until activated. They don't bloat your context. But if you want to trim, disable any skill with:
-```
-/skills disable skill-name
-```
-Or delete the skill directory from `~/.gemini/skills/`.
-
-### Want Different Loading Phrases?
-Edit `settings.json` — modify `customWittyPhrases` or set `"loadingPhrases": "off"` to disable them entirely.
-
-### Don't Want Hooks?
-Set `"hooksConfig": { "enabled": false }` in `settings.json` to disable all hooks, or remove individual hook files from `~/.gemini/hooks/`.
-
-### Want a Different Theme?
-Use `/theme` inside a Gemini session to pick from built-in themes, or edit `"ui.theme"` in `settings.json`.
-
-### Existing Config?
-The installer automatically backs up your existing `settings.json`, `GEMINI.md`, and `standards/` before making changes. Backups are saved to `~/.gemini/backup_TIMESTAMP/`.
+### npm Package — `astra-devkit/`
+| File | Purpose |
+|------|---------|
+| `bin/astra-devkit.mjs` | CLI entry point |
+| `lib/setup-wizard.mjs` | Interactive first-time setup |
+| `lib/mcp-selector.mjs` | MCP enable/disable menu |
+| `lib/theme-selector.mjs` | Theme picker |
+| `lib/doctor.mjs` | 10-point health check |
+| `lib/installer.mjs` | Component deployment + uninstall |
+| `lib/file-ops.mjs` | Cross-platform file operations |
+| `config/` | Bundled components for deployment |
 
 ---
 
@@ -134,9 +123,8 @@ The installer automatically backs up your existing `settings.json`, `GEMINI.md`,
 
 | Date | Change |
 |------|--------|
-| 2026-03-24 | Initial package creation. settings.json with Dracula theme, custom loading phrases. |
-| 2026-03-24 | Added PowerShell installer (install.ps1) for Windows support. Cross-platform package. |
-| 2026-03-24 | GEMINI.md created — Astra persona. Warm, professional, concise. 30% personality / 70% engineering discipline. |
-| 2026-03-24 | Restructured: dev standards moved from skill to standards/rules.md (@imported into GEMINI.md). Always loaded, not on-demand. Skills now purely domain-specific. |
-| 2026-03-24 | Added standards/testing.md — TDD workflow, test pyramid, AI+TDD synergy, anti-patterns. |
-| 2026-03-24 | First skill ported: python-standards. Cleaned from rayne-python, professional tone, all substance preserved. |
+| 2026-03-28 | **v4.0**: npm package (`astra-devkit`), 7 MCPs, card-builder/pdf-reports/ollama-ops skills, 3 themes, setup wizard, Astra banner |
+| 2026-03-27 | **v3.0**: Architect Pattern, contract-first, AAG engine, mutation testing, 21 rules, 9 agents, 17 hooks |
+| 2026-03-26 | Frontier testing (CLI, ETL, WebSocket, Library) — 88%+ across 4 non-CRUD domains |
+| 2026-03-25 | **v2.0**: Hooks system, TDD gates, build gates, secret scanner, 17 skills |
+| 2026-03-24 | **v1.0**: Initial release — Astra persona, standards, 4 agents, 7 hooks |
