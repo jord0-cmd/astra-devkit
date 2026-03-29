@@ -108,6 +108,19 @@ export default class Doctor extends Command {
     })
 
     this.log(`\n${passed}/${total} checks passed.\n`)
+
+    // Check for internal skill pack (informational, not a pass/fail)
+    try {
+      const result = tryExec('npm list -g astra-devkit-internal')
+      if (result.includes('astra-devkit-internal')) {
+        const version = result.match(/astra-devkit-internal@([\d.]+)/)?.[1] || 'installed'
+        this.log(`  \u2605 Internal skill pack: ${version}`)
+      }
+    } catch {
+      this.log('  \u2014 Internal skill pack: not installed (run \'astra-devkit extend\' if you have access)')
+    }
+    this.log('')
+
     if (passed === total) {
       this.log('All systems operational. You\'re good to go.\n')
     } else {
