@@ -116,8 +116,8 @@
     },
     "playwright": {
       "command": "npx",
-      "args": ["-y", "@anthropic-ai/mcp-playwright"],
-      "timeout": 30000
+      "args": ["-y", "@playwright/mcp@latest"],
+      "timeout": 60000
     }
   },
   "experimental": {
