@@ -1,7 +1,7 @@
 {
   "name": "astra-devkit",
   "version": "4.0.0",
-  "description": "AI Engineering Partner for Gemini CLI — 24 skills, 17 hooks, 9 agents, 7 MCPs, and 21 standards",
+  "description": "AI Engineering Partner for Gemini CLI — 24 skills, 17 hooks, 9 agents, 10 MCPs, and 21 standards",
   "type": "module",
   "bin": {
     "astra-devkit": "./bin/run.js"

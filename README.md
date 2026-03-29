@@ -60,7 +60,7 @@ Astra is the senior dev on your team who's sharp, approachable, and genuinely wa
 | **Skills** | 24 | On-demand expertise: Python, TypeScript, Rust, React, FastAPI, Docker, Azure, databases, PDF reports, card builder, and more |
 | **Hooks** | 17 | Automated quality gates: secret scanning, TDD enforcement, build gates, mutation testing, drift detection |
 | **Agents** | 9 | Specialist subagents: backend/frontend builders, code reviewer, debugger, test writer, contract enforcer |
-| **MCP Servers** | 7 | Context7, Pandoc, PowerPoint, Excel, Word, Gemini Imagen, Playwright |
+| **MCP Servers** | 10 | Context7, Pandoc, PowerPoint, Excel, Word, Gemini Imagen, Playwright, DBHub, MongoDB, Azure |
 | **Standards** | 21 | Always-loaded development rules — no placeholders, no shortcuts, no excuses |
 | **Themes** | 3 | Astra (dark professional), Retro Green (CRT terminal), Retro Amber (warm CRT) |
 
@@ -322,7 +322,7 @@ Astra DevKit — Health Check
   ✓ Hooks: 17 installed (OK)
   ✓ Agents: 9 installed (OK)
   ✓ Standards: 4 installed (OK)
-  ✓ Settings + MCPs: 7 MCPs, hooks ON, skills ON
+  ✓ Settings + MCPs: 10 MCPs, hooks ON, skills ON
   ✓ Themes: 3 available (OK)
   ✓ ast-grep: ast-grep 0.x.x
   ✓ Pandoc: pandoc 3.x.x
@@ -346,7 +346,7 @@ On your first run, Gemini will open your browser to sign in with your Google acc
 
 ## What's Inside
 
-### 24 Domain Skills
+### 24 Skills (Domain + Mode)
 
 Skills use progressive disclosure — only metadata loads until activated. No context bloat.
 
@@ -376,6 +376,8 @@ Skills use progressive disclosure — only metadata loads until activated. No co
 | `ast-ops` | ast-grep structural code search and modification |
 | `project-onboarding` | GEMINI.md creation, module summaries |
 | `hooks-guide` | Hook system reference for building custom automation |
+| `mentor` | **NEW** — Warm, patient mentor mode for beginners. Step-by-step guidance. |
+| `engineer` | **NEW** — Senior dev mode. Technical, direct, architecture-first. |
 
 ### 9 Specialist Agents
 
@@ -415,7 +417,7 @@ All hooks are Node.js (`.mjs`) — cross-platform, no bash/PowerShell split. The
 | `agent-telemetry` | AfterAgent | Captures failure signals and tool usage for analysis |
 | `root-files-gate` | BeforeTool | Prevents writing to repository root (forces proper project structure) |
 
-### 7 MCP Servers
+### 10 MCP Servers
 
 Model Context Protocol servers give Astra new capabilities beyond code:
 
@@ -427,7 +429,10 @@ Model Context Protocol servers give Astra new capabilities beyond code:
 | **Excel** | Documents | Create and edit spreadsheets (20 tools) | Python + uv |
 | **Word** | Documents | Create and edit rich documents | Python + uv |
 | **Gemini Imagen** | Images | AI image generation via Gemini | Node.js + `GEMINI_API_KEY` |
-| **Playwright** | Coding | Browser automation and testing | Node.js |
+| **Playwright** | Coding | Browser automation and testing (auto-installs Chromium) | Node.js |
+| **DBHub** | Databases | Multi-DB: PostgreSQL, MySQL, MariaDB, SQL Server, SQLite (read-only default) | Node.js |
+| **MongoDB** | Databases | MongoDB + Atlas — 30+ tools, official MongoDB package | Node.js |
+| **Azure** | Cloud | Full Azure tenant — Cosmos DB, SQL, Key Vault, AKS, Monitor, 40+ services | Node.js + `az login` |
 
 MCPs are selectable during setup — enable only what you need.
 
@@ -502,11 +507,11 @@ Astra DevKit — Health Check
   ✓ Node.js: v20.x.x (OK)
   ✓ Gemini CLI: 0.36.x
   ✓ Python + uv: Python 3.x.x + uv installed
-  ✓ Skills: 21 installed (OK)
+  ✓ Skills: 24 installed (OK)
   ✓ Hooks: 17 installed (OK)
   ✓ Agents: 9 installed (OK)
   ✓ Standards: 4 installed (OK)
-  ✓ Settings + MCPs: 7 MCPs, hooks ON, skills ON
+  ✓ Settings + MCPs: 10 MCPs, hooks ON, skills ON
   ✓ Themes: 3 available (OK)
   ✓ ast-grep: ast-grep 0.x.x
   ✓ Pandoc: pandoc 3.x.x
@@ -673,7 +678,7 @@ cat .astra/gate-reports.jsonl 2>/dev/null
 
 | Version | Date | Highlights |
 |---------|------|-----------|
-| **v4.0** | 2026-03-28 | npm package, 7 MCPs, card builder, PDF reports, ollama ops, 3 themes, setup wizard, 24 skills, 17 hooks |
+| **v4.0** | 2026-03-28 | oclif CLI, 10 MCPs (DBHub, MongoDB, Azure, Playwright, Office Suite, Pandoc, Context7, Imagen), mentor/engineer modes, infographic guides, desktop shortcut, 24 skills, 17 hooks |
 | **v3.0** | 2026-03-27 | Architect Pattern, contract-first, AAG engine, mutation testing, 21 rules, 9 agents |
 | **v2.0** | 2026-03-25 | Hooks system, TDD gates, build gates, secret scanner, 17 skills |
 | **v1.0** | 2026-03-24 | Initial release — persona, standards, 4 agents, 7 hooks |
