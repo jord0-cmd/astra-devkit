@@ -66,6 +66,21 @@ export default class Setup extends Command {
     this.log(BANNER)
     this.log('  AI Engineering Partner \u2014 First-Time Setup\n')
 
+    // ── Step 0: Ensure HOME is set (Windows) ───
+    if (isWin && !process.env.HOME) {
+      const userProfile = process.env.USERPROFILE
+      if (userProfile) {
+        try {
+          execSync(`powershell -NoProfile -Command "[Environment]::SetEnvironmentVariable('HOME', '${userProfile}', 'User')"`, {stdio: ['pipe', 'pipe', 'pipe']})
+          process.env.HOME = userProfile
+          this.log('  \u2713 Set HOME environment variable for cross-platform compatibility.\n')
+        } catch {
+          this.warn('Could not set HOME environment variable. Hooks may not work correctly.')
+          this.log(`  Set it manually: [Environment]::SetEnvironmentVariable('HOME', $env:USERPROFILE, 'User')\n`)
+        }
+      }
+    }
+
     // ── Step 1: Prerequisites ──────────────────
     this.log('Checking prerequisites...\n')
 

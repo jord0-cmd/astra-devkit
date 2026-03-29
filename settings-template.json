@@ -151,7 +151,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node ~/.gemini/hooks/context-loader.mjs",
+            "command": "node $HOME/.gemini/hooks/context-loader.mjs",
             "name": "astra-context-loader",
             "timeout": 5000,
             "description": "Load user preferences and project context on session start"
@@ -164,14 +164,14 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node ~/.gemini/hooks/skill-preflight.mjs",
+            "command": "node $HOME/.gemini/hooks/skill-preflight.mjs",
             "name": "astra-skill-preflight",
             "timeout": 3000,
             "description": "Detect tech keywords and nudge relevant skill activation"
           },
           {
             "type": "command",
-            "command": "node ~/.gemini/hooks/spec-mining.mjs",
+            "command": "node $HOME/.gemini/hooks/spec-mining.mjs",
             "name": "astra-spec-mining",
             "timeout": 3000,
             "description": "Detect ambiguous build specs and nudge clarifying questions before contract"
@@ -185,28 +185,28 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node ~/.gemini/hooks/secret-scanner.mjs",
+            "command": "node $HOME/.gemini/hooks/secret-scanner.mjs",
             "name": "astra-secret-scanner",
             "timeout": 5000,
             "description": "Block file writes containing secrets, API keys, or credentials"
           },
           {
             "type": "command",
-            "command": "node ~/.gemini/hooks/code-standards.mjs",
+            "command": "node $HOME/.gemini/hooks/code-standards.mjs",
             "name": "astra-code-standards",
             "timeout": 3000,
             "description": "Code standards \u2014 blocks requirements.txt, warns on hardcoded state"
           },
           {
             "type": "command",
-            "command": "node ~/.gemini/hooks/test-gate.mjs",
+            "command": "node $HOME/.gemini/hooks/test-gate.mjs",
             "name": "astra-test-gate",
             "timeout": 5000,
             "description": "TDD enforcement \u2014 blocks implementation writes when no test file exists, warns on missing sad path tests"
           },
           {
             "type": "command",
-            "command": "node ~/.gemini/hooks/contract-first-gate.mjs",
+            "command": "node $HOME/.gemini/hooks/contract-first-gate.mjs",
             "name": "astra-contract-first",
             "timeout": 3000,
             "description": "Warns when frontend code is written without an API contract in fullstack projects"
@@ -220,7 +220,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node ~/.gemini/hooks/auto-lint.mjs",
+            "command": "node $HOME/.gemini/hooks/auto-lint.mjs",
             "name": "astra-auto-lint",
             "timeout": 15000,
             "description": "Auto-format and lint files after writes (ruff, biome, rustfmt)"
@@ -233,56 +233,56 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node ~/.gemini/hooks/build-gate.mjs",
+            "command": "node $HOME/.gemini/hooks/build-gate.mjs",
             "name": "astra-build-gate",
             "timeout": 30000,
             "description": "Run build and type checks after agent completes coding tasks"
           },
           {
             "type": "command",
-            "command": "node ~/.gemini/hooks/fault-localiser.mjs",
+            "command": "node $HOME/.gemini/hooks/fault-localiser.mjs",
             "name": "astra-fault-localiser",
             "timeout": 15000,
             "description": "Parse test failures into fault capsules with causal reasoning and source file targets"
           },
           {
             "type": "command",
-            "command": "node ~/.gemini/hooks/cegis-repair.mjs",
+            "command": "node $HOME/.gemini/hooks/cegis-repair.mjs",
             "name": "astra-cegis-repair",
             "timeout": 10000,
             "description": "Track repeated test failures, provide minimal counterexamples, escalate after 3 retries"
           },
           {
             "type": "command",
-            "command": "node ~/.gemini/hooks/mutation-gate.mjs",
+            "command": "node $HOME/.gemini/hooks/mutation-gate.mjs",
             "name": "astra-mutation-gate",
             "timeout": 45000,
             "description": "Run AST mutations on critical code paths to detect test gaps"
           },
           {
             "type": "command",
-            "command": "node ~/.gemini/hooks/artifact-checker.mjs",
+            "command": "node $HOME/.gemini/hooks/artifact-checker.mjs",
             "name": "astra-artifact-checker",
             "timeout": 5000,
             "description": "Scan for required project artifacts and nudge creation of missing ones"
           },
           {
             "type": "command",
-            "command": "node ~/.gemini/hooks/hippocampus.mjs",
+            "command": "node $HOME/.gemini/hooks/hippocampus.mjs",
             "name": "astra-hippocampus",
             "timeout": 3000,
             "description": "Ensure GEMINI.md exists with required sections for session continuity"
           },
           {
             "type": "command",
-            "command": "node ~/.gemini/hooks/drift-check.mjs",
+            "command": "node $HOME/.gemini/hooks/drift-check.mjs",
             "name": "astra-drift-check",
             "timeout": 45000,
             "description": "Runs AAG engine to detect State Drift between backend and frontend after agent completes"
           },
           {
             "type": "command",
-            "command": "node ~/.gemini/hooks/agent-telemetry.mjs",
+            "command": "node $HOME/.gemini/hooks/agent-telemetry.mjs",
             "name": "astra-telemetry",
             "timeout": 5000,
             "description": "Captures failure signals and tool usage from agent responses for analysis"
