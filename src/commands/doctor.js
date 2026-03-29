@@ -89,6 +89,15 @@ export default class Doctor extends Command {
       return {ok: count >= 3, detail: `${count} available ${count >= 3 ? '(OK)' : '(expected 3)'}`}
     })
 
+    check('ast-grep', () => {
+      try {
+        const version = tryExec('sg --version')
+        return {ok: true, detail: version}
+      } catch {
+        return {ok: false, detail: 'not found \u2014 needed for AAG engine and mutation testing'}
+      }
+    })
+
     check('Pandoc', () => {
       try {
         const raw = tryExec('pandoc --version')
