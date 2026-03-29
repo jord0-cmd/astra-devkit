@@ -257,39 +257,43 @@ export default class Setup extends Command {
     const iconSrc = join(this.config.root, 'docs', 'images', 'astra-icon.ico')
     const iconDest = join(homedir(), '.gemini', 'astra-icon.ico')
 
-    if (existsSync(iconSrc)) {
-      const {copyFileSync} = await import('node:fs')
-      copyFileSync(iconSrc, iconDest)
+    try {
+      if (existsSync(iconSrc)) {
+        const {copyFileSync: cpFile} = await import('node:fs')
+        cpFile(iconSrc, iconDest)
+        this.log(`  \u2713 Icon copied to ${iconDest}`)
+      } else {
+        this.log(`  \u26a0 Icon not found at ${iconSrc}`)
+      }
+    } catch (err) {
+      this.log(`  \u26a0 Could not copy icon: ${err.message}`)
     }
 
     // Build PowerShell command to create a .lnk shortcut
+    // Uses PowerShell 5.1 compatible syntax (no ?. or ?? operators)
     const desktopPath = join(homedir(), 'Desktop')
     const shortcutPath = join(desktopPath, 'Astra.lnk')
 
-    // Use wt (Windows Terminal) to launch gemini
-    // Falls back to cmd if wt isn't available
     const ps = `
-$ws = New-Object -ComObject WScript.Shell
-$sc = $ws.CreateShortcut('${shortcutPath.replace(/'/g, "''")}')
-$sc.TargetPath = (Get-Command wt -ErrorAction SilentlyContinue)?.Source ?? 'cmd.exe'
-if ($sc.TargetPath -like '*wt*') {
-  $sc.Arguments = '-p "Command Prompt" cmd /k gemini'
-} else {
-  $sc.Arguments = '/k gemini'
-}
-$sc.WorkingDirectory = '%USERPROFILE%'
-$iconPath = '${iconDest.replace(/'/g, "''")}'
-if (Test-Path $iconPath) { $sc.IconLocation = $iconPath }
-$sc.Description = 'Astra DevKit - AI Engineering Partner'
+$ws = New-Object -ComObject WScript.Shell;
+$sc = $ws.CreateShortcut('${shortcutPath.replace(/\\/g, '\\\\').replace(/'/g, "''")}');
+$wtCmd = Get-Command wt -ErrorAction SilentlyContinue;
+if ($wtCmd) { $sc.TargetPath = $wtCmd.Source; $sc.Arguments = '-p "Command Prompt" cmd /k gemini' }
+else { $sc.TargetPath = 'cmd.exe'; $sc.Arguments = '/k gemini' };
+$sc.WorkingDirectory = $env:USERPROFILE;
+$iconFile = '${iconDest.replace(/\\/g, '\\\\').replace(/'/g, "''")}';
+if (Test-Path $iconFile) { $sc.IconLocation = $iconFile };
+$sc.Description = 'Astra DevKit - AI Engineering Partner';
 $sc.Save()
-`.trim().replace(/\n/g, '; ')
+`.trim().replace(/\n/g, ' ')
 
     try {
-      execSync(`powershell -NoProfile -Command "${ps}"`, {stdio: ['pipe', 'pipe', 'pipe']})
-      this.log('\n  \u2713 Desktop shortcut created! Look for "Astra" on your desktop.\n')
+      execSync(`powershell -NoProfile -Command "${ps}"`, {encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe']})
+      this.log(`  \u2713 Desktop shortcut created! Look for "Astra" on your desktop.\n`)
     } catch (err) {
-      this.warn('Could not create desktop shortcut automatically.')
-      this.log('  You can create one manually: right-click Desktop → New → Shortcut')
+      const stderr = err.stderr || err.message || 'unknown error'
+      this.warn(`Could not create desktop shortcut: ${stderr.trim()}`)
+      this.log('  You can create one manually: right-click Desktop \u2192 New \u2192 Shortcut')
       this.log('  Target: wt -p "Command Prompt" cmd /k gemini')
       this.log(`  Icon: ${iconDest}\n`)
     }
