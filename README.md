@@ -3,10 +3,6 @@
 </p>
 
 <p align="center">
-  <img src="docs/images/astra-icon.png" width="80" alt="Astra Icon">
-</p>
-
-<p align="center">
   <img src="https://img.shields.io/badge/version-4.0.0-blue?style=for-the-badge" alt="Version">
   <img src="https://img.shields.io/badge/node-20+-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js">
   <img src="https://img.shields.io/badge/Gemini_CLI-0.36+-4285F4?style=for-the-badge&logo=google&logoColor=white" alt="Gemini CLI">
