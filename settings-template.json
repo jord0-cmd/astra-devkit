@@ -141,8 +141,7 @@
       "args": [
         "-y",
         "@bytebase/dbhub@latest",
-        "--transport", "stdio",
-        "--readonly"
+        "--transport", "stdio"
       ],
       "timeout": 30000
     },

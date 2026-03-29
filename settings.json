@@ -121,8 +121,11 @@
     },
     "dbhub": {
       "command": "npx",
-      "args": ["-y", "@bytebase/dbhub@latest", "--transport", "stdio", "--readonly"],
-      "timeout": 30000
+      "args": ["-y", "@bytebase/dbhub@latest", "--transport", "stdio"],
+      "timeout": 30000,
+      "env": {
+        "DSN": "postgres://user:password@localhost:5432/mydb"
+      }
     },
     "mongodb": {
       "command": "npx",
