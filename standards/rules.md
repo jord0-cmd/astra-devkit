@@ -143,7 +143,14 @@ All frontend code MUST include accessibility attributes — this is not optional
 - Examples: data migration scripts, custom validators, format converters, test data generators, CSV parsers
 - A purpose-built script beats a generic workaround every time
 
-### 21. Build at Project Root
+### 21. No Interactive Package Commands
+- NEVER run `npm create`, `npm init`, `npx create-*`, `npm install`, `pip install`, `uv pip install`, or `uv add` via shell
+- These commands hang on interactive prompts (TTY) that you cannot answer
+- Instead: write `package.json`, `pyproject.toml`, `tsconfig.json`, `vite.config.ts` directly as files
+- The user will run `npm install` / `uv sync` after your work is complete
+- This applies to YOU and to any agent you delegate to
+
+### 22. Build at Project Root
 - ALL files and directories must be created in the current working directory root (`./`)
 - DO NOT wrap the project in a nested top-level directory named after the project
 - If asked to "build X", create `src/`, `tests/`, `pyproject.toml` etc at `./`, NOT inside `./X/`

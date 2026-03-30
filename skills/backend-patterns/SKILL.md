@@ -25,7 +25,8 @@ These rules override tutorial defaults. Follow them exactly.
 
 ### Testing (Non-negotiable)
 - ALWAYS use **in-memory fakes** implementing the Protocol interfaces for testing
-- NEVER use `mock.patch`, `MagicMock`, or `AsyncMock`
+- NEVER use `mock.patch`, `MagicMock`, `AsyncMock`, or `unittest.mock` in any form
+- For SDK/client objects: create Protocol-based fakes that return test data, NOT mocks
 - ALWAYS include sad path tests (404, 422, validation errors)
 - Write tests BEFORE implementation code (TDD)
 
