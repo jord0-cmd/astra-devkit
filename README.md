@@ -178,6 +178,9 @@ You'll see the Astra banner, and she'll introduce herself.
 
 Node.js is the only thing you need to install manually. It comes with `npm` (the package manager) built in.
 
+> **Linux / macOS: we strongly recommend `nvm`.**
+> System node (installed via `apt`, `snap`, or some `brew` setups) points npm's global prefix at `/usr/local`, which is owned by root. Every `npm install -g ...` then needs `sudo` — including the one this wizard runs to install Gemini CLI. Using **nvm** puts node under your home directory so global installs live in user space and never need `sudo`. Setup will still walk you through an interactive fix if you hit this wall with system node, but starting with nvm is the cleanest path.
+
 <details>
 <summary><strong>Windows</strong></summary>
 
@@ -228,20 +231,22 @@ nvm install 20
 <details>
 <summary><strong>Linux (Ubuntu / Debian)</strong></summary>
 
-**Option A: NodeSource repository (recommended)**
-
-```bash
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt install -y nodejs
-```
-
-**Option B: Using nvm**
+**Option A: nvm (recommended — avoids sudo for all npm -g installs)**
 
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 source ~/.bashrc
 nvm install 20
 ```
+
+**Option B: NodeSource repository**
+
+```bash
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt install -y nodejs
+```
+
+> If you go with NodeSource or Snap, `npm install -g` will hit permission errors because node's global prefix lives under `/usr/local`. The Astra setup wizard will detect this and walk you through the fix — either (a) switch to a user-local prefix (`~/.npm-global`), (b) use `sudo` for that one install, or (c) skip.
 
 **Option C: Snap**
 
