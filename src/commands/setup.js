@@ -5,6 +5,7 @@ import {join} from 'node:path'
 import {homedir, platform} from 'node:os'
 import {execSync} from 'node:child_process'
 import {deployComponent, mergeSettings, ensureDir, assemblePersona} from '../../lib/file-ops.mjs'
+import {configureUserNpmPrefix, npmGlobalStatus} from '../../lib/npm-prefix.mjs'
 
 const GEMINI_HOME = join(homedir(), '.gemini')
 const isWin = platform() === 'win32'
@@ -411,7 +412,7 @@ $sc2.Save()
       })
 
       if (install) {
-        this.#installGeminiCli()
+        await this.#installGeminiCli()
       } else {
         this.warn('Gemini CLI is required. Install manually: npm install -g @google/gemini-cli@preview')
         this.warn('Then run this setup again.\n')
@@ -432,7 +433,7 @@ $sc2.Save()
       })
 
       if (upgrade) {
-        this.#installGeminiCli()
+        await this.#installGeminiCli()
       } else {
         this.warn('Some features may not work with an older Gemini CLI version.')
       }
@@ -449,23 +450,87 @@ $sc2.Save()
       })
 
       if (upgrade) {
-        this.#installGeminiCli()
+        await this.#installGeminiCli()
       }
     }
   }
 
   /**
-   * Install or upgrade Gemini CLI via npm.
+   * Install or upgrade Gemini CLI via npm. Pre-flights the npm global
+   * prefix: if it isn't writable by the current user (the common case
+   * on Debian/Ubuntu where system node points at /usr/local), prompt
+   * with three options before attempting the install.
    */
-  #installGeminiCli() {
-    this.log(`\n  Installing ${GEMINI_NPM_PACKAGE}@${GEMINI_INSTALL_TAG}...\n`)
+  async #installGeminiCli() {
+    const pkg = `${GEMINI_NPM_PACKAGE}@${GEMINI_INSTALL_TAG}`
+
+    // Windows manages global installs per-user by default; skip the check.
+    if (!isWin) {
+      const status = npmGlobalStatus()
+      if (status.prefix && !status.writable) {
+        this.log('')
+        this.log(`  \u26a0  npm global prefix (${status.prefix}) isn't writable by this user.`)
+        this.log('     This is common when node was installed system-wide (apt/brew).')
+        this.log('')
+
+        const choice = await select({
+          message: 'How would you like to proceed?',
+          default: 'user-prefix',
+          choices: [
+            {
+              name: 'Configure user-local prefix (~/.npm-global) — recommended, no sudo',
+              value: 'user-prefix',
+              description: 'Writes ~/.npmrc and appends a PATH line to your shell rc.',
+            },
+            {
+              name: 'Use sudo for this one install',
+              value: 'sudo',
+              description: 'Runs `sudo npm install -g ...` — you will be prompted for your password.',
+            },
+            {
+              name: 'Skip — I\'ll install Gemini CLI manually',
+              value: 'skip',
+            },
+          ],
+        })
+
+        if (choice === 'user-prefix') {
+          try {
+            const {prefix, prefixBin, rcPath} = configureUserNpmPrefix()
+            this.log(`  \u2713 Set npm prefix to ${prefix}`)
+            this.log(`  \u2713 Added ${prefixBin} to PATH in ${rcPath}`)
+            this.log('    (already active for this install; new shells will pick it up automatically)\n')
+          } catch (err) {
+            this.warn(`Could not configure user-local prefix: ${err.message}`)
+            this.warn(`Install manually: npm install -g ${pkg}`)
+            return
+          }
+        } else if (choice === 'sudo') {
+          this.log(`\n  Installing ${pkg} with sudo...\n`)
+          try {
+            execSync(`sudo npm install -g ${pkg}`, {stdio: 'inherit'})
+            const newVersion = tryExec('gemini --version')
+            this.log(`\n  \u2713 Gemini CLI ${newVersion} installed.\n`)
+          } catch {
+            this.warn('sudo install failed.')
+            this.warn(`Install manually: sudo npm install -g ${pkg}`)
+          }
+          return
+        } else {
+          this.warn(`Install manually when ready: npm install -g ${pkg}`)
+          return
+        }
+      }
+    }
+
+    this.log(`\n  Installing ${pkg}...\n`)
     try {
-      execSync(`npm install -g ${GEMINI_NPM_PACKAGE}@${GEMINI_INSTALL_TAG}`, {stdio: 'inherit'})
+      execSync(`npm install -g ${pkg}`, {stdio: 'inherit'})
       const newVersion = tryExec('gemini --version')
       this.log(`\n  \u2713 Gemini CLI ${newVersion} installed.\n`)
     } catch {
       this.warn('Failed to install Gemini CLI automatically.')
-      this.warn(`Install manually: npm install -g ${GEMINI_NPM_PACKAGE}@${GEMINI_INSTALL_TAG}`)
+      this.warn(`Install manually: npm install -g ${pkg}`)
     }
   }
 }

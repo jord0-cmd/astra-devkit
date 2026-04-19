@@ -15,10 +15,11 @@ import {
   readdirSync, statSync, rmSync,
 } from "node:fs";
 import { join, dirname, resolve } from "node:path";
-import { homedir } from "node:os";
+import { homedir, platform } from "node:os";
 import { execSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { createInterface } from "node:readline";
+import { configureUserNpmPrefix, npmGlobalStatus } from "../lib/npm-prefix.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -60,6 +61,60 @@ function compareVersions(a, b) {
     if ((pa[i] || 0) < (pb[i] || 0)) return -1;
   }
   return 0;
+}
+
+/**
+ * Run `npm install -g <pkg>` with pre-flight permission check.
+ * If the npm global prefix isn't writable, prompt the user with three
+ * options: configure user-local prefix, retry with sudo, or skip.
+ *
+ * @returns {boolean} true on success, false otherwise
+ */
+async function npmInstallGlobal(pkg) {
+  if (platform() !== "win32") {
+    const status = npmGlobalStatus();
+    if (status.prefix && !status.writable) {
+      warn(`npm global prefix (${status.prefix}) isn't writable by this user.`);
+      log("This is common when node was installed system-wide (apt/brew).");
+      log("");
+      log("  [1] Configure user-local prefix (~/.npm-global) — recommended, no sudo");
+      log("  [2] Use sudo for this one install");
+      log("  [3] Skip (I'll install manually)");
+      const pick = await ask("Choose [1/2/3]:");
+      if (pick === "1" || pick === "" || pick === "y" || pick === "yes") {
+        try {
+          const { prefix, prefixBin, rcPath } = configureUserNpmPrefix();
+          success(`Set npm prefix to ${prefix}`);
+          success(`Added ${prefixBin} to PATH in ${rcPath}`);
+          log("(active for this install; new shells will pick it up automatically)");
+        } catch (err) {
+          error(`Could not configure user-local prefix: ${err.message}`);
+          log(`Install manually: npm install -g ${pkg}`);
+          return false;
+        }
+      } else if (pick === "2") {
+        log(`Installing ${pkg} with sudo...`);
+        try {
+          execSync(`sudo npm install -g ${pkg}`, { stdio: "inherit", timeout: 120000 });
+          return true;
+        } catch {
+          error("sudo install failed.");
+          log(`Install manually: sudo npm install -g ${pkg}`);
+          return false;
+        }
+      } else {
+        log(`Install manually when ready: npm install -g ${pkg}`);
+        return false;
+      }
+    }
+  }
+
+  try {
+    execSync(`npm install -g ${pkg}`, { stdio: "inherit", timeout: 120000 });
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 // --- Environment Checks ---
@@ -178,11 +233,8 @@ if (!geminiInfo.installed) {
   }
 
   log("Installing Gemini CLI (this may take a minute)...");
-  try {
-    execSync("npm install -g @google/gemini-cli@preview", {
-      stdio: "inherit",
-      timeout: 120000,
-    });
+  const installed = await npmInstallGlobal("@google/gemini-cli@preview");
+  if (installed) {
     const check = checkGeminiCli();
     if (check.installed) {
       success(`Gemini CLI v${check.version} installed`);
@@ -190,7 +242,7 @@ if (!geminiInfo.installed) {
       error("Installation completed but 'gemini' command not found. Check your PATH.");
       process.exit(1);
     }
-  } catch {
+  } else {
     error("Failed to install Gemini CLI.");
     log("Try manually: npm install -g @google/gemini-cli@preview");
     process.exit(1);
@@ -204,14 +256,11 @@ if (!geminiInfo.installed) {
     const answer = await ask("Upgrade Gemini CLI? (yes/no)");
     if (answer === "yes" || answer === "y") {
       log("Upgrading...");
-      try {
-        execSync("npm install -g @google/gemini-cli@preview", {
-          stdio: "inherit",
-          timeout: 120000,
-        });
+      const upgraded = await npmInstallGlobal("@google/gemini-cli@preview");
+      if (upgraded) {
         const check = checkGeminiCli();
         success(`Upgraded to v${check.version}`);
-      } catch {
+      } else {
         warn("Upgrade failed. Continuing with current version.");
       }
     }
