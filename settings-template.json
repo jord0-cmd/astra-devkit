@@ -398,7 +398,7 @@
         "POSTGRES_PORT": "5432",
         "POSTGRES_DATABASE": "mydb",
         "POSTGRES_USER": "myuser",
-        "POSTGRES_PASSWORD": "mypassword"
+        "POSTGRES_PASSWORD": "$POSTGRES_PASSWORD"
       }
     },
     "docker": {
