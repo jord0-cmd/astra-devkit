@@ -149,7 +149,6 @@ export default class Setup extends Command {
 
     let experience = 'beginner'
     let focus = 'everything'
-    const baseWorkspace = join(homedir(), 'AstraProjects')
 
     if (mode === 'code') {
       // Code path — ask experience level
@@ -191,7 +190,6 @@ export default class Setup extends Command {
         focus,
         primary_language: 'en',
       },
-      workspace: mode === 'office' ? join(baseWorkspace, 'Office') : baseWorkspace,
       created: new Date().toISOString(),
       devkit_version: this.config.version,
     }
@@ -281,12 +279,10 @@ export default class Setup extends Command {
     this.log(`  Run '${this.config.bin} doctor' to verify everything.`)
     this.log(`  Run '${this.config.bin} guide beginner' for the visual quick-start.\n`)
 
-    // ── Step 8: Desktop shortcut (Windows only) ──
-    if (isWin) {
-      await this.#offerDesktopShortcut()
-    }
+    // ── Step 8: Launch ─────────────────────────
+    // Desktop shortcut creation removed in v4.1.1 — astra-devkit no longer imposes a
+    // working directory. Users launch from their project terminal where they already are.
 
-    // ── Step 9: Launch ─────────────────────────
     const launchNow = await confirm({
       message: 'Launch Astra now?',
       default: true,

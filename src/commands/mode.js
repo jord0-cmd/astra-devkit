@@ -57,9 +57,8 @@ export default class Mode extends Command {
     // Update mode in user.json
     userData.mode = args.mode
 
-    // Update workspace
-    const baseWorkspace = join(homedir(), 'AstraProjects')
-    userData.workspace = args.mode === 'office' ? join(baseWorkspace, 'Office') : baseWorkspace
+    // Workspace assignment removed in v4.1.1 — astra-devkit no longer imposes a
+    // project location. Mode is purely a behaviour switch (code vs office persona).
 
     // Update explanation depth
     if (args.mode === 'office') {
