@@ -224,13 +224,6 @@ export default class Setup extends Command {
       this.log(`  \u26a0 Persona assembly: ${personaResult.error}`)
     }
 
-    // ── Step 5c: Create workspace folder ──────
-    const workspace = userProfile.workspace
-    if (!existsSync(workspace)) {
-      ensureDir(workspace)
-    }
-    this.log(`  \u2713 Workspace: ${workspace}\n`)
-
     // ── Step 6: MCP Configuration ──────────────
     if (mode === 'office') {
       this.log('Setting up your tools...\n')
