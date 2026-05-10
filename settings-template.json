@@ -383,24 +383,6 @@
       ],
       "timeout": 60000
     },
-    "database": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@toolbox-sdk/server",
-        "--prebuilt",
-        "postgres",
-        "--stdio"
-      ],
-      "timeout": 60000,
-      "env": {
-        "POSTGRES_HOST": "localhost",
-        "POSTGRES_PORT": "5432",
-        "POSTGRES_DATABASE": "mydb",
-        "POSTGRES_USER": "myuser",
-        "POSTGRES_PASSWORD": "$POSTGRES_PASSWORD"
-      }
-    },
     "docker": {
       "command": "uvx",
       "args": [
@@ -416,6 +398,24 @@
         "server",
         "start"
       ],
+      "timeout": 60000
+    },
+    "bigquery": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@toolbox-sdk/server",
+        "--prebuilt",
+        "bigquery",
+        "--prebuilt",
+        "cloud-storage",
+        "--stdio"
+      ],
+      "env": {
+        "BIGQUERY_PROJECT": "$GOOGLE_CLOUD_PROJECT",
+        "BIGQUERY_LOCATION": "$GOOGLE_CLOUD_LOCATION",
+        "CLOUD_STORAGE_PROJECT": "$GOOGLE_CLOUD_PROJECT"
+      },
       "timeout": 60000
     }
   },
@@ -478,14 +478,14 @@
             "command": "node $HOME/.gemini/hooks/code-standards.mjs",
             "name": "astra-code-standards",
             "timeout": 3000,
-            "description": "Code standards \u2014 blocks requirements.txt, warns on hardcoded state"
+            "description": "Code standards — blocks requirements.txt, warns on hardcoded state"
           },
           {
             "type": "command",
             "command": "node $HOME/.gemini/hooks/test-gate.mjs",
             "name": "astra-test-gate",
             "timeout": 5000,
-            "description": "TDD enforcement \u2014 blocks implementation writes when no test file exists, warns on missing sad path tests"
+            "description": "TDD enforcement — blocks implementation writes when no test file exists, warns on missing sad path tests"
           },
           {
             "type": "command",
