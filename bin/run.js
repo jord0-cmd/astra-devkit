@@ -19,24 +19,16 @@ if (args.length === 0) {
     console.log('\n  First time? Let\'s get you set up.\n')
     await execute({dir: import.meta.url, args: ['setup']})
   } else {
-    // Already set up — launch Gemini in the workspace folder
-    let workspace = join(homedir(), 'AstraProjects')
-
-    // Read user config for mode and workspace
+    // Already set up — launch Gemini in the CURRENT directory.
+    // (v4.0.5: removed forced chdir to ~/AstraProjects — astra-devkit no longer
+    // imposes a working directory; Astra runs from wherever the user is.)
     let mode = 'code'
     try {
       const userData = JSON.parse(readFileSync(join(GEMINI_HOME, 'user.json'), 'utf-8'))
-      if (userData.workspace) workspace = userData.workspace
       if (userData.mode) mode = userData.mode
     } catch {}
 
-    // Ensure workspace exists
-    if (!existsSync(workspace)) {
-      mkdirSync(workspace, {recursive: true})
-    }
-
-    // Change to workspace before launching Gemini
-    process.chdir(workspace)
+    const workspace = process.cwd()
     const modeLabel = mode === 'office' ? 'Office Mode' : 'Code Mode'
 
     // Check for internal pack
@@ -58,7 +50,7 @@ if (args.length === 0) {
     console.log(`  ${modeLabel} \u00b7 ${workspace}`)
     console.log('')
     try {
-      execSync('gemini', {stdio: 'inherit', cwd: workspace})
+      execSync('gemini', {stdio: 'inherit'})   // inherits current cwd, no override
     } catch {
       // Normal exit from Gemini (Ctrl+C) throws — that's fine
     }
