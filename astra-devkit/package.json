@@ -1,6 +1,6 @@
 {
   "name": "astra-devkit",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "AI Engineering Partner for Gemini CLI — skills, hooks, agents, MCPs, and themes",
   "type": "module",
   "bin": {
