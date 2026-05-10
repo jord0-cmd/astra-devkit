@@ -582,6 +582,90 @@ Use path aliases (`@/`) to avoid `../../../` imports.
 
 ---
 
+## Common Hallucinations to Avoid
+
+Real bugs from real production builds. Each of these has bitten:
+
+### Comment syntax — `//` and `/* */` ONLY
+
+TypeScript is NOT Python. NOT shell. The `#` character is **NOT a comment**. The compiler will parse `# foo` as an identifier and crash svelte-check / tsc with confusing errors.
+
+```typescript
+// CORRECT
+/* CORRECT */
+
+# WRONG — parser sees "# foo" as an expression, fails
+```
+
+If the surrounding project is Python-heavy, the muscle memory is dangerous. Comment syntax is **per-file-language**, not per-project.
+
+### Testing-library API — names you can verify, names you cannot
+
+The valid query names for `@testing-library/react`, `@testing-library/svelte`, `@testing-library/dom`, etc. are a closed set. Models hallucinate plausible-sounding names that don't exist. Memorise the real ones:
+
+**Real (use these)**:
+- `getByRole`, `findByRole`, `queryByRole`, `getAllByRole`, etc.
+- `getByText`
+- `getByLabelText`
+- `getByPlaceholderText`
+- `getByDisplayValue`
+- `getByAltText`
+- `getByTitle`
+- `getByTestId`
+
+**Hallucinations (do NOT write these — they don't exist)**:
+- ❌ `getByLabelAttribute`
+- ❌ `getByLabel`
+- ❌ `getByLabelFor`
+- ❌ `getByName`
+- ❌ `getByAriaLabel`
+
+The plural `getAllBy*`, async `findBy*`, and silent-failing `queryBy*` variants exist for every real query above. Plurals don't exist for hallucinated ones.
+
+### Svelte component caveats (when writing `.svelte` files)
+
+If you're touching Svelte components in addition to plain TypeScript, see the `sveltekit` skill for the runes lifecycle and preprocessor traps. Two highlights worth repeating here:
+
+1. **`<script lang="ts">` is mandatory** for TypeScript in Svelte components. Without it, types are silently stripped at compile time.
+
+2. **The Svelte preprocessor parses HTML-looking strings** even inside JavaScript comments. Literal `<style>` text inside a JS comment can confuse the parser:
+
+   ```ts
+   // BAD — preprocessor sees "<style>" in this comment and breaks CSS output
+   const example = "// see <style>color: red</style>";
+
+   // FIX — split the angle-brackets:
+   const example = "// see <" + "style>color: red</" + "style>";
+   ```
+
+3. **`verbatimModuleSyntax: true`** (default in SvelteKit 2 generated tsconfig) requires `import type` for type-only imports. Mixed value+type imports fail svelte-check with `'X' is a type and must be imported using a type-only import`.
+
+   ```typescript
+   // WRONG
+   import { ScanResult, fetchScan } from '$lib/api';
+   // CORRECT
+   import { fetchScan } from '$lib/api';
+   import type { ScanResult } from '$lib/api';
+   ```
+
+### Canvas-rendered libraries are NOT styled with CSS
+
+If a library renders to `<canvas>` (force-graph, three.js, pixi.js, fabric.js, konva), CSS does NOT reach inside the canvas. No `box-shadow`, no `border-radius`, no Tailwind classes on shapes. Every visual is a `ctx.*` call inside a render callback.
+
+Common mistake — passing CSS property strings to a canvas-renderer:
+
+```ts
+// BAD — Cytoscape's canvas renderer doesn't know what 'box-shadow' is
+{ selector: 'node.flagged', style: { 'box-shadow': '0 0 10px cyan' } }
+
+// In Cytoscape, the right keys are overlay-* (canvas-rendered), not shadow-*
+{ selector: 'node.flagged', style: { 'overlay-color': 'cyan', 'overlay-padding': 10, 'overlay-opacity': 0.6 } }
+```
+
+For force-graph, write a `nodeCanvasObject` callback and use `ctx.createRadialGradient` for halos. See the `force-graph` skill.
+
+---
+
 ## Pre-Commit Checklist
 
 Before committing TypeScript code:
@@ -602,6 +686,10 @@ Manual checks:
 - [ ] Hooks are never called conditionally
 - [ ] Error boundaries wrap major sections
 - [ ] API responses are validated (Zod)
+- [ ] No `#` comments — TypeScript uses `//` and `/* */` only
+- [ ] All testing-library queries use real names (no `getByLabelAttribute` etc.)
+- [ ] In `.svelte` files: `<script lang="ts">`, `import type` for types, no literal HTML in JS comments
+- [ ] Canvas-rendered libraries use their native API (e.g. `nodeCanvasObject` for force-graph), not CSS properties
 
 ---
 

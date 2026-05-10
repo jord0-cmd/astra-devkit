@@ -25,33 +25,36 @@
 | `standards/hooks.md` | `~/.gemini/standards/hooks.md` | Hook policy — execution order, block format, escape hatches |
 | `standards/skills.md` | `~/.gemini/standards/skills.md` | Skill compatibility matrix for common tech stacks |
 
-### Skills (24) — `~/.gemini/skills/<name>/SKILL.md`
-| Skill | Description | New in v4 |
-|-------|-------------|-----------|
-| `kickstart` | Guided project discovery — scoping, tech stack, brief generation | |
-| `python-standards` | uv, ruff, polars, type hints, pytest, structlog | |
-| `typescript-standards` | Strict mode, Vitest, Zustand, TanStack Query, Zod, Biome | |
-| `rust-standards` | thiserror/anyhow, tokio, axum, proptest, cargo-nextest | |
-| `backend-patterns` | FastAPI, SQLAlchemy 2.0, WebSocket, DI, health checks | |
-| `frontend-patterns` | React 19, shadcn/ui, Tailwind, a11y, performance | |
-| `integration-patterns` | OpenAPI type sync, API client, CORS, Docker Compose | |
-| `database-patterns` | PostgreSQL, Cosmos DB, Redis, Prisma, Alembic | |
-| `docker-ops` | Dockerfile best practices, Compose, multi-stage builds, security | |
-| `azure-ops` | Functions, Blob Storage, Key Vault, Bicep, DevOps Pipelines | |
-| `ml-ops` | PyTorch, CUDA, Docker GPU, ONNX, model serving | |
-| `git-github` | Conventional commits, gh CLI, GitHub Actions, branching | |
-| `log-analysis` | Docker debugging, structured logging, root cause analysis | |
-| `openwebui` | OpenWebUI/Ollama API, RAG workflows | |
-| `project-onboarding` | GEMINI.md creation, module summaries | |
-| `hooks-guide` | Hook system reference for custom automation | |
-| `aag-engine` | AST-based architectural graph, drift detection | |
-| `ast-ops` | ast-grep structural code search and modification | |
-| `mutation-engine` | AST mutation testing for test quality verification | |
-| `property-testing` | Hypothesis/proptest property-based testing | |
-| `experience-replay` | Learn from past failures, pattern matching | |
-| `card-builder` | Interactive OpenWebUI card + model config generator | YES |
-| `pdf-reports` | Professional PDF reports via HTML + Pandoc MCP | YES |
-| `ollama-ops` | Local Ollama model management, VRAM budgeting | YES |
+### Skills (27) — `~/.gemini/skills/<name>/SKILL.md`
+| Skill | Description | New in v4 | New in v4.1 |
+|-------|-------------|-----------|-------------|
+| `kickstart` | Guided project discovery — scoping, tech stack, brief generation | | |
+| `python-standards` | uv, ruff, polars, type hints, pytest, structlog | | |
+| `typescript-standards` | Strict mode, Vitest, Zustand, TanStack Query, Zod, Biome — plus hallucination guards (testing-library names, `#`-comments, Svelte preprocessor) | | UPDATED |
+| `rust-standards` | thiserror/anyhow, tokio, axum, proptest, cargo-nextest | | |
+| `backend-patterns` | FastAPI, SQLAlchemy 2.0, WebSocket, DI, health checks | | |
+| `frontend-patterns` | React 19, shadcn/ui, Tailwind, a11y, performance | | |
+| `integration-patterns` | OpenAPI type sync, API client, CORS, Docker Compose | | |
+| `database-patterns` | PostgreSQL, Cosmos DB, Redis, Prisma, Alembic | | |
+| `docker-ops` | Dockerfile best practices, Compose, multi-stage builds, security | | |
+| `azure-ops` | Functions, Blob Storage, Key Vault, Bicep, DevOps Pipelines | | |
+| `gcp-ops` | BigQuery (recursive CTEs, procedural LOOP), Vertex AI Gemini 2.5 Pro on regional endpoint, Cloud Run gen2, IAM, `northamerica-northeast1` residency, `_clean_schema` shim | | YES |
+| `ml-ops` | PyTorch, CUDA, Docker GPU, ONNX, model serving | | |
+| `git-github` | Conventional commits, gh CLI, GitHub Actions, branching | | |
+| `log-analysis` | Docker debugging, structured logging, root cause analysis | | |
+| `openwebui` | OpenWebUI/Ollama API, RAG workflows | | |
+| `project-onboarding` | GEMINI.md creation, module summaries | | |
+| `hooks-guide` | Hook system reference for custom automation | | |
+| `aag-engine` | AST-based architectural graph, drift detection | | |
+| `ast-ops` | ast-grep structural code search and modification | | |
+| `mutation-engine` | AST mutation testing for test quality verification | | |
+| `property-testing` | Hypothesis/proptest property-based testing | | |
+| `experience-replay` | Learn from past failures, pattern matching | | |
+| `card-builder` | Interactive OpenWebUI card + model config generator | YES | |
+| `pdf-reports` | Professional PDF reports via HTML + Pandoc MCP | YES | |
+| `ollama-ops` | Local Ollama model management, VRAM budgeting | YES | |
+| `force-graph` | Vasturiano canvas-based force-directed graph viz, Svelte 5 lifecycle, cinematic patterns (halos, pulse rings, money-flow particles), `zoomToFit` with cluster filter | | YES |
+| `sveltekit` | Svelte 5 runes (`$state`/`$derived`/`$effect`/`$props`), SvelteKit 2.x project structure, load functions, `verbatimModuleSyntax`, browser-only library mounting, `adapter-node` Cloud Run deploy | | YES |
 
 ### Agents (9) — `~/.gemini/agents/<name>.md`
 | Agent | Description |
@@ -123,6 +126,7 @@
 
 | Date | Change |
 |------|--------|
+| 2026-05-09 | **v4.1**: Added `force-graph`, `sveltekit`, `gcp-ops` skills (27 total). Updated `typescript-standards` with testing-library hallucination guards, `#`-comment warning, Svelte preprocessor pitfall, canvas-not-CSS rule. |
 | 2026-03-28 | **v4.0**: npm package (`astra-devkit`), 7 MCPs, card-builder/pdf-reports/ollama-ops skills, 3 themes, setup wizard, Astra banner |
 | 2026-03-27 | **v3.0**: Architect Pattern, contract-first, AAG engine, mutation testing, 21 rules, 9 agents, 17 hooks |
 | 2026-03-26 | Frontier testing (CLI, ETL, WebSocket, Library) — 88%+ across 4 non-CRUD domains |
